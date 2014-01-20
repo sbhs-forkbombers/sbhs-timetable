@@ -7,7 +7,7 @@ $days = array("Monday","Tuesday","Wednesday","Thursday","Friday");
 <div class='info'>
 <h1>1-Tap Timetable (Beta!)</h1>
 Save your classes, and access them from any <span title="Maybe not your fridge">device</span>.<br />
-Setup will take about five minutes, and you will need a copy of your timetable in order to complete it.<br /><br /><br /><a class="button" href="#Monday-a" onclick="showTips()">Begin!</a>
+Setup will take about five minutes, and you will need a copy of your timetable in order to complete it.<br /><br /><br /><a class="button" href="javascript:void(0)" onclick="showTips(); doScroll('#Monday-a')">Begin!</a>
 </div>
 <?php
 
@@ -28,7 +28,7 @@ foreach ($weeks as $wkey => $week) {
 			echo "<input type='submit' value='Save it!' />";
 		}
 		else {
-			echo "<a class='button' href='#" . $days[$nextday] . "-" . $weeks[$nextweek] . "'>Next</a>";
+			echo "<a class='button' href='javascript:void(0)' onclick='doScroll(\"#" . $days[$nextday] . "-" . $weeks[$nextweek] . "\")'>Next</a>";
 		}
 		echo "</div>";
 	}

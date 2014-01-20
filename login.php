@@ -17,11 +17,15 @@ if (isset($_GET['code'])) {
 
 }
 
-if (isset($_SESSION['access_token']) && $_SESSION['access_token'] && !isset($_GET['refresh_token'])) {
+if (isset($_SESSION['access_token']) && $_SESSION['access_token'] && !isset($_GET['refresh-token'])) {
 	header("Location: /"); // erroneous login request
 }
 else {
 	unset($_SESSION['access_token']);
+	if (isset($_GET['urlback'])) {
+		$redir = $_GET['urlback'];
+		$client->setRedirectUri('http://sbhstimetable.tk' . $redir);
+	}
 	$authUrl = $client->createAuthUrl();
 	header("Location: $authUrl");
 	echo "Redirecting...";

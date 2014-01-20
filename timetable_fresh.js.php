@@ -11,6 +11,10 @@ function showTips() {
 	// TODO
 }
 
+function doScroll(id) {
+	jQuery('html,body').animate({scrollTop: jQuery(id).offset().top}, 1000);
+}
+
 $(document).ready(function() {
 	init();
 });

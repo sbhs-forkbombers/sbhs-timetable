@@ -6,7 +6,6 @@ require_once("Google/Client.php");
 require_once("Google/Service/Oauth2.php");
 require_once("./common.php");
 $client = get_client();
-echo "</head>";
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 	// logged in
 	$client->setAccessToken($_SESSION['access_token']);
@@ -31,4 +30,4 @@ else {
 	include "./index_new.php";
 }
 
-
+echo "</html>";

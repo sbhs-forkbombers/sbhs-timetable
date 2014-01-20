@@ -48,6 +48,8 @@ function recalculateNextBell() {
 	if (after_school || weekend) {
 		nextBell = belltimes['bells'][0];
 		nextBell["internal"] = [9,0];
+		var pName = nextBell['bell'].replace("Roll Call", "School starts").replace("End of Day", "School ends");
+		document.getElementById("period-name").innerHTML = pName;
 		return;
 	}
 	var nearestBellIdx = null;

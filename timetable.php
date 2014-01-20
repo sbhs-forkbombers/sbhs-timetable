@@ -5,7 +5,7 @@ set_include_path("gapi");
 require_once("Google/Client.php");
 require_once("Google/Service/Oauth2.php");
 require_once("./common.php");
-if (!isset($_SESSION['access_token']) || !$_SESSION['access_token']) {
+if (!(isset($_SESSION['access_token']) && $_SESSION['access_token'])) {
 	header("Location: /");
 }
 $client = get_client();
@@ -15,10 +15,9 @@ try {
 	$results = $service->userinfo_v2_me->get();
 }
 catch (Exception $e) {
-	error_log("EXCEPTION: " . $e->getMessage() > "\n");
-	header("Location: /login.php?logout");
+	error_log("EXCEPTION: " . $e->getMessage() . "\n");
+	header("Location: /login.php?refresh-token&urlback=/timetable.php");
 }
-// XXX TEMPORARY
 $email = $results['email'];
 
 $user_data = db_get_data_or_create($email);
@@ -34,7 +33,7 @@ if ($user_data["fresh"]) {
 	include "./timetable_fresh.php";
 }
 else {
-	$timetable = $user_data["timetable"]["timetable"];
+	$timetable = json_decode($user_data["timetable"]["timetable"]);
 	echo "</head><body>";
 	echo "<div id='sidebar'><div id='user-info'>Logged in as<br />$email<br />";
 	echo "<a href='/login.php?logout'>Logout</a><span style='font-size: 20px;'>&nbsp;&middot;&nbsp;</span><a href='/'>Homepage</a></div></div>\n";

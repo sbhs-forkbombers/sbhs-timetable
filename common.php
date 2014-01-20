@@ -1,5 +1,4 @@
 <?php
-$handle = new SQLite3(".httimetable.db");
 $dow = array(
 	"mon" => array(),
 	"tue" => array(),
@@ -31,27 +30,48 @@ function get_client() {
 	return $client;
 }
 
+function get_client_email($urlback = "/") {
+	$client = get_client();
+	$client->setAccessToken($_SESSION['access_token']);
+	$service = new Google_Service_Oauth2($client);
+	try {
+		    $results = $service->userinfo_v2_me->get();
+	}
+	catch (Exception $e) {
+		    error_log("EXCEPTION: " . $e->getMessage() . "\n");
+		    header("Location: /login.php?refresh-token&urlback=$urlback");
+	}
+	return $results["email"];
+}
+
 
 function db_get_data_or_create($email) {
-	global $handle;
+	$handle = new SQLite3("/srv/http/timetable/.httimetable.db");
+	global $timetable_structure;
 	$result = $handle->querySingle('SELECT * FROM timetable WHERE email="' . SQLite3::escapeString($email) . '"', true);
 	if ($result === false) {
 		echo "FATAL ERROR - INVALID QUERY. ";
 		echo $handle->lastErrorCode() . " - " . $handle->lastErrorMsg() . "\n";
+		$handle->close();
 	}
 	else if (!isset($result['email'])) {
 		// create an entry
-		$handle->exec("INSERT INTO timetable VALUES (\"" . SQLite3::escapeString($email) . "\", \"" . SQLite3::escapeString(json_encode($timetable_structure)) . "\")");
+		error_log("INSERT INTO timetable VALUES (\"" . SQLite3::escapeString($email) . "\", '" . SQLite3::escapeString(json_encode($timetable_structure)) . "')");
+		$handle->exec("INSERT OR REPLACE INTO timetable VALUES (\"" . SQLite3::escapeString($email) . "\", '" . SQLite3::escapeString(json_encode($timetable_structure)) . "');");
 		$result = $handle->querySingle('SELECT * FROM timetable WHERE email="' . SQLite3::escapeString($email) . '"', true);
+		$handle->close();
 		return array("timetable" => $result, "fresh" => true);;
 	}
 	else {
-		return array("timetable" => $result, "fresh" => isset($result['timetable']['a']['mon'][0]));
+		$handle->close();
+		return array("timetable" => $result, "fresh" => isset($result['timetable']['a']['mon']));
 	}
 }
 
 function db_store_data($email, $timetable) {
+	$handle = new SQLite3("/srv/http/timetable/.httimetable.db");
 	$timetable = SQLite3::escapeString(json_encode($timetable));
 	$email = SQLite3::escapeString($email);
-	return $handle->exec("UPDATE timetable SET timetable=\"$timetable\" WHERE email=\"$email\"");
+	$handle->exec("UPDATE timetable SET timetable='$timetable' WHERE email=\"$email\"");
+	$handle->close();
 }
