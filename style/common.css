@@ -1,0 +1,65 @@
+body {
+	font-family: "Roboto", "Segoe UI", sans-serif;
+	color: #fff;
+	background-color: #000;
+	margin-right: 200px;
+}
+
+a {
+	color: #fff;
+	text-decoration: underline;
+	transition: all 500ms linear 0s;
+}
+a:visited {
+	color: #BEBEBE;
+}
+a:hover {
+	color: #000;
+	background-color: #fff;
+}
+
+
+
+#user-info {
+	font-family: "Roboto Condensed", "Segoe UI", sans-serif;
+	text-align: right;
+}
+#sidebar {
+	position: fixed;
+	right: 0;
+	top: 0px;
+	text-align: center;
+	margin-left: 5px;
+	margin-right: 5px;	
+	margin-top: 10px;
+	width: 200px;
+	z-index: 1;
+}
+#period-name {
+	position: fixed;
+	top: 10px;
+	font-family: "Roboto";
+	font-weight: 100;
+	font-size: 100px;
+	text-align: center;
+	width: 100%;
+}
+
+#in {
+	position: fixed;
+	top: 155px;
+	font-family: "Roboto Condensed";
+	font-size: 20px;
+	text-align:center;
+	width: 100%;
+}
+
+#countdown {
+	position: fixed;
+	top: 200px;
+	font-family: "Roboto";
+	font-weight: 100;
+	font-size: 100px;
+	text-align: center;
+	width: 100%;
+}

@@ -1,0 +1,29 @@
+<?php
+session_start();
+set_include_path("gapi");
+require_once "Google/Client.php";
+require_once "./common.php";
+$client = get_client();
+
+if (isset($_GET['logout'])) {
+	unset($_SESSION['access_token']);
+	header("Location: /index.php");
+	exit;
+}
+if (isset($_GET['code'])) {
+	$client->authenticate($_GET['code']);
+	$_SESSION['access_token'] = $client->getAccessToken();
+	header("Location: /");
+
+}
+
+if (isset($_SESSION['access_token']) && $_SESSION['access_token'] && !isset($_GET['refresh_token'])) {
+	header("Location: /"); // erroneous login request
+}
+else {
+	unset($_SESSION['access_token']);
+	$authUrl = $client->createAuthUrl();
+	header("Location: $authUrl");
+	echo "Redirecting...";
+}
+?>
