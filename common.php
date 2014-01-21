@@ -56,7 +56,6 @@ function db_get_data_or_create($email) {
 	}
 	else if (!isset($result['email'])) {
 		// create an entry
-		error_log("INSERT INTO timetable VALUES (\"" . SQLite3::escapeString($email) . "\", '" . SQLite3::escapeString(json_encode($timetable_structure)) . "')");
 		$handle->exec("INSERT OR REPLACE INTO timetable VALUES (\"" . SQLite3::escapeString($email) . "\", '" . SQLite3::escapeString(json_encode($timetable_structure)) . "');");
 		$result = $handle->querySingle('SELECT * FROM timetable WHERE email="' . SQLite3::escapeString($email) . '"', true);
 		$handle->close();
@@ -64,7 +63,11 @@ function db_get_data_or_create($email) {
 	}
 	else {
 		$handle->close();
-		return array("timetable" => $result, "fresh" => isset($result['timetable']['a']['mon']));
+		$decoded = json_decode($result['timetable']);
+		//var_dump($decoded);
+		$fresh = (count($decoded->a->mon[0]) == 0) ;
+		
+		return array("timetable" => $result, "fresh" => $fresh);
 	}
 }
 

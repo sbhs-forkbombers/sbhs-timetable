@@ -19,7 +19,11 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 		header("Location: /login.php?refresh-token");
 	}
 	include("./header.html");
-	echo "<script src='/belltimes.js.php' type='application/javascript'></script></head>";
+	echo "<script type='application/javascript'>";
+	include "./belltimes.js.php";
+	echo "</script></head>";
+	echo "<body>";
+	echo "<a href='/faq.php' id='faq-link' title=\"the link doesn't jiggle!\">FAQ</a>";
 	include "./index_acc.php";
 }
 else {
@@ -27,7 +31,8 @@ else {
 	include("./header.html");
 	echo "<script src='/belltimes.js.php' type='application/javascript'></script>";
 	echo "</head>";
+	echo "<body>";
+	echo "<a href='/faq.php' id='faq-link' title=\"the link doesn't jiggle!\">FAQ</a>";
 	include "./index_new.php";
 }
-
 echo "</html>";

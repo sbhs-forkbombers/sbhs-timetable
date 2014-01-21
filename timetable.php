@@ -19,7 +19,9 @@ catch (Exception $e) {
 	header("Location: /login.php?refresh-token&urlback=/timetable.php");
 }
 $email = $results['email'];
-
+if ($email == "") {
+	header("Location: /login.php?logout");
+}
 $user_data = db_get_data_or_create($email);
 include "./header.html";
 echo "<link rel='stylesheet' href='/style/timetable.css' />";
@@ -34,6 +36,7 @@ if ($user_data["fresh"]) {
 }
 else {
 	$timetable = json_decode($user_data["timetable"]["timetable"]);
+	echo "<script src='/timetable_old.js.php'></script>";
 	echo "</head><body>";
 	echo "<div id='sidebar'><div id='user-info'>Logged in as<br />$email<br />";
 	echo "<a href='/login.php?logout'>Logout</a><span style='font-size: 20px;'>&nbsp;&middot;&nbsp;</span><a href='/'>Homepage</a></div></div>\n";

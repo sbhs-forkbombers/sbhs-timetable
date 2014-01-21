@@ -1,6 +1,5 @@
 <?php
 session_start();
-header("Content-type: text/plain");
 set_include_path("gapi");
 require_once("Google/Client.php");
 require_once("Google/Service/Oauth2.php");
@@ -15,12 +14,10 @@ foreach ($_POST as $k => $v) {
 	$timetable[$data[1]][substr($data[0], 0, 3)][$data[2]][$data[3]] = $v;
 }
 
-$json = json_encode($timetable);
 
 $email = get_client_email();
 
-db_store_data($email,$json);
+db_store_data($email,$timetable);
 
-echo $json;
 
-	
+header("Location: /timetable.php");	

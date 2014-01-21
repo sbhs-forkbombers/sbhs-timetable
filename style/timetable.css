@@ -47,3 +47,62 @@ h1 {
 	width: 100%;
 	text-align: center;
 }
+
+.arrow {
+	border: 50px solid transparent;
+	opacity: 0.25;
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-ms-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	transition: all 1s ease;
+}
+.arrow:hover {
+	opacity: 1;
+}
+.arrow.left {
+	border-right-color: white;
+}
+.arrow.right {
+	border-left-color: white;
+}
+
+.day {
+	position: fixed;
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-ms-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	transition: all 1s ease;
+	left: 175%;
+	top: 25%;
+	opacity: 0.5;
+	width: 50%;
+	font-size: 50px;
+	font-family: "Roboto Condensed";
+}
+
+#mon-a {
+	left: 25%;
+	opacity: 1;
+}
+#tue-a {
+	left: 75%;
+}
+
+.big-number {
+	font-size: 60px;
+	font-family: "Roboto Slab";
+}
+
+.name {
+	position: absolute;
+	width: 300px;
+	text-align: right;
+}
+div.room,span.room {
+	position: absolute;
+	margin-left: 300px;
+	width: 150px;
+	text-align: left;
+}

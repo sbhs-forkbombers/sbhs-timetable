@@ -7,7 +7,7 @@ $client = get_client();
 
 if (isset($_GET['logout'])) {
 	unset($_SESSION['access_token']);
-	header("Location: /index.php");
+	header("Location: ". $_SESSION['urlback']);
 	exit;
 }
 if (isset($_GET['code'])) {
@@ -22,9 +22,10 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token'] && !isset($_GE
 }
 else {
 	unset($_SESSION['access_token']);
+	$_SESSION['urlback'] = "http://sbhstimetable.tk/";
 	if (isset($_GET['urlback'])) {
 		$redir = $_GET['urlback'];
-		$client->setRedirectUri('http://sbhstimetable.tk' . $redir);
+		$_SESSION['urlback'] = "http://sbhstimetable.tk/$redir";
 	}
 	$authUrl = $client->createAuthUrl();
 	header("Location: $authUrl");
