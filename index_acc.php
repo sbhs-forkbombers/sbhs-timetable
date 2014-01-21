@@ -10,8 +10,8 @@
 <span id="period-name"></span><br />
 <span id="in">in</span><br />
 <span id="countdown"></span>
-<div id="slideout-left" class="slideout"></h2></div>
+<div id="slideout-left" class="slideout"></div>
 <div id="slideout-left-arrow" class="arrow" onclick="slideOutLeft()"></div>
 <div id="slideout-right-arrow" class="arrow" onclick="slideOutRight()"></div>
-<div id="slideout-right" class="slideout"></h1></div>
+<div id="slideout-right" class="slideout"></div>
 </body>

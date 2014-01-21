@@ -16,6 +16,27 @@
 	font-size: 50px;
 }
 
+h1 {
+	position: fixed;
+	width: 100%;
+	text-align: center;
+}
+
+.edit {
+	opacity: 0.25;
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-ms-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	transition: all 1s ease;
+	font-size: 10px;
+}
+
+.edit:hover {
+	cursor: pointer;
+	opacity: 1;
+}
+
 input {
 	font-family: "Roboto", "Segoe UI", sans-serif;
 	font-size: 40px;
@@ -29,12 +50,23 @@ input.room {
 	width: 100px;
 }
 
+input[type=submit] {
+	background-color: #33B5E5;
+	color: white;
+	padding: 10px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+}
 a.button {
-	background-color: white;
-	color: black;
-	padding: 5px;
+	background-color: #33B5E5;
+	color: white;
+	font-family: "Roboto", "Segoe UI", sans-serif;
+	padding: 10px;
 	margin-top: 10px;
-	cursor: default;
+	cursor: pointer;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+	text-align: center;
 	text-decoration: none;
 	position: relative;
 	align-self: center;

@@ -92,6 +92,7 @@ a:hover {
 	margin-bottom: 1%;
 	width: 40%;
 	z-index: 2;
+	overflow: auto;
 }
 
 .slideout.expanded {
@@ -195,3 +196,21 @@ a.fake-button:hover {
 	color: #fff;
 }
 
+.right-table {
+	font-size: 20px;
+}
+
+.bell-desc {
+	text-align: left;
+	padding-right: 5px;
+}
+
+.bell-time {
+	text-align: right;
+	padding-left: 20px;
+	border-left: 1px solid white;
+}
+
+tr:not(:last-child) > td { 
+	border-bottom: 1px solid white; 
+}

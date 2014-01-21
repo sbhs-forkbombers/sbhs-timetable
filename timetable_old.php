@@ -9,14 +9,13 @@ $ldays = array(
 	"thu" => "Thursday",
 	"fri" => "Friday"
 );
-$timetable = json_decode($timetable);
 foreach (get_object_vars($timetable) as $wn => $week) {
 	foreach (get_object_vars($week) as $dn => $day) {
 		echo "<div id='$dn-$wn' class='day'>";
 		echo "<span class='day-heading'>" . $ldays[$dn] . " " . strtoupper($wn) . "</span><br />";
 		foreach ($day as $num => $data) {
 			$dnum = $num + 1;
-			echo "<span class='big-number'>$dnum</span>: <span class='name'>" . $data->name . "</span>&nbsp;&nbsp;<span class='room'>" . $data->room . "</span><br />";
+			echo "<span class='big-number'>$dnum</span>: <span class='name'>" . $data->name . "</span>&nbsp;&nbsp;<span class='room'>" . $data->room . " <span class='edit'>Edit</span></span><br />";
 		}
 		echo "</div>";
 	}

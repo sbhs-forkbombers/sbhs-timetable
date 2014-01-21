@@ -65,7 +65,7 @@ function db_get_data_or_create($email) {
 		$handle->close();
 		$decoded = json_decode($result['timetable']);
 		//var_dump($decoded);
-		$fresh = (count($decoded->a->mon[0]) == 0) ;
+		$fresh = (!array_key_exists(0, $decoded->a->mon) || count($decoded->a->mon[0]) == 0) ;
 		
 		return array("timetable" => $result, "fresh" => $fresh);
 	}

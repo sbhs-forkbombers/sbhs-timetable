@@ -32,7 +32,7 @@ else {
 	echo "<script src='/belltimes.js.php' type='application/javascript'></script>";
 	echo "</head>";
 	echo "<body>";
-	echo "<a href='/faq.php' id='faq-link' title=\"the link doesn't jiggle!\">FAQ</a>";
+	echo "<a href='/faq.php' id='faq-link' title=\"The link doesn't jiggle!\">FAQ</a>";
 	include "./index_new.php";
 }
 echo "</html>";

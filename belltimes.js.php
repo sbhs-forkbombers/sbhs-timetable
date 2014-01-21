@@ -231,6 +231,16 @@ function slideOutLeft() {
 	$('#slideout-left-arrow').toggleClass('expanded');
 }
 
+function updateRightSlideout() { // belltimes here
+	var text;
+	text = "<div style='text-align: center;'><span class='big'>" + dow + " " + week + "</span><br /><table class='right-table' style='margin-left: auto; margin-right:auto;'><tbody>";
+	for (i in belltimes['bells']) {
+		var part = belltimes['bells'][i];
+		text +="<tr><td class='bell-desc'>" + part['bell'].replace(/^(\d)/, function(v) { return "Period " + v; }) + "</td><td class='bell-time'>" + part['time'] + "</td></tr>";
+	}
+	text += "</tbody></table></div>";
+	document.getElementById("slideout-right").innerHTML = text;
+}
 function updateLeftSlideout() {// timetable here
 	var text;
 	if (timetable == null) {
@@ -239,18 +249,18 @@ function updateLeftSlideout() {// timetable here
 			text = "<div style='text-align: center;'><h1>Your timetable, here.</h1>";
 			text += "You can personalize this page to show <strong>your timetable</strong>!<br />";
 			text += "It'll only take five minutes, and you'll need a copy of your timetable to start.<br /><br /><br /><br />";
-			text += "<a href='/timetable.php' class='fake-button'>START!</a></div>";
+			text += "<a href='/timetable.php' class='fake-button'>Get Started!</a></div>";
 		}
 		else {
 			text = "<div style='text-align: center;'><h1>Your timetable, here.</h1>";
 			text += "You can see your timetable here. All you need to do is log in using your google account using the button below.<br />";
 			text += "<strong>Don't have a google account?</strong><br />";
 			text += "That's OK too. When prompted to sign in using a google account, sign in with the address &lt;YourStudentID&gt;@student.sbhs.nsw.edu.au<br /><br /><br /><br />"; 
-			text += "<a href='/login.php?urlback=/timetable.php' class='fake-button'>START!</a></div>";
+			text += "<a href='/login.php?urlback=/timetable.php' class='fake-button'>Sign In</a></div>";
 		}
 	}
 	else {
-		text = "<div style='text-align: center;' ><span class='big'>" + dow + " " + wk + "</span><br /><table class='left-table' style='margin-left: auto; margin-right: auto;'><tbody>";
+		text = "<div style='text-align: center;' ><span class='big'>" + dow + " " + week + "</span><br /><table class='left-table' style='margin-left: auto; margin-right: auto;'><tbody>";
 		var day = dow.substr(0,3).toLowerCase();
 		var wk  = week.toLowerCase();
 		var today = timetable[wk][day];
@@ -267,9 +277,17 @@ function updateLeftSlideout() {// timetable here
 }
 	
 $(document).ready(function() {
-	recalculateNextBell();
-	updateTimeLeft();
-	setInterval(updateTimeLeft, 1000);
-	updateLeftSlideout();
+	if (belltimes["status"] == "Error") {
+		$('#in').text('');
+		$('#period-name').text("Something went wrong :(");
+		$('#countdown').text("You can <a href='http://github.com/sbhs-forkbombers/sbhs-timetable'>report a bug</a>, or try again later.");
+	}
+	else {
+		recalculateNextBell();
+		updateTimeLeft();
+		setInterval(updateTimeLeft, 1000);
+		updateLeftSlideout();
+		updateRightSlideout();
+	}
 });
 

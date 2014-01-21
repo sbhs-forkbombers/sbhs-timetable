@@ -53,3 +53,6 @@ function goRight() {
 	}
 	currentIdx++;
 }
+
+function startEdit(ev) {
+
