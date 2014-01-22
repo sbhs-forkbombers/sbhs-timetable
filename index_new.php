@@ -1,6 +1,6 @@
 <div id="sidebar">
 <div id="user-info">
-You can sign in using your SBHS email account.<br />
+Log in using your SBHS email or Google account.<br />
 <a href="/login.php">Login</a>
 </div>
 </div>

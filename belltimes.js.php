@@ -264,7 +264,7 @@ function updateLeftSlideout() {// timetable here
 		}
 		else {
 			text = "<div style='text-align: center;'><h1>Your timetable, here.</h1>";
-			text += "You can see your timetable here. All you need to do is log in using your Google account .<br />";
+			text += "You can see your timetable here. Sign in using your Google account .<br />";
 			text += "You can also sign in with your school email account:<br />";
 			text += "&lt;YourStudentID&gt;@student.sbhs.nsw.edu.au<br /><br /><br /><br />"; 
 			text += "<a href='/login.php?urlback=/timetable.php' class='fake-button'>Sign In</a></div>";
