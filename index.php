@@ -32,6 +32,7 @@ else {
 	echo "<script src='/belltimes.js.php' type='application/javascript'></script>";
 	echo "</head>";
 	echo "<body>";
+	echo "<div id=\"nojs\"><noscript>You need a Javascript-enabled browser to use this site.</noscript></div>"; 
 	echo "<a href='/faq.php' id='faq-link' title=\"The link doesn't jiggle!\">FAQ</a>";
 	include "./index_new.php";
 }
