@@ -55,4 +55,47 @@ function goRight() {
 }
 
 function startEdit(ev) {
+	var el = $(ev.currentTarget);
+	if (el.hasClass("editing")) {
+		var inputName = el.parent().prev().children()[0];
+		var inputRoom = el.parent().children()[0];
+		var newName = inputName.value;
+		var newRoom = inputRoom.value;
+		var path = el.parent().parent().attr("id");
+		var req = $.ajax({
+			"url": "/update_db.php",
+			"type": "POST",
+			"data": { "changed": path, "room": newRoom, "name": newName },
+			"dataType": "text"
+		});
+		el.text("Saving...");
+		req.done(function(msg) {
+			if (/^Ok/.test(msg)) {
+				el.parent().prev().html(newName);
+				el.parent().html(newRoom + " <span class='edit' id='edit'>Edit</span>");
+				el = document.getElementById('edit');
+				el.id = "";
+				$(el).click(startEdit);
+			}
+			else {
+				// do something to notify the user the request failed. TODO
+			}
+		});
+		req.failed(function() { /*TODO*/ });
+	}
+	else {
+		el.addClass("editing");
+		var pName = el.parent().prev().text();
+		var pRoom = el.parent().text().replace(el.text(), "");
+		el.parent().prev().html("<input type='text' value='"+pName+"' />");
+		el.parent().html("<input type='text' value='"+pRoom+"' /> <span class='edit editing' id='edit'>Done!</span>");
+		var el = $('#edit');
+		el[0].id = "";
+		el.click(startEdit);
+	}
+}
 
+
+$(document).ready(function() {
+	$('.edit').click(startEdit);
+});

@@ -14,19 +14,20 @@ a {
 	-o-transition: all 500ms ease;
 	transition: all 500ms ease;
 }
+
 a:visited {
 	color: #fff;
 }
+
 a:hover {
-	color: #BEBEBE;
+	color: #33b5e5;
 }
-
-
 
 #user-info {
 	font-family: "Roboto Condensed", "Segoe UI", sans-serif;
 	text-align: right;
 }
+
 #sidebar {
 	position: fixed;
 	right: 0;
@@ -39,6 +40,7 @@ a:hover {
 	word-wrap: break-word;
 	z-index: 1;
 }
+
 #period-name {
 	position: fixed;
 	top: 10px;
@@ -100,35 +102,41 @@ a:hover {
 	box-shadow: 5px 5px 20px 5px #bebebe;
 }
 
-
 #slideout-left {
 	left: -40%;
 }
+
 #slideout-left.expanded {
 	left: 0;
 	background-color: rgba(0,0,0,0.5);
 }
+
 #slideout-left-arrow {
 	top: 75%;
 	left: 0;
 	border-left-color: white;
 }
+
 #slideout-left-arrow.expanded {
 	border-right-color: white;
 	border-left-color: transparent;
 }
+
 #slideout-right {
 	right: -40%;
 }
+
 #slideout-right.expanded {
 	right: 0%;
 	background-color: rgba(0,0,0,0.5);
 }
+
 #slideout-right-arrow {
 	top: 75%;
 	right: 0;
 	border-right-color: white;
 }
+
 #slideout-right-arrow.expanded {
 	border-right-color: transparent;
 	border-left-color: white;
@@ -194,6 +202,7 @@ a.fake-button {
 }
 a.fake-button:hover {
 	color: #fff;
+	background-color: #0099cc;
 }
 
 .right-table {
@@ -213,4 +222,12 @@ a.fake-button:hover {
 
 tr:not(:last-child) > td { 
 	border-bottom: 1px solid white; 
+}
+
+#nojs {
+	color: #FF4444;
+	width: 100%;
+	text-align: center;
+	position: fixed;
+	font-size: 22px;
 }

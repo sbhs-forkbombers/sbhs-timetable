@@ -103,19 +103,21 @@ function recalculateNextBell() {
 	}
 	nextBell = belltimes['bells'][nearestBellIdx];
 	var pName = nextBell['bell'].replace("Roll Call", "School starts").replace("End of Day", "School ends");
-	if (/Transition|Lunch|Recess/i.test(pName)) {
+	if (/Transition|Lunch 1|Recess/i.test(pName)) {
 		var last = belltimes['bells'][nearestBellIdx-1]['bell'];
 		if (timetable != null) {
 			var lesson = last;
-			var details= timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(lesson)];
+			var details= timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(last)];
 			var name = details["name"];
 			if (name == "") {
 				pname = "Free Period";
 			}
-			pName = name + " ends";
+			else {
+				pName = name + " ends";
+			}
 		}
 		else {
-			pName = "Period " + last + " ends";
+			pName = last + " ends";
 		}
 	}
 	if (!/ (starts)| (ends)$/.test(pName)) {
@@ -147,12 +149,21 @@ function recalculateNextBell() {
 	}
 	
 	document.getElementById("period-name").innerHTML = pName;
-	doNextPeriod(nextPeriod);
+	if (timetable != null) {
+		doNextPeriod(nextPeriod);
+	}
+	else {
+		var j = document.getElementById("next-info");
+		if (j != null) {
+			j.innerHTML = "";
+		}
+	}
 	recalculating = false;
 }
 
-function doNextPeriod(nextPeriod) {
+function doNextPeriod(nextP) {
 	var text = "";
+	var nextPeriod = timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(nextP["bell"])];
 	if (nextPeriod == null) {
 		text = "No more periods today!";
 	}
@@ -247,15 +258,15 @@ function updateLeftSlideout() {// timetable here
 		// prompt them to log in and create a timetable
 		if (loggedIn) {
 			text = "<div style='text-align: center;'><h1>Your timetable, here.</h1>";
-			text += "You can personalize this page to show <strong>your timetable</strong>!<br />";
-			text += "It'll only take five minutes, and you'll need a copy of your timetable to start.<br /><br /><br /><br />";
-			text += "<a href='/timetable.php' class='fake-button'>Get Started!</a></div>";
+			text += "You can see. your timetable here.<br />";
+			text += "It'll take about five minutes. You'll need a copy of your timetable.<br /><br /><br /><br />";
+			text += "<a href='/timetable.php' class='fake-button'>Get Started</a></div>";
 		}
 		else {
 			text = "<div style='text-align: center;'><h1>Your timetable, here.</h1>";
-			text += "You can see your timetable here. All you need to do is log in using your google account using the button below.<br />";
-			text += "<strong>Don't have a google account?</strong><br />";
-			text += "That's OK too. When prompted to sign in using a google account, sign in with the address &lt;YourStudentID&gt;@student.sbhs.nsw.edu.au<br /><br /><br /><br />"; 
+			text += "You can see your timetable here. All you need to do is log in using your Google account .<br />";
+			text += "You can also sign in with your school email account:<br />";
+			text += "&lt;YourStudentID&gt;@student.sbhs.nsw.edu.au<br /><br /><br /><br />"; 
 			text += "<a href='/login.php?urlback=/timetable.php' class='fake-button'>Sign In</a></div>";
 		}
 	}

@@ -13,7 +13,7 @@ if (!isset($_SESSION['email'])) {
 	exit;
 }
 
-if (!isset($_REQUEST['changed']) || !isset($_REQUEST['new-val'])) {
+if (!isset($_REQUEST['changed']) || !isset($_REQUEST['room']) || !isset($_REQUEST['name'])) {
 	echo "Not ok";
 	error_log("Attempted to update entry without key/value!");
 	exit;
@@ -43,5 +43,5 @@ $day[$parts[2]]->room = $updated_room;
 $week->$parts[1] = $day;
 $currently->$parts[0] = $week;
 
-db_store_data($email, $currently);
+db_store_data($_SESSION['email'], $currently);
 echo "Ok";

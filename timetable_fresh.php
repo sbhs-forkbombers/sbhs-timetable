@@ -5,9 +5,8 @@ $days = array("Monday","Tuesday","Wednesday","Thursday","Friday");
 
 ?>
 <div class='info'>
-<h1>1-Tap Timetable (Beta!)</h1>
-Save your classes, and access them from any <span title="Maybe not your fridge">device</span>.<br />
-Setup will take about five minutes, and you will need a copy of your timetable in order to complete it.<br /><br /><br /><a class="button" href="javascript:void(0)" onclick="showTips(); doScroll('#Monday-a')">Begin!</a>
+Save your classes and access them anywhere.<br />
+It'll take about five minutes. You will need a copy of your timetable.<br /><br /><br /><a class="button" href="javascript:void(0)" onclick="showTips(); doScroll('#Monday-a')">Begin!</a>
 </div>
 <?php
 
