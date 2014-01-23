@@ -19,8 +19,8 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 		header("Location: /login.php?refresh-token");
 	}
 	include("./header.html");
-	echo "<script type='application/javascript'>";
-	include "./belltimes.js.php";
+	echo "<script defer type='application/javascript'>";
+	include "belltimes.js.php";
 	echo "</script></head>";
 	echo "<body>";
 	echo "<a href='/faq.php' id='faq-link' title=\"the link doesn't jiggle!\">FAQ</a>";
@@ -29,11 +29,20 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 else {
 	// TODO some kind of notice saying what email will be used for, etc.
 	include("./header.html");
-	echo "<script src='/belltimes.js.php' type='application/javascript'></script>";
+	echo "<script defer src='/belltimes.js.php' type='application/javascript'></script>";
 	echo "</head>";
 	echo "<body>";
 	echo "<div id=\"nojs\"><noscript>You need a Javascript-enabled browser to use this site.</noscript></div>"; 
 	echo "<a href='/faq.php' id='faq-link' title=\"The link doesn't jiggle!\">FAQ</a>";
 	include "./index_new.php";
 }
+echo "<script src=\"https://ajax.googleapis.com/ajax/libs/webfont/1.5.0/webfont.js\"></script>";
+echo "<script>
+  WebFont.load({
+    google: {
+      families: ['Roboto:400,100,700', 'Roboto Condensed', 'Roboto Slab:400,700']
+    }
+  });
+</script>";
+echo "</body>";
 echo "</html>";
