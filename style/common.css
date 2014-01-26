@@ -231,3 +231,10 @@ tr:not(:last-child) > td {
 	position: fixed;
 	font-size: 22px;
 }
+
+.faq {
+	border: 1px solid white;
+	width: 100%;
+	text-align: center;
+	position: relative;
+}

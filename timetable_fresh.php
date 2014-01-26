@@ -6,10 +6,10 @@ $days = array("Monday","Tuesday","Wednesday","Thursday","Friday");
 ?>
 <div class='info'>
 Save your classes and access them anywhere.<br />
-It'll take about five minutes. You will need a copy of your timetable.<br /><br /><br /><a class="button" href="javascript:void(0)" onclick="showTips(); doScroll('#Monday-a')">Begin!</a>
+It'll take about five minutes. You will need a copy of your timetable.<br /><br /><br /><a class="button" href="javascript:void(0)" onclick="doIE9InitialScroll()">Begin!</a>
 </div>
 <?php
-
+$ie9fix = array(); // IE9. Bad.
 echo "<form action='process_timetable.php' method='POST'>";
 foreach ($weeks as $wkey => $week) {
 	foreach ($days as $dkey => $day) {
@@ -28,10 +28,13 @@ foreach ($weeks as $wkey => $week) {
 			echo "<input type='submit' value='Save it!' />";
 		}
 		else {
-			echo "<a class='button' href='javascript:void(0)' onclick='doScroll(\"#" . $days[$nextday] . "-" . $weeks[$nextweek] . "\")'>Next</a>";
+			$ie9fix["$day-$week"] = "#" . $days[$nextday] . "-" . $weeks[$nextweek];
+			echo "<a class='button' href='javascript:void(0)' onclick='ie9Scroll(event);'>Next</a>";
 		}
 		echo "</div>";
 	}
 }
 ?>
 </form>
+<?php echo "<script>window.NEXT_ANCHOR = " . json_encode($ie9fix) . ";</script>" ?>
+</body></html>
