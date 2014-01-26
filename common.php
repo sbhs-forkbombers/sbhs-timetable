@@ -71,6 +71,12 @@ function db_get_data_or_create($email) {
 	}
 }
 
+function db_clear_data($email) {
+	$handle = new SQLite3("/srv/http/timetable/.httimetable.db");
+	$handle->exec("DELETE FROM timetable WHERE email=\"" . SQLite3::escapeString($email) . "\";");
+	$handle->close();
+}
+
 function db_store_data($email, $timetable) {
 	$handle = new SQLite3("/srv/http/timetable/.httimetable.db");
 	$timetable = SQLite3::escapeString(json_encode($timetable));

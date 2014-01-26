@@ -28,7 +28,17 @@ else {
 }
 if ($wday%7 < 2) {
 	echo "weekend = true;\n";
-	echo "day_offset += " . $wday%7 . ";";
+	$rWday = $wday;
+	if ($wday==0) {
+		$wday = 2;
+	}
+	else {
+		$wday = $wday%7;
+	}
+	if (is_after_school($hour,$min)) {
+		$wday--;		
+	}
+	echo "day_offset += " . $wday . ";";
 	$now += (24*60*60)*($wday);
 }
 else {
@@ -79,6 +89,7 @@ function recalculateNextBell() {
 		var pName = nextBell['bell'].replace("Roll Call", "School starts").replace("End of Day", "School ends");
 		document.getElementById("period-name").innerHTML = pName;
 		recalculating = false;
+		doReposition();
 		return;
 	}
 	var nearestBellIdx = null;
@@ -110,7 +121,7 @@ function recalculateNextBell() {
 			var details= timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(last)];
 			var name = details["name"];
 			if (name == "") {
-				pname = "Free Period";
+				pName = "Free Period";
 			}
 			else {
 				pName = name + " ends";
@@ -159,6 +170,7 @@ function recalculateNextBell() {
 		}
 	}
 	recalculating = false;
+	doReposition();	
 }
 
 function doNextPeriod(nextP) {
@@ -258,15 +270,15 @@ function updateLeftSlideout() {// timetable here
 		// prompt them to log in and create a timetable
 		if (loggedIn) {
 			text = "<div style='text-align: center;'><h1>Your timetable, here.</h1>";
-			text += "You can see. your timetable here.<br />";
+			text += "You can see your timetable here.<br />";
 			text += "It'll take about five minutes. You'll need a copy of your timetable.<br /><br /><br /><br />";
 			text += "<a href='/timetable.php' class='fake-button'>Get Started</a></div>";
 		}
 		else {
 			text = "<div style='text-align: center;'><h1>Your timetable, here.</h1>";
-			text += "You can see your timetable here. Sign in using your Google account .<br />";
+			text += "You can see your timetable here. Sign in using your Google account.<br />";
 			text += "You can also sign in with your school email account:<br />";
-			text += "&lt;YourStudentID&gt;@student.sbhs.nsw.edu.au<br /><br /><br /><br />"; 
+			text += "<span style='word-wrap: break-word'>&lt;YourStudentID&gt;@student.sbhs.nsw.edu.au</span><br /><br /><br /><br />"; 
 			text += "<a href='/login.php?urlback=/timetable.php' class='fake-button'>Sign In</a></div>";
 		}
 	}
@@ -288,7 +300,7 @@ function updateLeftSlideout() {// timetable here
 }
 	
 $(document).ready(function() {
-	if (belltimes["status"] == "Error") {
+		if (belltimes["status"] == "Error") {
 		$('#in').text('');
 		$('#period-name').text("Something went wrong :(");
 		$('#countdown').text("You can <a href='http://github.com/sbhs-forkbombers/sbhs-timetable'>report a bug</a>, or try again later.");
@@ -301,4 +313,10 @@ $(document).ready(function() {
 		updateRightSlideout();
 	}
 });
+function doReposition() {
+	var top1 = $('#period-name').height();
+	$('#in').css({"top": top1});
+	var top2 = $('#in').height();
+	$('#countdown').css({"top": top1+top2});
+}
 

@@ -95,11 +95,11 @@ a:hover {
 	width: 40%;
 	z-index: 2;
 	overflow: auto;
+	opacity: 0;
 }
 
 .slideout.expanded {
-	-webkit-box-shadow: 5px 5px 20px 5px #bebebe;
-	box-shadow: 5px 5px 20px 5px #bebebe;
+	opacity: 1;
 }
 
 #slideout-left {
@@ -109,6 +109,7 @@ a:hover {
 #slideout-left.expanded {
 	left: 0;
 	background-color: rgba(0,0,0,0.5);
+	border-right: 1px solid white;
 }
 
 #slideout-left-arrow {
@@ -129,6 +130,7 @@ a:hover {
 #slideout-right.expanded {
 	right: 0%;
 	background-color: rgba(0,0,0,0.5);
+	border-left: 1px solid white;
 }
 
 #slideout-right-arrow {
@@ -230,11 +232,4 @@ tr:not(:last-child) > td {
 	text-align: center;
 	position: fixed;
 	font-size: 22px;
-}
-
-.faq {
-	border: 1px solid white;
-	width: 100%;
-	text-align: center;
-	position: relative;
 }

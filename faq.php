@@ -1,12 +1,32 @@
 <?php
 include("./header.html");
 ?>
+<style>
+body {
+	position: fixed;
+	width: 100%;
+}
+.faq {
+	border: 1px solid white;
+	width: 100%;
+	text-align: center;
+	position: relative;
+}
+
+.faq-ans {
+	font-family: Roboto; 
+	font-size: 18px; 
+	margin: 10px; 
+	text-align: left;
+	height: 0;
+}
+</style>
 </head>
 <body>
 <h1>FAQ</h1>
 <div onclick="toggleHeader('#faq-1')" class="faq" id="faq-1">
 <span style="font-family: Roboto Slab; font-size: 30px; ">About this site</span><br /><br />
-<div id="faq-1-ans" style="display:none; font-family: Roboto; font-size: 18px; margin: 10px; text-align: left;">
+<div id="faq-1-ans" class="faq-ans">
 This site is the spiritual successor to <a href='http://sbhsbelltimes.tk/'>http://sbhsbelltimes.tk</a>
 <br />
 The code can be found on <a href='https://github.com/sbhs-forkbombers/sbhs-timetable'>GitHub</a>
@@ -22,11 +42,11 @@ It's probably your computer and web browser. You should switch to the latest ver
 <script>
 function toggleHeader(id) {
 	if ($(id).hasClass("expanded")) {
-		$(id + "-ans").css({"display": "none"});
+		$(id + "-ans").css({"height": "0"});
 		$(id).removeClass("expanded");
 	}
 	else {
-		$(id + "-ans").css({"display": "block"});
+		$(id + "-ans").css({"height": "auto"});
 		$(id).addClass("expanded");
 	}
 }
