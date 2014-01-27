@@ -32,20 +32,29 @@ foreach (get_object_vars($timetable) as $wn => $week) {
 	foreach (get_object_vars($week) as $dn => $day) {
 		echo "<div id='$dn-$wn' class='day'>";
 		echo "<span class='day-heading'>" . $ldays[$dn] . " " . strtoupper($wn) . "</span><br />";
+		echo "<table><tbody>";
 		foreach ($day as $num => $data) {
 			$dnum = $num + 1;
-			echo "<span id='$wn-$dn-$num'><span class='big-number'>$dnum</span>: <span class='name'>" 
-				. $data->name 
-				. "</span>&nbsp;&nbsp;<span class='room'>" 
-				. $data->room 
-				. " <span class='edit'>Edit</span></span></span><br />";
+			$name = $data->name;
+			$room = $data->room;
+			if ($name == "") {
+				$name = "&nbsp;&nbsp;&nbsp;&nbsp;";
+			}
+			if ($room == "") {
+				$room = "&nbsp;&nbsp;&nbsp;&nbsp;";
+			}
+			echo "<tr id='$wn-$dn-$num'><td class='big-number'>$dnum</td> <td class='name'>" 
+				. $name 
+				. "</td><td class='room'>" 
+				. $room 
+				. "</td><td class='edit'>Edit</td></tr>";
 		}
-		echo "</div>";
+		echo "</tbody></table></div>";
 	}
 }
 			
 
 ?>
-
-<div class='arrow left' style="position: fixed; top: 75%; left: 10%; cursor: pointer" onclick="goLeft()"></div>
+<div id="swipe-info">Swipe left/right to see other days</div>
+<div class='arrow left'  style="position: fixed; top: 75%; left: 10%; cursor: pointer" onclick="goLeft()"></div>
 <div class='arrow right' style="position:fixed; top: 75%; right: 10%; cursor: pointer" onclick="goRight()"></div>

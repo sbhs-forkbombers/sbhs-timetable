@@ -42,7 +42,11 @@ if (isset($_REQUEST['clear-data'])) {
 	db_clear_data($email);
 }
 $user_data = db_get_data_or_create($email);
-include "./header.html";
+if (!$user_data["fresh"] && isset($_SESSION['new-timetable'])) {
+	unset($_SESSION['new-timetable']);
+	header("Location: /");
+}
+include "./header.php";
 echo "<link rel='stylesheet' href='/style/timetable.css' />";
 if ($user_data["fresh"]) {
 	// new user, display that page.
@@ -57,9 +61,9 @@ else {
 	$timetable = json_decode($user_data["timetable"]["timetable"]);
 	echo "<script src='/timetable_old.js.php'></script>";
 	echo "</head><body>";
-	echo "<div id='sidebar'><div id='user-info'>Logged in as<br />$email<br />";
+	echo "<div id='sidebar'><div id='user-info'><span class='nomobile'>Logged in as</span>$email<br />";
 	// TODO a warning when deleting the timetable
-	echo "<a href='/login.php?logout'>Logout</a><span style='font-size: 20px;'>&nbsp;&middot;&nbsp;</span><a href='/'>Homepage</a><span style='font-size: 20px;'>&nbsp;&middot;&nbsp;</span><a href='/timetable.php?clear-data' title='UNLEASH THE HOUNDS'>Clear the timetable</a></div></div>\n";
+	echo "<a href='/login.php?logout'>Logout</a><span style='font-weight: bold;'>&nbsp;&middot;&nbsp;</span><a href='/'>Homepage</a><span style='font-weight: bold;'>&nbsp;&middot;&nbsp;</span><a href='/timetable.php?clear-data' title='UNLEASH THE HOUNDS'>Clear the timetable</a></div></div>\n";
 
 	include "./timetable_old.php";
 }

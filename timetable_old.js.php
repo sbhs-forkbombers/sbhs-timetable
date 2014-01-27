@@ -34,16 +34,18 @@ function goLeft() {
 	
 	var nowEl = inOrder[currentIdx];
 	var newEl = inOrder[currentIdx-1];
+	var rightSemiOffScreenVal = (window.actualMobile ? "150%" : "75%");
+	var leftSemiOffScreenVal = (window.actualMobile ? "-150%" : "-25%");
 
 	if ((currentIdx+1) < 15) {
 		var rightEl = inOrder[currentIdx+1];
 		$('#'+rightEl).css({"left": "150%"});
 	}
-	$('#'+nowEl).css({"left": "75%", "opacity": "0.5"});
+	$('#'+nowEl).css({"left": rightSemiOffScreenVal, "opacity": "0.5"});
 	$('#'+newEl).css({"left": "25%", "opacity": "1"});
 	if ((currentIdx-2) > -1) {
 		var leftEl = inOrder[currentIdx-2];
-		$('#'+leftEl).css({"left": "-25%"});
+		$('#'+leftEl).css({"left": leftSemiOffScreenVal});
 	}
 	currentIdx--;
 }
@@ -52,19 +54,21 @@ function goRight() {
 	if (currentIdx == 14) {
 		return;
 	}
-	
+	var leftSemiOffScreenVal = (window.actualMobile ? "150%" : "75%");
+	var rightSemiOffScreenVal = (window.actualMobile ? "-150%" : "-25%");
+
 	var nowEl = inOrder[currentIdx];
 	var newEl = inOrder[currentIdx+1];
 
 	if ((currentIdx-1) > -1) {
 		var leftEl = inOrder[currentIdx-1];
-		$('#'+leftEl).css({"left": "-50%"});
+		$('#'+leftEl).css({"left": "-150%"});
 	}
-	$('#'+nowEl).css({"left": "-25%", "opacity": "0.5"});
+	$('#'+nowEl).css({"left": rightSemiOffScreenVal, "opacity": "0.5"});
 	$('#'+newEl).css({"left": "25%", "opacity": "1"});
 	if ((currentIdx+2) < 15) {
 		var rightEl = inOrder[currentIdx+2];
-		$('#'+rightEl).css({"left": "75%"});
+		$('#'+rightEl).css({"left": leftSemiOffScreenVal});
 	}
 	currentIdx++;
 }
@@ -72,11 +76,11 @@ function goRight() {
 function startEdit(ev) {
 	var el = $(ev.currentTarget);
 	if (el.hasClass("editing")) {
-		var inputName = el.parent().prev().children()[0];
-		var inputRoom = el.parent().children()[0];
+		var inputRoom = el.prev().children()[0];
+		var inputName = el.prev().prev().children()[0];
 		var newName = inputName.value;
 		var newRoom = inputRoom.value;
-		var path = el.parent().parent().attr("id");
+		var path = el.parent().attr("id");
 		var req = $.ajax({
 			"url": "/update_db.php",
 			"type": "POST",
@@ -86,27 +90,28 @@ function startEdit(ev) {
 		el.text("Saving...");
 		req.done(function(msg) {
 			if (/^Ok/.test(msg)) {
-				el.parent().prev().html(newName);
-				el.parent().html(newRoom + " <span class='edit' id='edit'>Edit</span>");
-				el = document.getElementById('edit');
-				el.id = "";
-				$(el).click(startEdit);
+				el.prev().prev().html(newName);
+				el.prev().html(newRoom);
+				el.text("Saved!");
+				el.css({"opacity": 1});
+				el.removeClass("editing");
+				setTimeout(function() { el.text("Edit"); el.css({"opacity": ""}) }, 5000);
 			}
 			else {
+				el.text("Failed :(");
+				setTimeout(function() { el.text("Try again") }, 5000);
 				// do something to notify the user the request failed. TODO
 			}
 		});
-		req.failed(function() { /*TODO*/ });
+		req.fail(function() { /*TODO*/ });
 	}
 	else {
 		el.addClass("editing");
-		var pName = el.parent().prev().text();
-		var pRoom = el.parent().text().replace(el.text(), "");
-		el.parent().prev().html("<input type='text' value='"+pName+"' />");
-		el.parent().html("<input type='text' value='"+pRoom+"' /> <span class='edit editing' id='edit'>Done!</span>");
-		var el = $('#edit');
-		el[0].id = "";
-		el.click(startEdit);
+		var pName = el.prev().prev().text().replace(/^ +/, "");
+		var pRoom = el.prev().text().replace(/^ +/, "");
+		el.prev().prev().html("<input type='text' value='"+pName+"' />");
+		el.prev().html("<input type='text' value='"+pRoom+"' />");
+		el.text("Done");
 	}
 }
 
@@ -114,3 +119,25 @@ function startEdit(ev) {
 $(document).ready(function() {
 	$('.edit').click(startEdit);
 });
+
+Modernizr.load([{
+	test: Modernizr.touch,
+	yep : ["/script/jquery.mobile.custom.min.js"],
+	complete: function() {
+		if ($.mobile) {
+			$(document).ready(function() { 
+				$(document).on('swipeleft', function(ev) { 
+					goRight();
+				});
+				$(document).on('swiperight', function(ev) { 
+					goLeft();
+				});
+			});
+			if (window.actualMobile || /ipad|android/i.test(navigator.userAgent)) {
+				$('#swipe-info').css({"opacity": 1});
+				setTimeout(function() { $('#swipe-info').css({"opacity": 0}) }, 5000);
+			}
+		}
+	}
+}]);
+

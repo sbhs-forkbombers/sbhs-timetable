@@ -1,0 +1,63 @@
+.arrow {
+	border: 10px solid transparent;
+}
+
+
+.nomobile {
+	display: none;
+}
+
+#sidebar {
+	bottom: 5px;
+	top: auto;
+}
+
+.big {
+	font-size: 30px;
+	font-weight: initial;
+	font-family: "Roboto Slab";
+}
+
+
+.left-table {
+	font-size: 20px;
+}
+
+#faq-link {
+	font-size: 15px;
+}
+
+h1 {
+	font-family: "Roboto Slab";
+	font-weight: initial;
+	font-size: 30px;
+}
+
+.day {
+	font-size: 30px;
+}
+
+.big-number {
+	font-size: 35px;
+}
+
+.name {
+	width: auto;
+	padding-right: 10px;
+}
+.room {
+	width: auto;
+	margin-left: 10px;
+}
+
+#tue-a {
+	left: 175%;
+}
+
+td > input {
+	position: relative;
+	width: 100%;
+	font-size: inherit;
+	margin: 0;
+}
+

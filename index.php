@@ -34,17 +34,18 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 		# the token has probably expired.
 		header("Location: /login.php?refresh-token");
 	}
-	include("./header.html");
+	include("./header.php");
 	echo "<script defer type='application/javascript'>";
 	include "./belltimes.js.php";
-	echo "</script></head>";
+	echo "</script>";
+	echo "</head>";
 	echo "<body>";
 	echo "<a href='/faq.php' id='faq-link' title=\"the link doesn't jiggle!\">FAQ</a>";
 	include "./index_acc.php";
 }
 else {
 	// TODO some kind of notice saying what email will be used for, etc.
-	include("./header.html");
+	include("./header.php");
 	echo "<script defer src='./belltimes.js.php' type='application/javascript'></script>";
 	echo "</head>";
 	echo "<body>";
@@ -52,7 +53,7 @@ else {
 	echo "<a href='/faq.php' id='faq-link' title=\"The link doesn't jiggle!\">FAQ</a>";
 	include "./index_new.php";
 }
-echo "<div id=\"debug\" style=\"position:fixed;top:2px;left:2px;color:#ff4444;font-family:'Roboto Condensed';font-size:16px;\">DEVELOPMENT NOTICE<br />This site may not function as intended</div>";
+//echo "<div id=\"debug\" style=\"position:fixed;top:2px;left:2px;color:#ff4444;font-family:'Roboto Condensed';font-size:16px;\">DEVELOPMENT NOTICE<br />This site may not function as intended</div>";
 /*echo "<script src=\"https://ajax.googleapis.com/ajax/libs/webfont/1.5.0/webfont.js\"></script>";
 echo "<script>
   WebFont.load({
@@ -62,5 +63,6 @@ echo "<script>
   });
 </script>";*/
 echo "<div id='darkener'></div>";
+echo "<div id='swipe-info'>Swipe left or right to show more information...</div>";
 echo "</body>";
 echo "</html>";

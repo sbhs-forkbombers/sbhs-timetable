@@ -16,7 +16,8 @@
 -->
 <div id="sidebar">
 	<div id="user-info">
-		Logged in as<br />
+
+<span class='nomobile'>	Logged in as</span>
 		<?php echo $results['email'] ?>
 		<br />
 		<a href="/login.php?logout">Logout</a><span style="font-weight: bold;">&nbsp;&middot;&nbsp;</span><a href="/timetable.php">My timetable</a>

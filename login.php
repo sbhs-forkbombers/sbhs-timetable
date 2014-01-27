@@ -27,6 +27,9 @@ else {
 		$redir = $_GET['urlback'];
 		$_SESSION['urlback'] = "http://sbhstimetable.tk/$redir";
 	}
+	if (isset($_GET['new-timetable'])) {
+		$_SESSION['new-timetable'] = true;
+	}
 	$authUrl = $client->createAuthUrl();
 	header("Location: $authUrl");
 	echo "Redirecting...";

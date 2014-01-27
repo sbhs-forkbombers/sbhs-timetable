@@ -132,14 +132,14 @@ h1 {
 }
 
 .name {
-	position: absolute;
-	width: 300px;
+	position: relative;
+	width: 50%;
 	text-align: right;
 }
 
 div.room,span.room {
 	position: absolute;
 	margin-left: 300px;
-	width: 150px;
+	width: 25%;
 	text-align: left;
 }
