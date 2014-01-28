@@ -32,7 +32,7 @@ try {
 }
 catch (Exception $e) {
 	error_log("EXCEPTION: " . $e->getMessage() . "\n");
-	header("Location: /login.php?refresh-token&urlback=/timetable.php");
+	header("Location: /login.php?refresh-token&urlback=timetable.php");
 }
 $email = $results['email'];
 if ($email == "") {
@@ -53,7 +53,7 @@ if ($user_data["fresh"]) {
 	echo "<script src='/timetable_fresh.js.php'></script>";
 	echo "</head><body>";
 	echo "<div id='sidebar'><div id='user-info'><span class='nomobile'>Logged in as<br /></span>$email<br />";
-	echo "<a href='/login.php?logout'>Logout</a><span style='font-size: 20px;'>&nbsp;&middot;&nbsp;</span><a href='/'>Homepage</a></div></div>\n";
+	echo "<a href='/login.php?logout'>Logout</a> <span style='font-size: 14px;'>&#9679;</span> <a href='/'>Homepage</a></div></div>\n";
 
 	include "./timetable_fresh.php";
 }
@@ -63,7 +63,7 @@ else {
 	echo "</head><body>";
 	echo "<div id='sidebar'><div id='user-info'><span class='nomobile'>Logged in as<br /></span>$email<br />";
 	// TODO a warning when deleting the timetable
-	echo "<a href='/login.php?logout'>Logout</a><span style='font-weight: bold;'>&nbsp;&middot;&nbsp;</span><a href='/'>Homepage</a><span style='font-weight: bold;'>&nbsp;&middot;&nbsp;</span><a href='/timetable.php?clear-data' title='UNLEASH THE HOUNDS'>Clear the timetable</a></div></div>\n";
+	echo "<a href='/login.php?logout'>Logout</a> <span style='font-size: 14px;'>&#9679;</span> <a href='/'>Homepage</a> <span style='font-size: 14px;'>&#9679;</span> <a href='/timetable.php?clear-data' title='UNLEASH THE HOUNDS'>Clear the timetable</a></div></div>\n";
 
 	include "./timetable_old.php";
 }

@@ -8,8 +8,6 @@
 }
 
 #sidebar {
-	bottom: 5px;
-	top: auto;
 }
 
 .big {
@@ -21,10 +19,6 @@
 
 .left-table {
 	font-size: 20px;
-}
-
-#faq-link {
-	font-size: 15px;
 }
 
 h1 {
@@ -64,3 +58,10 @@ td > input {
 	margin: 0;
 }
 
+#feedback {
+	font-size: 20px;
+}
+
+#faq-link {
+	font-size: 20px;
+}

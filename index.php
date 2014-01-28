@@ -65,6 +65,7 @@ echo "<script>
     }
   });
 </script>";*/
+echo '<div id="feedback"><a href="https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform">Feedback</a></div>';
 echo "<div id='darkener'></div>";
 echo "<div id='swipe-info'>Swipe left or right to show more information...</div>";
 echo "</body>";

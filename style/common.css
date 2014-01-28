@@ -46,22 +46,23 @@ a:hover {
 	top: 50px;
 	font-family: "Roboto";
 	font-weight: 100;
-	font-size: 100px;
+	font-size: 90px;
 	text-align: center;
 	width: 100%;
 }
 
 #in {
 	position: fixed;
-	top: 155px;
-	font-family: "Roboto Condensed";
+	top: 180px;
+	font-family: "Roboto";
 	font-size: 20px;
-	text-align:center;
+	text-align: center;
 	width: 100%;
 }
 
 #faq-link {
-	font-size: 30px;
+	font-family: "Roboto Condensed";
+	font-size: 22px;
 	position: fixed;
 	left: 5px;
 	bottom: 5px;
@@ -74,9 +75,13 @@ a:hover {
 	top: 200px;
 	font-family: "Roboto";
 	font-weight: 100;
-	font-size: 100px;
+	font-size: 115px;
 	text-align: center;
 	width: 100%;
+}
+
+#countdown strong {
+	font-weight: 400;
 }
 
 .slideout {
@@ -86,8 +91,8 @@ a:hover {
 	-o-transition: all 1s ease;
 	transition: all 1s ease;
 	height: 98%;
-	-webkit-border-radius: 5px 5px 5px 5px;
-	border-radius: 5px 5px 5px 5px;
+	/*-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;*/
 	padding: 10px;
 	position: fixed;
 	border-collapse: separate;
@@ -114,7 +119,7 @@ a:hover {
 }
 
 #slideout-left-arrow {
-	top: 75%;
+	top: 66%;
 	left: 0;
 	border-left-color: white;
 }
@@ -135,7 +140,7 @@ a:hover {
 }
 
 #slideout-right-arrow {
-	top: 75%;
+	top: 66%;
 	right: 0;
 	border-right-color: white;
 }
@@ -269,4 +274,14 @@ tr:not(:last-child) > td {
 	-ms-transition: all 500ms ease;
 	-o-transition: all 500ms ease;
 	transition: all 500ms ease;
+}
+
+#feedback {
+	font-family: "Roboto Condensed";
+	position: fixed;
+	right: 5px;
+	bottom: 5px;
+	font-size: 22px;
+	z-index: 1;
+	text-align: center;
 }

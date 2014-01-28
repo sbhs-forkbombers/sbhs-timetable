@@ -54,8 +54,8 @@ input[type=submit] {
 	background-color: #33B5E5;
 	color: white;
 	padding: 10px;
-	-webkit-border-radius: 5px 5px 5px 5px;
-	border-radius: 5px 5px 5px 5px;
+	/*-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;*/
 }
 
 a.button {

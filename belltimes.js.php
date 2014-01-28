@@ -63,7 +63,7 @@ else {
 	echo "weekend = false;\n";
 }
 $NOW = $now;
-echo "window.NOW = new Date(" . strftime("%G, %m, %d", $now) . ");";
+echo "window.NOW = new Date(" . strftime("%G, %m - 1, %d", $now) . ");";
 echo "//http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $now);
 ?>
 
@@ -257,13 +257,7 @@ function format(seconds) {
 	if (sec.length < 2) {
 		sec = "0" + sec;
 	}
-	if (min.length < 2) {
-		min = "0" + min;
-	}
-	if (hrs.length < 2) {
-		hrs = "0" + hrs;
-	}
-	return hrs + ":" + min + ":" + sec;
+	return hrs + "h " + min + "m " + sec + "s";
 }
 
 function isAfterSchool(hour, min) {
@@ -443,20 +437,22 @@ function doReposition() {
 		window.MOBILE = false;
 	}
 	if (window.MOBILE) {
-		$('#period-name').css({"font-family": "Roboto Slab", "font-size": "30px"});
-		$('#countdown').css({"font-family": "Roboto Slab", "font-size": "50px"});
+		$('#period-name').css({"font-family": "Roboto", "font-size": "40px"});
+		$('#countdown').css({"font-family": "Roboto", "font-size": "50px"});
 	}
-	var top1 = $('#period-name').height() + 50;
+	var top1 = $('#period-name').height() + 62;
 	$('#in').css({"top": top1});
 	var top2 = $('#in').height();
 	$('#countdown').css({"top": top1+top2});
 
 	
 }
-
 Modernizr.load([{
 		test: Modernizr.touch,
 		yep : ["/script/jquery.mobile.custom.min.js"],
+/*		callback: function(url, result, key) {
+			console.log("CALLBACKED! " + url +"," + result +"," + key);
+		},*/
 		complete: function() {
 			if ($.mobile) {
 				$(document).ready(function() { 

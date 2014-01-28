@@ -24,7 +24,8 @@ body {
 }
 .faq {
 	border: 1px solid white;
-	width: 100%;
+	width: 99%;
+	left: -5px;
 	text-align: center;
 	position: relative;
 	cursor: pointer;
@@ -46,12 +47,26 @@ body {
 	-ms-transition: all 500ms ease;
 	-o-transition: all 500ms ease;
 	transition: all 500ms ease;
-*/}
+*/
+}
+
+#back {
+	position: fixed;
+	top: 0; left: 0;
+	padding: 4px;
+	background-color: #33b5e5;
+	border-radius: 0 0 5px 0;
+}
+
+#back:hover {
+	color: #33b5e5;
+	background-color: white;
+}
 </style>
 </head>
 <body>
 <h1>FAQ</h1>
-<a href="/">Back</a>
+<a href="/" id="back">Back</a>
 <div onclick="toggleHeader('#faq-1')" class="faq" id="faq-1">
 <span style="font-family: Roboto Slab; font-size: 30px; ">About this site</span><br /><br />
 <div id="faq-1-ans" class="faq-ans" >
@@ -62,7 +77,7 @@ The code can be found on <a href='https://github.com/sbhs-forkbombers/sbhs-timet
 Improvements include:
 <ul>
 <li><strong>Integrated timetable</strong> - on the front page, you can see what class you've got next, what you've got tomorrow, and what the belltimes are for today</li>
-<li><strong>Less annoying animations</strong> - The FAQ button doesn't jiggle like it does on the other website. Neat, huh?</li>
+<li><strong>Designed with UX in mind</strong> - No annoying jiggly links, no attention-grabbing popups. Just a plain, clean look.</li>
 <li><strong>Intuitive touch-screen support</strong> - Why click when you can swipe? On your phone or tablet, swipe from the left and right of the screen to view more information</li>
 </div>
 </div>
