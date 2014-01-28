@@ -22,10 +22,11 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token'] && !isset($_GE
 }
 else {
 	unset($_SESSION['access_token']);
-	$_SESSION['urlback'] = "http://sbhstimetable.tk/";
+	$root = $_SERVER["HTTP_HOST"];
+	$_SESSION['urlback'] = "http://$root/";
 	if (isset($_GET['urlback'])) {
 		$redir = $_GET['urlback'];
-		$_SESSION['urlback'] = "http://sbhstimetable.tk/$redir";
+		$_SESSION['urlback'] = "http://$root/$redir";
 	}
 	if (isset($_GET['new-timetable'])) {
 		$_SESSION['new-timetable'] = true;

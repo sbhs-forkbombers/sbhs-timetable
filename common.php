@@ -36,7 +36,7 @@ function get_client() {
 	global $data;
 	$client_id = $data[0];
 	$client_secret = $data[1];
-	$redirect_uri = 'http://sbhstimetable.tk/login.php';
+	$redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/login.php';
 	//$redirect_uri = 'http://localhost:8081/login.php';
 
 	$client = new Google_Client();

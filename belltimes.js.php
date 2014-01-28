@@ -63,6 +63,7 @@ else {
 	echo "weekend = false;\n";
 }
 $NOW = $now;
+echo "window.NOW = new Date(" . strftime("%G, %m, %d", $now) . ");";
 echo "//http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $now);
 ?>
 
@@ -90,16 +91,27 @@ else {
 	echo "loggedIn = false;\n";
 }
 ?>
+Date.prototype.getYearDay = function() {
+	var onejan = new Date(this.getFullYear(),0,1);
+	return Math.ceil((this - onejan) / 86400000);
+} 
+Date.prototype.getDateStr = function() { return this.getFullYear() + "-" + (this.getMonth()+1) + "-" + this.getDate() }; 
 week = null; 
 dow = null;
 recalculating = false;
 nextBell = null;
 nextPeriod = null;
-n = new Date();
-todaysDate = n.getDate() + " " + n.getMonth();
+startDate = new Date();
 function recalculateNextBell() {
 	recalculating = true;
 	var now = new Date();
+	if (now.getDateStr() != startDate.getDateStr()) {
+		// we've changed days
+		startDate = now;
+		after_school = false;
+		day_offset--;
+		if (day_offset <= 0) { weekend = false }
+	}
 	var hour = now.getHours();
 	var min  = now.getMinutes();
 
@@ -107,11 +119,20 @@ function recalculateNextBell() {
 		// it's now after school.
 		after_school = true;
 		// should get the next set of bells here
-		var dweek = now.getDay();
+		NOW.setDate(NOW.getDate()+1);
+		if (NOW.getDay() == 6) {
+			NOW.setDate(now.getDate() + 2);
+		}
+		else if (NOW.getDay() == 0) {
+			NOW.setDate(now.getDate() + 1);
+		}
 		if (now.getDay() >= 5) {
 			// weekend!
 			weekend = true;
 		}
+		$('#period-name').text("Updating bells...");
+		$('#countdown').text('');
+		$.getScript("http://student.sbhs.net.au/api/belltimes/bells.json?date=" + NOW.getDateStr() + "&callback=loadTimetable");
 	}
 
 	if (after_school || weekend) {
@@ -244,25 +265,23 @@ function format(seconds) {
 	}
 	return hrs + ":" + min + ":" + sec;
 }
-	
+
+function isAfterSchool(hour, min) {
+	if (hour == 15 && min >= 15) {
+		return true;
+	}
+	else if (hour > 15) {
+		return true;
+	}
+	return false;
+}
 
 function updateTimeLeft() {
 	if (recalculating) {
 		return;
 	}
 	var n = new Date();
-	var teststr = n.getDate() + " " + n.getMonth();
-	if (teststr != window.todaysDate) {
-		if (after_school) {
-			after_school = false;
-		}
-		else if (day_offset > 0) {
-			day_offset--;
-		}
-		else if (weekend) {
-			weekend = false;
-		}
-	}
+	var teststr = n.getDateStr();
 	var el = document.getElementById("countdown");
 	var start = nextBell["internal"];
 	if (weekend || after_school) {
@@ -283,7 +302,7 @@ function updateTimeLeft() {
 		sec += Math.floor((now.valueOf() - Date.now())/1000);
 	}
 	sec += (60 - now.getSeconds());
-	if (sec < 60) {
+	if (sec < 60 || n.getDateStr() != startDate.getDateStr()) {
 		recalculateNextBell();
 		updateTimeLeft();
 		return;
