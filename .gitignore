@@ -1,6 +1,10 @@
 # secret
 .ht*
 
+# stuff
+analyticstracking.php
+google*.html
+
 # vim
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
