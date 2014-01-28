@@ -100,6 +100,7 @@ week = null;
 dow = null;
 recalculating = false;
 nextBell = null;
+nextBellIdx = null;
 nextPeriod = null;
 startDate = new Date();
 function recalculateNextBell() {
@@ -148,24 +149,28 @@ function recalculateNextBell() {
 	}
 	var nearestBellIdx = null;
 	var nearestBell = null;
-
-	for (var i in belltimes['bells']) {
-		var start = belltimes['bells'][i]['time'].split(":");
-		start[0] = Number(start[0]);
-		start[1] = Number(start[1]);
-		if (start[0] == hour && start[1] >= min) {
-			if (nearestBell == null || ((nearestBell[0] == start[0] && nearestBell[0] > start[0]) || (nearestBell[0] > start[0]))) {
-				nearestBell = start;
-				nearestBellIdx = i;
+//	if (nextBellIdx == null) {
+	for (var i = 0; i < belltimes['bells'].length; i++) {
+			var start = belltimes['bells'][i]['time'].split(":");
+			start[0] = Number(start[0]);
+			start[1] = Number(start[1]);
+			if (start[0] == hour && start[1] >= min) {
+				if (nearestBell == null || ((nearestBell[0] == start[0] && nearestBell[1] > start[1]) || (nearestBell[0] > start[0]))) {
+					nearestBell = start;
+					nearestBellIdx = i;
+				}
+			}
+			else if (start[0] > hour) {
+				if (nearestBell == null || ((nearestBell[0] == start[0] && nearestBell[1] > start[1]) || (nearestBell[0] > start[0]))) {
+					nearestBell = start;
+					nearestBellIdx = i;
+				}
+			}
+			if (nearestBell != null && ((nearestBell[0] == start[0] && nearestBell[1] < start[1]) || nearestBell[0] < start[0])) {
+				// we're done!
+				break;
 			}
 		}
-		else if (start[0] > hour) {
-			if (nearestBell == null || ((nearestBell[0] == start[0] && nearestBell[0] > start[0]) || (nearestBell[0] > start[0]))) {
-				nearestBell = start;
-				nearestBellIdx = i;
-			}
-		}
-	}
 	nextBell = belltimes['bells'][nearestBellIdx];
 	var pName = nextBell['bell'].replace("Roll Call", "School starts").replace("End of Day", "School ends");
 	if (/Transition|Lunch 1|Recess/i.test(pName)) {
@@ -446,6 +451,47 @@ function doReposition() {
 	$('#countdown').css({"top": top1+top2});
 
 	
+}
+
+function getNotices() {
+	$.getJSON("notices/dailynotices.php?codify=yes&date="+NOW.getDateStr(), processNotices);
+}
+
+function processNotices(data) {
+
+	var res = "<h1>Notices for " + dow + " " + week + "</h1>";
+	res += "<select id='notice-filter'><option value='.notice-row'>Everything</option>";
+	for (i=7; i <= 12; i++) {
+		res += "<option value='.notice-"+i+"'>Year " + i + "</option>";
+	}
+	res += "<option value='.notice-Staff'>Staff</option></select>";
+	res += "<table onload='doneNoticeLoad()' id='notices'><tbody>";
+	var allNotices = data[0];
+	i = 0;
+	for (i in allNotices) {
+		var n = allNotices[i];
+		var classes = 'notice-row';
+		var ylist = n["years"];
+		for (j in ylist) {
+			classes += " notice-"+ylist[j];
+		}
+		res += "<tr id='notice-"+i+"' class='"+classes+"'><td class='for'>"+n["applicability"]+"</td><td class='info'><span class='title'>"+n["title"]+"</span><br /><br /><span class='content'>"+n["content"]+"<br /><br /><span class='author'>"+n["author"]+"</span></span></td></tr>";
+	}
+	res+="</tbody></table>";
+	if (i==0) {
+		res += "<h1>There are no notices!</h1>";
+	}
+	$('#slideout-top').html(res);
+	doneNoticeLoad();
+}
+function doneNoticeLoad() {
+	$('.info').click(function(ev) {
+		$($(this).children('.content')[0]).slideToggle();
+	});
+	$('#notice-filter').change(function() {
+		$('.notice-row:not('+$(this).val()+')').fadeOut();
+		$($(this).val()).fadeIn();
+	});
 }
 Modernizr.load([{
 		test: Modernizr.touch,

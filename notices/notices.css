@@ -1,0 +1,113 @@
+#header {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	background-color: black;
+	padding-bottom: 5px;
+}
+table {
+	table-layout: fixed;
+	width: 100%;
+	margin-right: 30px;
+	margin-left: 30px;
+}
+h1 {
+	margin: 0;
+	margin-left: 5px;
+	padding: 3px !important;
+}
+
+
+
+.faded {
+	opacity: 0.5;
+    -webkit-transition: all 300ms ease 0s;
+    -o-transition: all 300ms ease 0s;
+    -moz-transition: all 300ms ease 0s;
+    -ms-transition: all 300ms ease 0s;
+    transition: all 300ms ease 0s;
+}
+.faded > a :hover {
+	opacity: 1 !important;
+}
+
+body {
+	padding-top: 120px;
+}
+td,.message {
+	z-index: -200;
+	border-right: 10px solid rgba(0,0,0,255);
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.for {
+	font-family: "Roboto Slab";
+	font-size: 16px;
+	width: 90px;
+	height: 50px;
+/*	vertical-align: middle;*/
+	vertical-align: top;
+	padding-top: 22px;
+	padding-right: 10px;
+}
+.message {
+	vertical-align: middle;
+/*	width: 100%;
+	width: calc(calc(100%) - 90px);*/
+}
+.title {
+	font-family: "Roboto";font-weight: bold;
+	font-size: 30px;
+}
+.meeting-details .title {
+	font-family: "Roboto Condensed";
+	font-size: inherit;
+}	
+.notice-text {
+	padding: 5px;
+}
+.author {
+	font-family: "Roboto";font-weight: bold;
+	padding-top: 10px;
+}
+#footer-left {
+	position: fixed;
+	height: 18px;
+	bottom: 0;
+	left: 0;
+	padding-left: 2px;
+	padding-bottom: 2px;
+	background-color: inherit;
+	border-radius: 5px;
+	width: 99%;
+}
+
+#footer-right {
+	z-index: 2;
+	border-radius: 5px;
+	position: fixed;
+	height: 18px;
+	bottom: 0;
+	right: 0;
+	background-color: inherit;
+	padding-right: 2px;
+	padding-bottom: 2px;
+}
+#footer-center {
+	z-index: -1;
+	border-radius: 5px;
+	position: fixed;
+	text-align: center;
+	height: 18px;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: inherit;
+	padding-right: 2px;
+	padding-bottom: 2px;
+}

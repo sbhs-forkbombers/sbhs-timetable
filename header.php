@@ -20,8 +20,8 @@
 <meta property="og:title" content="SBHS Belltimes" />
 <meta property="og:image" content="http://sbhsbelltimes.tk/assets/logo_big.jpg" />
 <meta name="keywords" content="SBHS, Timetable, Bell, Times, Belltimes, SHS, Sydney Boys, sbhstimtable, sbhsbelltimes" />
-<meta property="og:description" content="The fastest countdown to the bell for Sydney Boys High. Tells you what's next, and how long you've got left" />
-<meta name="description" content="The fastest countdown to the bell for Sydney Boys High. Tells you what's next, and how long you've got left" />
+<meta property="og:description" content="The fastest countdown to the bell for Sydney Boys High. The place to go to know what's next, and how long you've got left, or when that teacher you woe didn't read out today's notices..." />
+<meta name="description" content="The fastest countdown to the bell for Sydney Boys High. The place to go to know what's next, and how long you've got left, or when that teacher you woe didn't read out today's notices..." />
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
