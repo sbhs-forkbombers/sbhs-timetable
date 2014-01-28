@@ -193,7 +193,7 @@ function recalculateNextBell() {
 	}
 	
 	document.getElementById("period-name").innerHTML = pName;
-	if (timetable != null && nextP != null) {
+	if (timetable != null && nextPeriod != null) {
 		doNextPeriod(nextPeriod);
 	}
 	else {

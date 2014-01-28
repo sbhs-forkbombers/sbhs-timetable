@@ -61,7 +61,7 @@ else {
 	$timetable = json_decode($user_data["timetable"]["timetable"]);
 	echo "<script src='/timetable_old.js.php'></script>";
 	echo "</head><body>";
-	echo "<div id='sidebar'><div id='user-info'><span class='nomobile'>Logged in as</span>$email<br />";
+	echo "<div id='sidebar'><div id='user-info'><span class='nomobile'>Logged in as<br /></span>$email<br />";
 	// TODO a warning when deleting the timetable
 	echo "<a href='/login.php?logout'>Logout</a><span style='font-weight: bold;'>&nbsp;&middot;&nbsp;</span><a href='/'>Homepage</a><span style='font-weight: bold;'>&nbsp;&middot;&nbsp;</span><a href='/timetable.php?clear-data' title='UNLEASH THE HOUNDS'>Clear the timetable</a></div></div>\n";
 
