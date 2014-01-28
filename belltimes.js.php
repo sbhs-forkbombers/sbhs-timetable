@@ -369,7 +369,7 @@ function updateLeftSlideout() {// timetable here
 	document.getElementById("slideout-left").innerHTML = text;
 }
 $.getScript('<?php
-echo "http://student.sbhs.net.au/api/timetable/bells.json?date=" . /*strftime("%G-%m-%d", $NOW)*/ "2014-01-30" . "&callback=loadTimetable";
+echo "http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $NOW)/* "2014-01-30"*/ . "&callback=loadTimetable";
 ?>');
 
 var DOCUMENT_READY = false;

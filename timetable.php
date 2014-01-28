@@ -52,7 +52,7 @@ if ($user_data["fresh"]) {
 	// new user, display that page.
 	echo "<script src='/timetable_fresh.js.php'></script>";
 	echo "</head><body>";
-	echo "<div id='sidebar'><div id='user-info'>Logged in as<br />$email<br />";
+	echo "<div id='sidebar'><div id='user-info'><span class='nomobile'>Logged in as<br /></span>$email<br />";
 	echo "<a href='/login.php?logout'>Logout</a><span style='font-size: 20px;'>&nbsp;&middot;&nbsp;</span><a href='/'>Homepage</a></div></div>\n";
 
 	include "./timetable_fresh.php";
