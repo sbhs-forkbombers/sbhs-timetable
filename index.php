@@ -53,8 +53,10 @@ else {
 	echo "<a href='/faq.php' id='faq-link' title=\"The link doesn't jiggle!\">FAQ</a>";
 	include "./index_new.php";
 }
-//echo "<div id=\"debug\" style=\"position:fixed;top:2px;left:2px;color:#ff4444;font-family:'Roboto Condensed';font-size:16px;\">DEVELOPMENT NOTICE<br />This site may not function as intended</div>";
-include "./dev_header.php";
+
+if ($_SERVER["HTTP_HOST"] = "dev.sbhstimetable.tk") {
+echo "<div id=\"debug\" style=\"position:fixed;top:2px;left:2px;color:#ff4444;font-family:'Roboto Condensed';font-size:16px;\">DEVELOPMENT NOTICE<br />This site may not function as intended</div>";
+}
 /*echo "<script src=\"https://ajax.googleapis.com/ajax/libs/webfont/1.5.0/webfont.js\"></script>";
 echo "<script>
   WebFont.load({
