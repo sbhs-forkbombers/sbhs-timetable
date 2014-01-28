@@ -42,7 +42,7 @@ input {
 	font-size: 40px;
 	margin: 5px;
 	padding: 0px;
-	width: 300px;
+	min-width: 100px;
 	border: none;
 }
 
@@ -135,6 +135,12 @@ h1 {
 	position: relative;
 	width: 50%;
 	text-align: right;
+	padding-right: 10px;
+}
+
+td.room {
+	text-align:left;
+	padding-left: 10px;
 }
 
 div.room,span.room {

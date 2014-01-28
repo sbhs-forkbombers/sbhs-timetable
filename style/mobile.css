@@ -43,10 +43,12 @@ h1 {
 
 .name {
 	width: auto;
+	min-width: 100px;
 	padding-right: 10px;
 }
 .room {
 	width: auto;
+	min-width: 50px;
 	margin-left: 10px;
 }
 
@@ -57,6 +59,7 @@ h1 {
 td > input {
 	position: relative;
 	width: 100%;
+	min-width: 50px;
 	font-size: inherit;
 	margin: 0;
 }

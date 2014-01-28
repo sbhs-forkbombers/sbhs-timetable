@@ -37,12 +37,6 @@ foreach (get_object_vars($timetable) as $wn => $week) {
 			$dnum = $num + 1;
 			$name = $data->name;
 			$room = $data->room;
-			if ($name == "") {
-				$name = "&nbsp;&nbsp;&nbsp;&nbsp;";
-			}
-			if ($room == "") {
-				$room = "&nbsp;&nbsp;&nbsp;&nbsp;";
-			}
 			echo "<tr id='$wn-$dn-$num'><td class='big-number'>$dnum</td> <td class='name'>" 
 				. $name 
 				. "</td><td class='room'>" 

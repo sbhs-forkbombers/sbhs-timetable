@@ -36,7 +36,8 @@ function doScroll(id) {
 }
 
 function ie9Scroll(event) {
-	var id = event.srcElement.parentNode.id;
+	var el = event.srcElement || event.target;
+	var id = el.parentNode.id;
 	doScroll(NEXT_ANCHOR[id]);	
 }
 

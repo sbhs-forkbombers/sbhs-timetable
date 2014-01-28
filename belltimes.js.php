@@ -95,11 +95,25 @@ dow = null;
 recalculating = false;
 nextBell = null;
 nextPeriod = null;
+n = new Date();
+todaysDate = n.getDate() + " " + n.getMonth();
 function recalculateNextBell() {
 	recalculating = true;
 	var now = new Date();
 	var hour = now.getHours();
 	var min  = now.getMinutes();
+
+	if (nextBell != null && nextBell["bell"] == "End of Day") {
+		// it's now after school.
+		after_school = true;
+		// should get the next set of bells here
+		var dweek = now.getDay();
+		if (now.getDay() >= 5) {
+			// weekend!
+			weekend = true;
+		}
+	}
+
 	if (after_school || weekend) {
 		nextBell = belltimes['bells'][0];
 		nextBell["internal"] = [9,0];
@@ -137,7 +151,7 @@ function recalculateNextBell() {
 		var last = belltimes['bells'][nearestBellIdx-1]['bell'];
 		if (timetable != null) {
 			var lesson = last;
-			var details= timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(last)];
+			var details= timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(last)-1];
 			var name = details["name"];
 			if (name == "") {
 				pName = "Free Period";
@@ -179,7 +193,7 @@ function recalculateNextBell() {
 	}
 	
 	document.getElementById("period-name").innerHTML = pName;
-	if (timetable != null) {
+	if (timetable != null && nextP != null) {
 		doNextPeriod(nextPeriod);
 	}
 	else {
@@ -194,7 +208,7 @@ function recalculateNextBell() {
 
 function doNextPeriod(nextP) {
 	var text = "";
-	var nextPeriod = timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(nextP["bell"])];
+	var nextPeriod = timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(nextP["bell"]-1)];
 	if (nextPeriod == null) {
 		text = "No more periods today!";
 	}
@@ -235,6 +249,19 @@ function format(seconds) {
 function updateTimeLeft() {
 	if (recalculating) {
 		return;
+	}
+	var n = new Date();
+	var teststr = n.getDate() + " " + n.getMonth();
+	if (teststr != window.todaysDate) {
+		if (after_school) {
+			after_school = false;
+		}
+		else if (day_offset > 0) {
+			day_offset--;
+		}
+		else if (weekend) {
+			weekend = false;
+		}
 	}
 	var el = document.getElementById("countdown");
 	var start = nextBell["internal"];
