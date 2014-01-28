@@ -4,6 +4,7 @@
 # stuff
 analyticstracking.php
 google*.html
+sitemap.txt
 
 # vim
 [._]*.s[a-w][a-z]
