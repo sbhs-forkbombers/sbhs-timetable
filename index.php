@@ -54,7 +54,7 @@ else {
 	include "./index_new.php";
 }
 
-if ($_SERVER["HTTP_HOST"] = "dev.sbhstimetable.tk") {
+if ($_SERVER["HTTP_HOST"] == "dev.sbhstimetable.tk") {
 echo "<div id=\"debug\" style=\"position:fixed;top:2px;left:2px;color:#ff4444;font-family:'Roboto Condensed';font-size:16px;\">DEVELOPMENT NOTICE<br />This site may not function as intended</div>";
 }
 /*echo "<script src=\"https://ajax.googleapis.com/ajax/libs/webfont/1.5.0/webfont.js\"></script>";
