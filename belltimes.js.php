@@ -349,6 +349,7 @@ function slideOutTop() {
 	if (!noticesLoaded) {
 		getNotices();
 	}
+	topEx = !topEx;
 	noticesLoaded = true;
 }
 
@@ -508,8 +509,8 @@ function getNotices() {
 
 function processNotices(data) {
 
-	var res = "<h1>Notices for " + dow + " " + week + "</h1>";
-	res += "<select id='notice-filter'><option value='.notice-row'>Everything</option>";
+	var res = "<h1 style='text-align: center'>Notices for " + dow + " " + week + "</h1>";
+	res += "Pick a year: <select id='notice-filter'><option value='.notice-row'>All years</option>";
 	for (i=7; i <= 12; i++) {
 		res += "<option value='.notice-"+i+"'>Year " + i + "</option>";
 	}
@@ -582,6 +583,16 @@ Modernizr.load([{
 						}
 						else if ((leftPanel || window.oneSlider) && !leftEx) {
 							slideOutLeft();
+						}
+					});
+					$(document).on('swipeup', function(ev) {
+						if (topEx) {
+							slideOutTop();
+						}
+					});
+					$(document).on('swipedown', function(ev) {
+						if (!topEx) {
+							slideOutTop();
 						}
 					});
 				});

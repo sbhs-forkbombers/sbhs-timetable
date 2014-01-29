@@ -22,8 +22,14 @@ require_once "./common.php";
 $client = get_client();
 
 if (isset($_GET['logout'])) {
-	unset($_SESSION['access_token']);
-	header("Location: ". $_SESSION['urlback']);
+	$_SESSION = array();
+	$params = session_get_cookie_params();
+	setcookie(session_name(), '', time() - 42000,
+		$params["path"], $params["domain"],
+		$params["secure"], $params["httponly"]
+	);
+	session_destroy();
+	header("Location: /");
 	exit;
 }
 if (isset($_GET['code'])) {
