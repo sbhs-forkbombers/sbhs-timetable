@@ -149,3 +149,11 @@ div.room,span.room {
 	width: 25%;
 	text-align: left;
 }
+
+#day-select {
+	top: 5px;
+	left: 50%;
+	position: fixed;
+	margin-left: -84px;
+	font-size: 20px;
+}

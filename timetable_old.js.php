@@ -36,13 +36,14 @@ function goLeft() {
 	var newEl = inOrder[currentIdx-1];
 	var rightSemiOffScreenVal = (window.actualMobile ? "150%" : "75%");
 	var leftSemiOffScreenVal = (window.actualMobile ? "-150%" : "-25%");
+	var centerVal = (window.actualMobile ? "15%" : "25%");
 
 	if ((currentIdx+1) < 15) {
 		var rightEl = inOrder[currentIdx+1];
 		$('#'+rightEl).css({"left": "150%"});
 	}
 	$('#'+nowEl).css({"left": rightSemiOffScreenVal, "opacity": "0.5"});
-	$('#'+newEl).css({"left": "25%", "opacity": "1"});
+	$('#'+newEl).css({"left": centerVal, "opacity": "1"});
 	if ((currentIdx-2) > -1) {
 		var leftEl = inOrder[currentIdx-2];
 		$('#'+leftEl).css({"left": leftSemiOffScreenVal});
@@ -56,7 +57,7 @@ function goRight() {
 	}
 	var leftSemiOffScreenVal = (window.actualMobile ? "150%" : "75%");
 	var rightSemiOffScreenVal = (window.actualMobile ? "-150%" : "-25%");
-
+	var centerVal = (window.actualMobile ? "15%" : "25%");
 	var nowEl = inOrder[currentIdx];
 	var newEl = inOrder[currentIdx+1];
 
@@ -65,7 +66,7 @@ function goRight() {
 		$('#'+leftEl).css({"left": "-150%"});
 	}
 	$('#'+nowEl).css({"left": rightSemiOffScreenVal, "opacity": "0.5"});
-	$('#'+newEl).css({"left": "25%", "opacity": "1"});
+	$('#'+newEl).css({"left": centerVal, "opacity": "1"});
 	if ((currentIdx+2) < 15) {
 		var rightEl = inOrder[currentIdx+2];
 		$('#'+rightEl).css({"left": leftSemiOffScreenVal});
@@ -120,7 +121,7 @@ $(document).ready(function() {
 	$('.edit').click(startEdit);
 });
 
-Modernizr.load([{
+yepnope([{
 	test: Modernizr.touch,
 	yep : ["/script/jquery.mobile.custom.min.js"],
 	complete: function() {

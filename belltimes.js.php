@@ -444,8 +444,10 @@ function loadTimetable(obj) {
 $(document).ready(function() { 
 	DOCUMENT_READY = true;  
 	if (BELLTIMES_DONE) begin();
+	if (window.actualMobile) return;
 	$('#slideout-top-arrow').click(slideOutTop);
 	$('#slideout-top-arrow').css({"opacity": 1});
+	$('#notices-notice').css({"opacity": 1});
 	setTimeout(function() {
 		$('#slideout-top-arrow').css({"opacity": ""});
 		$('#notices-notice').css({"opacity": 0});
@@ -549,7 +551,7 @@ function doneNoticeLoad() {
 		$('.content').slideToggle();
 	});
 }
-Modernizr.load([{
+yepnope([{
 		test: Modernizr.touch,
 		yep : ["/script/jquery.mobile.custom.min.js"],
 /*		callback: function(url, result, key) {

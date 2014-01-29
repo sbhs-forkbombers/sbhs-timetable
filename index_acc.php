@@ -21,7 +21,7 @@
 			echo $results['email'];
 		?><br />
 		<a href="/login.php?logout">Logout</a> <span style="font-size: 14px;">&#9679;</span> <a href="/timetable.php">My timetable</a>
-		<span style="font-size: 14px;">&#9679;</span> <a href="/notices/dailynotices.php">Today's Notices</a>
+<!--		<span style="font-size: 14px;">&#9679;</span> <a href="/notices/dailynotices.php">Today's Notices</a>-->
 	</div>
 	<div id="next-info"></div>
 </div>

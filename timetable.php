@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 session_start();
-// todo google stuff
 set_include_path("gapi");
 require_once("Google/Client.php");
 require_once("Google/Service/Oauth2.php");
@@ -46,8 +45,8 @@ if (!$user_data["fresh"] && isset($_SESSION['new-timetable'])) {
 	unset($_SESSION['new-timetable']);
 	header("Location: /");
 }
+$EXTRA_STYLESHEETS = "<link rel='stylesheet' href='/style/timetable.css' />";
 include "./header.php";
-echo "<link rel='stylesheet' href='/style/timetable.css' />";
 if ($user_data["fresh"]) {
 	// new user, display that page.
 	echo "<script src='/timetable_fresh.js.php'></script>";

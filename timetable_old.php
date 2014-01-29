@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-echo "<h1>Your timetable</h1>";
+echo "<h1 id='timetable-h1'>Your timetable</h1>";
 
 
 $ldays = array(
@@ -50,5 +50,35 @@ foreach (get_object_vars($timetable) as $wn => $week) {
 
 ?>
 <div id="swipe-info">Swipe left/right to see other days</div>
-<div class='arrow left'  style="position: fixed; top: 75%; left: 10%; cursor: pointer" onclick="goLeft()"></div>
-<div class='arrow right' style="position:fixed; top: 75%; right: 10%; cursor: pointer" onclick="goRight()"></div>
+<div class='timetable arrow left'  style="position: fixed; top: 75%; left: 10%; cursor: pointer" onclick="goLeft()"></div>
+<div class='timetable arrow right' style="position:fixed; top: 75%; right: 10%; cursor: pointer" onclick="goRight()"></div>
+
+<select id="day-select">
+<option value='0'>Jump to a day...</option>
+<?php
+$weeks = array("A","B","C");
+$days = array("mon","tue","wed","thu","fri");
+for ($i = 0; $i < 15; $i++) {
+	$wk = floor($i / 5);
+	$day = $i % 5;
+	echo "<option value='".$i."'>".$ldays[$days[$day]]." ".$weeks[$wk]."</option>";
+}
+?>
+</select>
+<script>
+$('#day-select').change(function() {
+	var val = $(this).val();
+	if (val < currentIdx) {
+		while (currentIdx != val) {
+			goLeft();
+		}
+	}
+	else if (val > currentIdx) {
+		while (currentIdx != val) {
+			goRight();
+		}
+	}
+});
+</script>
+</body>
+</html>

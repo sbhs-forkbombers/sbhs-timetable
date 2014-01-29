@@ -98,6 +98,10 @@ td > input {
 	width: auto;
 }
 
+#slideout-top-arrow {
+	margin-left: 10%;
+}
+
 .info {
 	padding-top: 50px;
 }
@@ -109,4 +113,27 @@ input {
 }
 .room {
 	max-width: 50px;
+}
+
+#timetable-h1 {
+	margin-top: 50px;
+}
+
+#mon-a {
+	left: 15%;
+}
+
+#swipe-info {
+	bottom: 30px;
+}
+
+.timetable.arrow {
+	top: 90% !important;
+}
+#day-select {
+	bottom: 5px;
+	font-size: 15px;
+	top: auto;
+	left: 50%;
+	margin-left: -60px;
 }

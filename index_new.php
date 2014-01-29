@@ -18,7 +18,7 @@
 <div id="user-info">
 <!-- Log in using your SBHS email or Google account.<br /> -->
 <a href="javascript:void(0)" onclick="slideOutLeft(event)">Login</a>
-<span style="font-size: 14px;">&#9679;</span> <a href="/notices/dailynotices.php">Today's Notices</a>
+<!--<span style="font-size: 14px;">&#9679;</span> <a href="/notices/dailynotices.php">Today's Notices</a>-->
 
 </div>
 </div>

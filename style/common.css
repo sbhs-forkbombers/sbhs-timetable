@@ -395,6 +395,7 @@ p {
 	margin-left: 79px;
 	top: 60px;
 	color: #ccc;
+	opacity: 0;
 	-webkit-transition: all 500ms ease;
 	-moz-transition: all 500ms ease;
 	-ms-transition: all 500ms ease;
