@@ -113,9 +113,9 @@ function recalculateNextBell() {
 		day_offset--;
 		if (day_offset <= 0) { weekend = false }
 	}
+	now.setMinutes(now.getMinutes() + 1);
 	var hour = now.getHours();
 	var min  = now.getMinutes();
-
 	if (nextBell != null && nextBell["bell"] == "End of Day") {
 		// it's now after school.
 		after_school = true;
@@ -166,7 +166,7 @@ function recalculateNextBell() {
 					nearestBellIdx = i;
 				}
 			}
-			if (nearestBell != null && ((nearestBell[0] == start[0] && nearestBell[1] < start[1]) || nearestBell[0] < start[0])) {
+			if (nearestBell != null && ((nearestBell[0] == start[0] && nearestBell[1] < start[1]) || nearestBell[0] < start[0]) && ((nearestBell[0] == hour && nearestBell[1] > min) || nearestBell[0] > hour)) {
 				// we're done!
 				break;
 			}
@@ -257,12 +257,24 @@ function doNextPeriod(nextP) {
 
 function format(seconds) {
 	var sec = (seconds % 60) + ""; seconds = Math.floor(seconds/60);
-	var min = (seconds % 60) + ""; seconds = Math.floor(seconds/60);
-	var hrs = seconds + "";
+	var min = (seconds % 60); 
+	if (min + (seconds-min) < 100) {
+		min += (seconds-min);
+		var hrs = 0;
+	}
+	else {
+		seconds = Math.floor(seconds/60);
+		min += "";
+		if (min.length < 2) {
+			min = "0" + min;
+		}
+		var hrs = seconds;
+	}
+
 	if (sec.length < 2) {
 		sec = "0" + sec;
 	}
-	return hrs + "h " + min + "m " + sec + "s";
+	return (hrs > 0 ? (hrs + "h ") : "") + min + "m " + sec + "s";
 }
 
 function isAfterSchool(hour, min) {
@@ -311,6 +323,34 @@ function updateTimeLeft() {
 
 var rightEx = false;
 var leftEx = false;
+var topEx = false;
+
+var noticesLoaded = false;
+function slideOutTop() {
+	if (rightEx) slideOutRight();
+	if (leftEx) slideOutLeft();
+	var opts = { // spinner settings
+		lines: 10,
+		length: 40,
+		width: 10,
+		radius: 30,
+		corners: 1,
+		direction: 1,
+		color: '#fff',
+		speed: 1,
+		trail: 60,
+		shadow: true,
+	};
+	if (!noticesLoaded) {
+		var target = document.getElementById("slideout-top");
+		window.currentNoticesSpinner = new Spinner(opts).spin(target);
+	}
+	$('#slideout-top,#slideout-top-arrow').toggleClass("expanded");
+	if (!noticesLoaded) {
+		getNotices();
+	}
+	noticesLoaded = true;
+}
 
 function slideOutRight() {
 	if (window.oneSlider && leftEx) {
@@ -400,13 +440,22 @@ function loadTimetable(obj) {
 	}
 }
 
-$(document).ready(function() { DOCUMENT_READY = true;  if (BELLTIMES_DONE) begin() });
+$(document).ready(function() { 
+	DOCUMENT_READY = true;  
+	if (BELLTIMES_DONE) begin();
+	$('#slideout-top-arrow').click(slideOutTop);
+	$('#slideout-top-arrow').css({"opacity": 1});
+	setTimeout(function() {
+		$('#slideout-top-arrow').css({"opacity": ""});
+		$('#notices-notice').css({"opacity": 0});
+	}, 5000);
+});
 
 function begin() {
 	if (belltimes["status"] == "Error") {
 		$('#countdown').text('');
 		$('#period-name').text("Something went wrong :(");
-		$('#in').html("You can <a href='http://github.com/sbhs-forkbombers/sbhs-timetable'>report a bug</a>, or try again later.");
+		$('#in').html("You can <a href='https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform'>report a bug</a>, or try again later.");
 	}
 	else {
 		week = belltimes["weekType"];
@@ -465,7 +514,8 @@ function processNotices(data) {
 		res += "<option value='.notice-"+i+"'>Year " + i + "</option>";
 	}
 	res += "<option value='.notice-Staff'>Staff</option></select>";
-	res += "<table onload='doneNoticeLoad()' id='notices'><tbody>";
+	res += "<span class='rightside'>" /*<a href='javascript:void(0)' id='noticetoggle'>Expand/collapse all notices</a><span style='font-size:14px'>&#9679;</span>*/+"<a href='/notices/dailynotices.php?date="+NOW.getDateStr()+"'>Full notices</a></span>";
+	res += "<table id='notices'><tbody>";
 	var allNotices = data[0];
 	i = 0;
 	for (i in allNotices) {
@@ -475,12 +525,13 @@ function processNotices(data) {
 		for (j in ylist) {
 			classes += " notice-"+ylist[j];
 		}
-		res += "<tr id='notice-"+i+"' class='"+classes+"'><td class='for'>"+n["applicability"]+"</td><td class='info'><span class='title'>"+n["title"]+"</span><br /><br /><span class='content'>"+n["content"]+"<br /><br /><span class='author'>"+n["author"]+"</span></span></td></tr>";
+		res += "<tr id='notice-"+i+"' class='"+classes+"'><td class='for'>"+n["applicability"]+"</td><td class='info'><span class='notice-title'>"+n["title"]+"</span><span class='content'>"+n["content"]+"<span class='author'>"+n["author"]+"</span></span></td></tr>";
 	}
 	res+="</tbody></table>";
 	if (i==0) {
 		res += "<h1>There are no notices!</h1>";
 	}
+	window.currentNoticesSpinner.stop();
 	$('#slideout-top').html(res);
 	doneNoticeLoad();
 }
@@ -488,9 +539,13 @@ function doneNoticeLoad() {
 	$('.info').click(function(ev) {
 		$($(this).children('.content')[0]).slideToggle();
 	});
+	$('.content').slideToggle();
 	$('#notice-filter').change(function() {
 		$('.notice-row:not('+$(this).val()+')').fadeOut();
 		$($(this).val()).fadeIn();
+	});
+	$('#notice-toggle').click(function() {
+		$('.content').slideToggle();
 	});
 }
 Modernizr.load([{

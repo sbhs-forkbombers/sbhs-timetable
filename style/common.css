@@ -110,15 +110,15 @@ a:hover {
 	-ms-transition: all 1s ease;
 	-o-transition: all 1s ease;
 	transition: all 1s ease;
-	height: 98%;
+	height: 94%;
 	-webkit-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
 	padding: 10px;
 	position: fixed;
 	border-collapse: separate;
-	top: 1%;
-	margin-bottom: 1%;
-	width: 100%;
+	top: 3%;
+	width: 94%;
+	left: 3%;
 	z-index: 3;
 	overflow: auto;
 	opacity: 0;
@@ -139,6 +139,17 @@ a:hover {
 	top: 0;
 	background-color: rgba(0,0,0,0.8);
 	border: 1px solid white;
+}
+
+#slideout-top-arrow {
+	top: 0;
+	left: 10%;
+	border-top-color: white;
+}
+
+#slideout-top-arrow.expanded {
+	border-top-color: transparent;
+	border-bottom-color: white;
 }
 
 #slideout-left {
@@ -327,20 +338,39 @@ tr:not(:last-child) > td {
 	text-align: center;
 }
 
-.title {
+.notice-title {
 	font-family: "Roboto Condensed";
 	font-size: 30px;
 	text-align: center;
 	margin-top: 1em;
+	width: 100%;
+	position: relative;
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
+.title { /* sbhs meeting-info title */
+	font-family: "Roboto";
+	font-size: 30px;
+	color: rgb(240,240,240);
+}
+p {
+	margin: 0;
+	padding: 0;
+}
 .content {
 	font-size: 20px;
 }
 
+.info {
+	cursor: pointer;
+}
+
 .author {
-	font-family: "Roboto Slab";
+	font-family: "Roboto";
 	font-weight: bold;
+	font-size: 25px;
 }
 
 #notices {
@@ -348,5 +378,25 @@ tr:not(:last-child) > td {
 	width: 98%;
 	margin-left: 1%;
 	margin-right: 1%;
-	border-right: 1px solid white;
 }
+
+.rightside {
+	position: absolute;
+	right: 0;
+	margin-right: 5px;
+	margin-top: 5px;
+	top: 0;
+	text-align: right;
+}
+#notices-notice {
+	position: fixed;
+	left: 5%;
+	top: 60px;
+	color: #ccc;
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+}
+

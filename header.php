@@ -28,6 +28,7 @@
 <link href="/favicon.ico" rel="shortcut icon" />
 <link rel="stylesheet" href="/style/common.css" />
 <title>SBHS Timetable</title>
+<script defer src="/script/spin.min.js" type="application/javascript"></script>
 <script defer>
 <?php include "./script/jquery-1.10.2.min.js" ?>
 <?php include "./script/modernizr.min.js" ?>

@@ -68,6 +68,7 @@ echo "<script>
 echo '<div id="feedback"><a href="https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform">Feedback</a></div>';
 echo "<div id='darkener'></div>";
 echo "<div id='slideout-top' class='long-slideout'></div>";
+echo "<div id='slideout-top-arrow' class='arrow' ></div><div id='notices-notice'>Click here for notices (new!)</div>";
 echo "<div id='swipe-info'>Swipe left or right to show more information...</div>";
 echo "</body>";
 echo "</html>";
