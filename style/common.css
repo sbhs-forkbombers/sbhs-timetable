@@ -414,3 +414,23 @@ select {
 	color: white;
 	background-color: black;
 }
+
+#ie9-warn {
+	opacity: 0;
+	position: fixed;
+	font-size: 20px;
+	bottom: 20%;
+	width: 100%;
+	text-align: center;
+	z-index: 0;
+}
+
+#old-ie-warn {
+	opacity: 1;
+	position: fixed;
+	font-size: 50px;
+	bottom: 20%;
+	width: 100%;
+	text-align: center;
+	z-index: 0;
+}

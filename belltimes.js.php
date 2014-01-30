@@ -442,16 +442,21 @@ function loadTimetable(obj) {
 }
 
 $(document).ready(function() { 
+	$('#old-ie-warn').css({"opacity": 0, "font-size": 0}); // we got this far...
 	DOCUMENT_READY = true;  
 	if (BELLTIMES_DONE) begin();
 	if (window.actualMobile) return;
 	$('#slideout-top-arrow').click(slideOutTop);
 	$('#slideout-top-arrow').css({"opacity": 1});
 	$('#notices-notice').css({"opacity": 1});
+	if (/compatible; MSIE 9.0;/.test(window.navigator.userAgent) && !window.localStorage["noIE9annoy"] && false ) { // TODO enable this. It might scare people off, though.
+		$('#ie9-warn').css({"opacity": 1});
+	}
 	setTimeout(function() {
 		$('#slideout-top-arrow').css({"opacity": ""});
 		$('#notices-notice').css({"opacity": 0});
 	}, 5000);
+	setTimeout(function() {$('#ie9-warn').css({"opacity": 0})}, 10000);
 });
 
 function begin() {
@@ -497,7 +502,7 @@ function doReposition() {
 		$('#period-name').css({"font-family": "Roboto", "font-size": "40px"});
 		$('#countdown').css({"font-family": "Roboto", "font-size": "50px"});
 	}
-	var top1 = $('#period-name').height() + 62;
+	var top1 = $('#period-name').height() + 80;
 	$('#in').css({"top": top1});
 	var top2 = $('#in').height();
 	$('#countdown').css({"top": top1+top2});
@@ -551,6 +556,12 @@ function doneNoticeLoad() {
 		$('.content').slideToggle();
 	});
 }
+
+function dismissIE9() {
+	window.localStorage["noIE9annoy"] = true;
+	$('#ie9-warn').css({"opacity": 0});
+}
+
 yepnope([{
 		test: Modernizr.touch,
 		yep : ["/script/jquery.mobile.custom.min.js"],
