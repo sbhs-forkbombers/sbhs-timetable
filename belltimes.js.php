@@ -144,6 +144,19 @@ function recalculateNextBell() {
 		var pName = nextBell['bell'].replace("Roll Call", "School starts").replace("End of Day", "School ends");
 		document.getElementById("period-name").innerHTML = pName;
 		recalculating = false;
+		day_offset = 0;
+		if (weekend) {
+			var d = new Date();
+			if (d.getDay() == 5) {
+				day_offset += 2;
+			}
+			else if (d.getDay() == 6) {
+				day_offset+=2;
+			}
+			else if (d.getDay() == 0) {
+				day_offset += 1;
+			}
+		}
 		doReposition();
 		return;
 	}
@@ -309,7 +322,7 @@ function updateTimeLeft() {
 	min = startMin - min;
 	var sec = min * 60;
 	if (weekend || after_school) {
-		sec += (24*60*60)*day_offset;
+		//sec += (24*60*60)*day_offset;
 		sec += Math.floor((now.valueOf() - Date.now())/1000);
 	}
 	sec += (60 - now.getSeconds());
