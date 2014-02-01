@@ -101,7 +101,7 @@ function db_store_data($email, $timetable, $year=null) {
 		$year = "";
 	}
 	$handle = new SQLite3("/srv/http/timetable/.httimetable.db");
-	if (is_object($timetable)) {
+	if (!is_string($timetable)) {
 		$timetable = SQLite3::escapeString(json_encode($timetable));
 	}
 	else {

@@ -55,6 +55,8 @@ input[type=submit] {
 	background-color: #33B5E5;
 	color: white;
 	padding: 10px;
+	min-width: initial;
+	max-width: initial;
 	/*-webkit-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;*/
 }
@@ -158,3 +160,8 @@ div.room,span.room {
 	margin-left: -84px;
 	font-size: 20px;
 }
+
+#finish > h1 {
+	position: initial;
+}
+
