@@ -56,6 +56,9 @@ if ($wday%7 < 2) {
 	if (is_after_school($hour,$min)) {
 		$wday--;		
 	}
+	if ($wday == -1) {
+		$wday = 2;
+	}
 	echo "day_offset += " . $wday . ";";
 	$now += (24*60*60)*($wday);
 }
@@ -63,6 +66,7 @@ else {
 	echo "weekend = false;\n";
 }
 $NOW = $now;
+
 echo "window.NOW = new Date(" . strftime("%G, %m - 1, %d", $now) . ");";
 echo "//http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $now);
 ?>
@@ -147,15 +151,16 @@ function recalculateNextBell() {
 		day_offset = 0;
 		if (weekend) {
 			var d = new Date();
+			after_school = true;
 			if (d.getDay() == 5) {
 				day_offset += 2;
 			}
 			else if (d.getDay() == 6) {
-				day_offset+=2;
-			}
-			else if (d.getDay() == 0) {
 				day_offset += 1;
 			}
+/*			else if (d.getDay() == 0) {
+				day_offset += 1;
+		}*/
 		}
 		doReposition();
 		return;
