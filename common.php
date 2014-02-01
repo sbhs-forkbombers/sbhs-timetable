@@ -84,7 +84,7 @@ function db_get_data_or_create($email) {
 		//var_dump($decoded);
 		$fresh = (!array_key_exists(0, $decoded->a->mon) || count($decoded->a->mon[0]) == 0) ;
 		
-		return array("timetable" => $result, "fresh" => $fresh);
+		return array("timetable" => $result, "fresh" => $fresh, "year" => $result['year']);
 	}
 }
 
@@ -94,10 +94,16 @@ function db_clear_data($email) {
 	$handle->close();
 }
 
-function db_store_data($email, $timetable) {
+function db_store_data($email, $timetable, $year=null) {
+	if ($year == null) {
+		$j = debug_backtrace();
+		error_log("db_store_data was called without a year arg from " . $j['file'] .":". $j['line']);
+		$year = "";
+	}
 	$handle = new SQLite3("/srv/http/timetable/.httimetable.db");
 	$timetable = SQLite3::escapeString(json_encode($timetable));
 	$email = SQLite3::escapeString($email);
-	$handle->exec("UPDATE timetable SET timetable='$timetable' WHERE email=\"$email\"");
+	$year = SQLite3::escapeString($year);
+	$handle->exec("UPDATE timetable SET timetable='$timetable',year='$year' WHERE email=\"$email\"");
 	$handle->close();
 }

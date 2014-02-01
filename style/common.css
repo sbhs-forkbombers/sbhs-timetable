@@ -151,6 +151,10 @@ a:hover {
 #slideout-top-arrow.expanded {
 	border-top-color: transparent;
 	border-bottom-color: white;
+	bottom: 0;
+	top: auto;
+	left: 50%;
+	margin-left: -50px;
 }
 
 #slideout-left {

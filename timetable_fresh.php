@@ -40,8 +40,13 @@ foreach ($weeks as $wkey => $week) {
 		$nextweek = $nextday > 4 ? $wkey+1 : $wkey;
 		$nextday %= 5;
 		echo "<br /><br />";
-		if ($nextweek > 2) {
+		/*if ($nextweek > 2) {
 			echo "<input type='submit' value='Save it!' />";
+		}
+else {*/
+		if ($nextweek > 2) {
+			$ie9fix["$day-$week"] = "#finish";
+			echo "<a class='button' href='javascript:void(0) onclick='ie9Scroll(event);'>Finish!</a>";
 		}
 		else {
 			$ie9fix["$day-$week"] = "#" . $days[$nextday] . "-" . $weeks[$nextweek];
@@ -51,6 +56,12 @@ foreach ($weeks as $wkey => $week) {
 	}
 }
 ?>
+<div class="day-input" id="finish">
+<h1>One more thing...</h1>
+If you'd like, you can enter your year. This means that we'll automatically be able to show daily notices relevant to you<br />
+(you can still see other ones, if you want!)<br />
+<strong>I am in year...</strong> <input name="student-year" type='text'/><br />
+<input type="submit" value="Save the timetable!" />
 </form>
 <?php echo "<script>window.NEXT_ANCHOR = " . json_encode($ie9fix) . ";</script>" ?>
 </body></html>

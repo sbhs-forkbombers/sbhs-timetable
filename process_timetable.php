@@ -24,6 +24,13 @@ require_once("./common.php");
 
 $timetable = $timetable_structure;
 
+if (isset($_POST["student-year"])) {
+	$year = $_POST["student-year"];
+	unset($_POST["student-year"]);
+}
+else {
+	$year = "";
+}
 
 foreach ($_POST as $k => $v) {
 	$data = preg_split("/-/", strtolower($k));
@@ -33,7 +40,7 @@ foreach ($_POST as $k => $v) {
 
 $email = get_client_email();
 
-db_store_data($email,$timetable);
+db_store_data($email,$timetable,$year);
 
 
 header("Location: /timetable.php");	
