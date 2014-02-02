@@ -607,8 +607,14 @@ function saveYear() {
 	$('#year > .fake-button').text("Saving...");
 	
 	req.done(function(msg) {
+		var years = ["", "7", "8", "9", "10", "11", "12", "Staff"];
 		if (msg == "Ok") {
 			$('#year').html(newYear + "&nbsp;&nbsp;<small><a href='javascript:void(0)' onclick='promptSetYear()'>Set</a></small>");
+			studentYear = newYear;
+			if (noticesLoaded) {
+				$('#notice-filter')[0].selectedIndex = years.indexOf(studentYear);
+				$('#notice-filter').change();
+			}
 		}
 		else {
 			$('#year > .fake-button').text("Try again...");
