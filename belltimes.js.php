@@ -34,33 +34,34 @@ $now = time();
 $localtime = localtime($now,true);
 $hour = $localtime["tm_hour"];
 $min  = $localtime["tm_min"];
-$wday = $localtime["tm_wday"]+1;
+$wday = $localtime["tm_wday"];
 echo "day_offset = 0;";
-if (is_after_school($hour,$min) && ($wday%7) >= 2) {
+if (is_after_school($hour,$min) && $wday >= 1 && $wday <= 5) {
 	echo "after_school = true;\n";
-	$wday+=1;
+	$dateOffset+=1;
+	$wday = $wday%7;
 	$now += 24*60*60;
 }
 else {
 	echo "after_school = false;\n";
 }
-if ($wday%7 < 2) {
+if ($wday == 0 || $wday == 6) {
 	echo "weekend = true;\n";
 	$rWday = $wday;
 	if ($wday==0) {
-		$wday = 2;
+		$dateOffset += 2;
 	}
 	else {
-		$wday = $wday%7;
+		$dateOffset += 1;
 	}
 	if (is_after_school($hour,$min)) {
-		$wday--;		
+		$dateOffset--;		
 	}
-	if ($wday == -1) {
-		$wday = 2;
+	if ($dateOffset == -1) {
+		$dateOffset = 2;
 	}
-	echo "day_offset += " . $wday . ";";
-	$now += (24*60*60)*($wday);
+	echo "day_offset += " . $dateOffset . ";";
+	$now += (24*60*60)*($dateOffset);
 }
 else {
 	echo "weekend = false;\n";
