@@ -34,6 +34,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 		# the token has probably expired.
 		header("Location: /login.php?refresh-token");
 	}
+	$_SESSION['email'] = $results["email"];
 	include("./header.php");
 	echo "<script defer type='application/javascript'>";
 	include "./belltimes.js.php";

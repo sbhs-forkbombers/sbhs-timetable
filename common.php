@@ -73,10 +73,10 @@ function db_get_data_or_create($email) {
 	}
 	else if (!isset($result['email'])) {
 		// create an entry
-		$handle->exec("INSERT OR REPLACE INTO timetable VALUES (\"" . SQLite3::escapeString($email) . "\", '" . SQLite3::escapeString(json_encode($timetable_structure)) . "');");
+		$handle->exec("INSERT OR REPLACE INTO timetable VALUES (\"" . SQLite3::escapeString($email) . "\", '" . SQLite3::escapeString(json_encode($timetable_structure)) . "', '');");
 		$result = $handle->querySingle('SELECT * FROM timetable WHERE email="' . SQLite3::escapeString($email) . '"', true);
 		$handle->close();
-		return array("timetable" => $result, "fresh" => true);;
+		return array("timetable" => $result, "fresh" => true, "year" => $result['year']);
 	}
 	else {
 		$handle->close();
@@ -101,9 +101,15 @@ function db_store_data($email, $timetable, $year=null) {
 		$year = "";
 	}
 	$handle = new SQLite3("/srv/http/timetable/.httimetable.db");
-	$timetable = SQLite3::escapeString(json_encode($timetable));
+	if (!is_string($timetable)) {
+		$timetable = SQLite3::escapeString(json_encode($timetable));
+	}
+	else {
+		$timetable = SQLite3::escapeString($timetable);
+	}
 	$email = SQLite3::escapeString($email);
 	$year = SQLite3::escapeString($year);
-	$handle->exec("UPDATE timetable SET timetable='$timetable',year='$year' WHERE email=\"$email\"");
+	$r = $handle->exec("UPDATE timetable SET timetable='$timetable',year='$year' WHERE email=\"$email\"");
 	$handle->close();
+	return $r;
 }

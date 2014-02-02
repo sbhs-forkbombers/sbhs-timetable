@@ -34,33 +34,34 @@ $now = time();
 $localtime = localtime($now,true);
 $hour = $localtime["tm_hour"];
 $min  = $localtime["tm_min"];
-$wday = $localtime["tm_wday"]+1;
+$wday = $localtime["tm_wday"];
 echo "day_offset = 0;";
-if (is_after_school($hour,$min) && ($wday%7) >= 2) {
+if (is_after_school($hour,$min) && $wday >= 1 && $wday <= 5) {
 	echo "after_school = true;\n";
-	$wday+=1;
+	$dateOffset+=1;
+	$wday = $wday%7;
 	$now += 24*60*60;
 }
 else {
 	echo "after_school = false;\n";
 }
-if ($wday%7 < 2) {
+if ($wday == 0 || $wday == 6) {
 	echo "weekend = true;\n";
 	$rWday = $wday;
 	if ($wday==0) {
-		$wday = 2;
+		$dateOffset += 2;
 	}
 	else {
-		$wday = $wday%7;
+		$dateOffset += 1;
 	}
 	if (is_after_school($hour,$min)) {
-		$wday--;		
+		$dateOffset--;		
 	}
-	if ($wday == -1) {
-		$wday = 2;
+	if ($dateOffset == -1) {
+		$dateOffset = 2;
 	}
-	echo "day_offset += " . $wday . ";";
-	$now += (24*60*60)*($wday);
+	echo "day_offset += " . $dateOffset . ";";
+	$now += (24*60*60)*($dateOffset);
 }
 else {
 	echo "weekend = false;\n";
@@ -79,7 +80,7 @@ belltimes = {"status": "error"};
 	$udata = db_get_data_or_create($results['email']);
 	if ($udata['fresh']) {
 		echo "//fresh\n";
-		echo "timetable = null;";
+		echo "timetable = null; studentYear = '';\n";
 	}
 	else {
 		$timetable = $udata['timetable']['timetable'];
@@ -87,12 +88,14 @@ belltimes = {"status": "error"};
 			$timetable = json_encode($timetable);
 		}
 		echo "timetable = JSON.parse(" . $timetable . ");";
+		echo "studentYear = " . $udata['year'] . ';';
 	}
 }
 else {
 	echo "// results unset\n";
 	echo "timetable = null;";
 	echo "loggedIn = false;\n";
+	echo "studentYear = '';\n";
 }
 ?>
 Date.prototype.getYearDay = function() {
@@ -536,10 +539,12 @@ function processNotices(data) {
 
 	var res = "<h1 style='text-align: center'>Notices for " + dow + " " + week + "</h1>";
 	res += "Pick a year: <select id='notice-filter'><option value='.notice-row'>All years</option>";
+	var year = (Number(studentYear) == Number.NaN ? studentYear : Number(studentYear));
 	for (i=7; i <= 12; i++) {
-		res += "<option value='.notice-"+i+"'>Year " + i + "</option>";
+		
+		res += "<option value='.notice-"+i+"'" + (year == i ? "selected" : "") + ">Year " + i + "</option>";
 	}
-	res += "<option value='.notice-Staff'>Staff</option></select>";
+	res += "<option value='.notice-Staff'" + (year == "Staff" ? "selected" : "") + ">Staff</option></select>";
 	res += "<span class='rightside'>" /*<a href='javascript:void(0)' id='noticetoggle'>Expand/collapse all notices</a><span style='font-size:14px'>&#9679;</span>*/+"<a href='/notices/dailynotices.php?date="+NOW.getDateStr()+"'>Full notices</a></span>";
 	res += "<table id='notices'><tbody>";
 	var allNotices = data[0];
@@ -570,6 +575,7 @@ function doneNoticeLoad() {
 		$('.notice-row:not('+$(this).val()+')').fadeOut();
 		$($(this).val()).fadeIn();
 	});
+	$('#notice-filter').change();
 	$('#notice-toggle').click(function() {
 		$('.content').slideToggle();
 	});
@@ -579,6 +585,36 @@ function dismissIE9() {
 	window.localStorage["noIE9annoy"] = true;
 	$('#ie9-warn').css({"opacity": 0});
 }
+
+function promptSetYear() {
+	$('#year').html("<input type='text' id='new-year' /><br /><br /><a class='fake-button' href='javascript:void(0)' onclick='saveYear()'>Save Year!</a>");
+}
+
+function saveYear() {
+	var newYear = $('#new-year').val();
+	if (!/7|8|9|10|11|12|Staff/.test(newYear)) {
+		$('#year').append("<br /><br />Nope. Valid values are: 7, 8, 9, 10, 11, 12 or Staff");
+		return;
+	}
+	var req = $.ajax({
+		"type": "POST",
+		"url":  "update_year.php",
+		"dataType": "text",
+		"data": {
+			"year": newYear
+		}
+	});
+	$('#year > .fake-button').text("Saving...");
+	
+	req.done(function(msg) {
+		if (msg == "Ok") {
+			$('#year').html(newYear + "&nbsp;&nbsp;<small><a href='javascript:void(0)' onclick='promptSetYear()'>Set</a></small>");
+		}
+		else {
+			$('#year > .fake-button').text("Try again...");
+		}
+	});
+}		
 
 yepnope([{
 		test: Modernizr.touch,

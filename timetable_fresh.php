@@ -58,7 +58,7 @@ else {*/
 ?>
 <div class="day-input" id="finish">
 <h1>One more thing...</h1>
-If you'd like, you can enter your year. This means that we'll automatically be able to show daily notices relevant to you<br />
+If you'd like, you can enter your year. This means that we'll automatically be able to show daily notices relevant to you
 (you can still see other ones, if you want!)<br />
 <strong>I am in year...</strong> <input name="student-year" type='text'/><br />
 <input type="submit" value="Save the timetable!" />

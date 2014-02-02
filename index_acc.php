@@ -23,7 +23,17 @@
 		<a href="/login.php?logout">Logout</a> <span style="font-size: 14px;">&#9679;</span> <a href="/timetable.php">My timetable</a>
 <!--		<span style="font-size: 14px;">&#9679;</span> <a href="/notices/dailynotices.php">Today's Notices</a>-->
 	</div>
-	<div id="next-info"></div>
+	<div id="next-info"></div><br />
+	<span id="year-wrapper">Year: <span id="year"><?php
+			// udata comes from belltimes.js.php
+			$year = $udata['year'];
+if ($year == "") {
+	echo "(not set) <a href='javascript:void(0)' onclick='promptSetYear()'>Set</a>";
+}
+else {
+	echo $year . "&nbsp;&nbsp;<small><a href='javascript:void(0)' onclick='promptSetYear()'>Set</a></small>";
+}
+?></span></span>
 </div>
 <span id="period-name"></span><br />
 <span id="in">in</span><br />
