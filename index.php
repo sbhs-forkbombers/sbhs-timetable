@@ -66,8 +66,8 @@ echo "<script>
     }
   });
 </script>";*/
-echo '<div id="ie9-warn"><strong>Hey there</strong>! You seem to be using Internet Explorer 9. For a better experience, you\'ll need to upgrade. <a href="/ie9_faq.php">Read more...</a> <a href="javascript:void(0)" onclick="dismissIE9()">Dismiss</a></div>';
-echo '<div id="old-ie-warn"><strong>You\'re running an old version of Internet Explorer.</strong> We recomend that you upgrade to a newer version of IE, or <a href="http://firefox.com">Firefox</a> or <a href="http://chrome.google.com">Google Chrome</a>. This website will not work on Internet Explorer 8 or older!</div>';
+echo '<div id="ie9-warn"><!--<strong>Hey there</strong>! You seem to be using Internet Explorer 9. For a better experience, you\'ll need to upgrade. <a href="/ie9_faq.php">Read more...</a> <a href="javascript:void(0)" onclick="dismissIE9()">Dismiss</a>--></div>';
+echo '<div id="old-ie-warn"><!--<strong>You\'re running an old version of Internet Explorer.</strong> We recomend that you upgrade to a newer version of IE, or <a href="http://firefox.com">Firefox</a> or <a href="http://chrome.google.com">Google Chrome</a>. This website will not work on Internet Explorer 8 or older!--></div>';
 echo '<div id="feedback"><a href="https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform">Feedback</a></div>';
 echo "<div id='darkener'></div>";
 echo "<div id='slideout-top' class='long-slideout'></div>";
