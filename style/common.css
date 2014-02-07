@@ -133,6 +133,7 @@ a:hover {
 
 #slideout-bottom {
 	bottom: -100%;
+	top: auto;
 }
 
 #slideout-bottom.expanded {

@@ -1,4 +1,21 @@
 <?php
+
+function crawlerDetect() {
+	if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+
+}
+
+if ($_SERVER["HTTP_HOST"] == "dev.sbhstimetable.tk" || $_SERVER["HTTP_HOST"] == "devel.sbhstimetable.tk") {
+	if (crawlerDetect()) {
+		header("HTTP/1.1 301 Moved Permanently");
+		header("Location: http://sbhstimetable.tk");
+	}
+}
 /*
     SBHS-Timetable Copyright (C) James Ye, Simon Shields 2014
 
