@@ -88,6 +88,9 @@ belltimes = {"status": "error"};
 			$timetable = json_encode($timetable);
 		}
 		echo "timetable = JSON.parse(" . $timetable . ");";
+		if ($udata['year'] . "" == "") {
+			$udata['year'] = "''";
+		}
 		echo "studentYear = " . $udata['year'] . ';';
 	}
 }
