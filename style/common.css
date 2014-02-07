@@ -131,6 +131,32 @@ a:hover {
 	opacity: 1;
 }
 
+#slideout-bottom {
+	bottom: -100%;
+}
+
+#slideout-bottom.expanded {
+	bottom: 0;
+	background-color: rgba(0,0,0,0.8);
+	border: 1px solid white;
+}
+
+#slideout-bottom-arrow {
+	bottom: 0;
+	left: 3%;
+	margin-left: 179px;
+	border-bottom-color: white;
+}
+
+#slideout-bottom-arrow.expanded {
+	border-bottom-color: transparent;
+	border-top-color:white;
+	top:0;
+	bottom: auto;
+	left: 50%;
+	margin-left: -50px;
+}
+
 #slideout-top {
 	top: -100%;
 }
@@ -437,4 +463,28 @@ select {
 	width: 100%;
 	text-align: center;
 	z-index: 0;
+}
+
+.diary-name {
+	font-family: "Roboto Slab";
+	font-size: 25px;
+}
+
+small.diary-name {
+	font-family: "Roboto Condensed";
+}
+
+.diary-subject {
+	font-family: "Roboto Slab";
+	font-size: 30px;
+}
+
+.diary-notes {
+	font-size: 25px;
+}
+
+#slideout-bottom table {
+	width: 94%;
+	left: 4%;
+	position: fixed;
 }

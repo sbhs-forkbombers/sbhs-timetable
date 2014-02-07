@@ -42,3 +42,5 @@ else {
 <div id="slideout-left-arrow" class="arrow" onclick="slideOutLeft()"></div>
 <div id="slideout-right-arrow" class="arrow" onclick="slideOutRight()"></div>
 <div id="slideout-right" class="slideout"></div>
+<div id="slideout-bottom" class="long-slideout"></div>
+<!--<div id="slideout-bottom-arrow" class="arrow" onclick="slideOutBottom()"></div>-->

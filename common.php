@@ -63,7 +63,7 @@ function get_client_email($urlback = "/") {
 
 
 function db_get_data_or_create($email) {
-	$handle = new SQLite3("/srv/http/timetable/.httimetable.db");
+	$handle = new SQLite3(".httimetable.db");
 	global $timetable_structure;
 	$result = $handle->querySingle('SELECT * FROM timetable WHERE email="' . SQLite3::escapeString($email) . '"', true);
 	if ($result === false) {
@@ -89,7 +89,7 @@ function db_get_data_or_create($email) {
 }
 
 function db_clear_data($email) {
-	$handle = new SQLite3("/srv/http/timetable/.httimetable.db");
+	$handle = new SQLite3(".httimetable.db");
 	$handle->exec("DELETE FROM timetable WHERE email=\"" . SQLite3::escapeString($email) . "\";");
 	$handle->close();
 }
@@ -100,7 +100,7 @@ function db_store_data($email, $timetable, $year=null) {
 		error_log("db_store_data was called without a year arg from " . $j['file'] .":". $j['line']);
 		$year = "";
 	}
-	$handle = new SQLite3("/srv/http/timetable/.httimetable.db");
+	$handle = new SQLite3(".httimetable.db");
 	if (!is_string($timetable)) {
 		$timetable = SQLite3::escapeString(json_encode($timetable));
 	}
@@ -110,6 +110,41 @@ function db_store_data($email, $timetable, $year=null) {
 	$email = SQLite3::escapeString($email);
 	$year = SQLite3::escapeString($year);
 	$r = $handle->exec("UPDATE timetable SET timetable='$timetable',year='$year' WHERE email=\"$email\"");
+	$handle->close();
+	return $r;
+}
+
+function db_get_diary_or_create($email) {
+	$handle = new SQLite3(".httimetable.db");
+	$result = $handle->querySingle('SELECT * FROM todo WHERE email="' . SQLite3::escapeString($email) . '"', true);
+	if ($result === false) {
+		echo "FATAL ERROR - INVALID QUERY. ";
+		echo $handle->lastErrorCode() . " - " . $handle->lastErrorMsg() . "\n";
+		$handle->close();
+	}
+	else if (!isset($result['email'])) {
+		// create an entry
+		$handle->exec("INSERT OR REPLACE INTO todo VALUES (\"" . SQLite3::escapeString($email) . "\", '[]');");
+		$result = $handle->querySingle('SELECT * FROM todo WHERE email="' . SQLite3::escapeString($email) . '"', true);
+		$handle->close();
+		return $result["data"];
+	}
+	else {
+		return $result["data"];	
+	}
+}
+
+function db_clear_diary($email) {
+	$handle = new SQLite3(".httimetable.db");
+	$handle->exec("DELETE FROM todo WHERE email=\"" . SQLite3::escapeString($email) . "\";");
+	$handle->close();
+}
+
+function db_store_diary($email, $json) {
+	$handle = new SQLite3(".httimetable.db");
+	$json = SQLite3::escapeString($json);
+	$email = SQLite3::escapeString($email);
+	$r = $handle->exec("UPDATE todo SET data='$json' WHERE email='$email'");
 	$handle->close();
 	return $r;
 }

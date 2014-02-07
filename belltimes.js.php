@@ -35,12 +35,18 @@ $localtime = localtime($now,true);
 $hour = $localtime["tm_hour"];
 $min  = $localtime["tm_min"];
 $wday = $localtime["tm_wday"];
+$afterSchool = false;
 echo "day_offset = 0;";
 if (is_after_school($hour,$min) && $wday >= 1 && $wday <= 5) {
 	echo "after_school = true;\n";
 	$dateOffset+=1;
 	$wday = $wday%7;
-	$now += 24*60*60;
+	if ($wday == 5) {
+		$dateOffset += 2;
+		echo "day_offset += 2;\n";
+	}
+	$afterSchool = true;
+
 }
 else {
 	echo "after_school = false;\n";
@@ -61,14 +67,15 @@ if ($wday == 0 || $wday == 6) {
 		$dateOffset = 2;
 	}
 	echo "day_offset += " . $dateOffset . ";";
-	$now += (24*60*60)*($dateOffset);
 }
 else {
 	echo "weekend = false;\n";
 }
+$now += (24*60*60)*($dateOffset);
+if ($afterSchool) $now -= 24*60*60;
 $NOW = $now;
 
-echo "window.NOW = new Date(" . strftime("%G, %m - 1, %d", $now) . ");";
+echo "window.NOW = new Date(" . strftime("%G, Number('%m')-1, Number('%d')", $now) . ");";
 echo "//http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $now);
 ?>
 
@@ -155,8 +162,8 @@ function recalculateNextBell() {
 		document.getElementById("period-name").innerHTML = pName;
 		recalculating = false;
 		day_offset = 0;
-		if (weekend) {
-			var d = new Date();
+		var d = new Date();
+		if (weekend || d.getDay() == 5) {
 			after_school = true;
 			if (d.getDay() == 5) {
 				day_offset += 2;
@@ -348,11 +355,14 @@ function updateTimeLeft() {
 var rightEx = false;
 var leftEx = false;
 var topEx = false;
+var botEx = false;
 
+var diaryLoaded = false;
 var noticesLoaded = false;
 function slideOutTop() {
 	if (rightEx) slideOutRight();
 	if (leftEx) slideOutLeft();
+	if (botEx) slideOutBottom();
 	var opts = { // spinner settings
 		lines: 10,
 		length: 40,
@@ -377,9 +387,43 @@ function slideOutTop() {
 	noticesLoaded = true;
 }
 
+function slideOutBottom() {
+	if (rightEx) slideOutRight();
+	if (leftEx) slideOutLeft();
+	if (topEx) slideOutTop();
+	var opts = { // spinner settings
+		lines: 10,
+		length: 40,
+		width: 10,
+		radius: 30,
+		corners: 1,
+		direction: 1,
+		color: '#fff',
+		speed: 1,
+		trail: 60,
+		shadow: true,
+	};
+	if (!diaryLoaded) {
+		var target= document.getElementById("slideout-bottom");
+		window.currentDiarySpinner = new Spinner(opts).spin(target);
+	}
+	$('#slideout-bottom,#slideout-bottom-arrow').toggleClass("expanded");
+	if (!diaryLoaded) {
+		getDiary();
+	}
+	botEx = !botEx;
+	diaryLoaded = true;
+}
+
 function slideOutRight() {
 	if (window.oneSlider && leftEx) {
 		slideOutLeft();
+	}
+	if (topEx) {
+		slideOutTop();
+	}
+	if (botEx) {
+		slideOutBottom();
 	}
 	rightEx = !rightEx;
 	$('#slideout-right').toggleClass('expanded');
@@ -395,6 +439,12 @@ function slideOutRight() {
 function slideOutLeft() {
 	if (window.oneSlider && rightEx) {
 		slideOutRight();
+	}
+	if (topEx) {
+		slideOutTop();
+	}
+	if (botEx) {
+		slideOutBottom();
 	}
 	leftEx = !leftEx;
 	$('#slideout-left').toggleClass('expanded');
@@ -452,7 +502,7 @@ function updateLeftSlideout() {// timetable here
 	document.getElementById("slideout-left").innerHTML = text;
 }
 $.getScript('<?php
-echo "http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $NOW)/* "2014-01-30"*/ . "&callback=loadTimetable";
+echo "http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $NOW+($afterSchool ? 24*60*60 : 0))/* "2014-01-30"*/ . "&callback=loadTimetable";
 ?>');
 
 var DOCUMENT_READY = false;
@@ -583,6 +633,60 @@ function doneNoticeLoad() {
 		$('.content').slideToggle();
 	});
 }
+
+function formatDate(d,js) {
+	var dom = d.getDate().toString();
+	var mon = (d.getMonth()+(js ? 0 : 1)).toString();
+	var yrs = d.getFullYear().toString();
+	if (dom.length < 2) {
+		dom = "0" + dom;
+	}
+	if (mon.length < 2) {
+		mon = "0" + mon;
+	}
+	if (!js) {
+		return dom +"/"+ mon +"/"+ yrs;
+	}
+	else {
+		return yrs+"-"+mon+"-"+dom;
+	}
+}
+
+function getDiary() {
+	$.getJSON("diary.php?raw-json", processDiary);
+}
+
+function processDiary(diary) {
+/*TODO	var beforeToday = [];
+	var afterToday = [];
+var today = [];*/
+	var rows = [];
+	var date = new Date(formatDate(new Date(), true));
+
+	for (i in diary) {
+		var el = diary[i];
+		var dueDate = new Date(el["due"]);
+		var dStr = formatDate(dueDate);
+		if (dueDate == date) {
+			dStr = "<strong>Today</strong>";
+		}
+		else if (dueDate == (date-24*60*60) && !el["done"]) {
+			dStr = "<strong>Yesterday</strong>";
+		}
+		else if (dueDate == (date+24*60*60) && !el["done"]) {
+			dStr = "<strong>Tomorrow</strong>";
+		}
+		var text = "<tr><td class='diary-name'>"+el["name"]+"<br /><small>due " + dStr + "</small></td><td class='diary-notes'><span class='diary-subject'>"+el["subject"]+"</span><br /><span class='diary-notes'>"+el["notes"]+"</span></td><td><input type='checkbox' onchange='processDiaryDone(event)' /></td><td style='display:none' class='json'>"+JSON.stringify(el)+"</td></tr>";
+		rows.push(text);
+	}
+	var res = "<table><tbody>";
+	for (i in rows) {
+		res += rows[i];
+	}
+	res += "</tbody></table>";
+	$('#slideout-bottom').html(res);
+}
+		
 
 function dismissIE9() {
 	window.localStorage["noIE9annoy"] = true;
