@@ -11,7 +11,7 @@ function crawlerDetect() {
 }
 
 if ($_SERVER["HTTP_HOST"] == "dev.sbhstimetable.tk" || $_SERVER["HTTP_HOST"] == "devel.sbhstimetable.tk") {
-	if (crawlerDetect()) {
+	if (crawlerDetect() || preg_match('/https?:\/\/(www)?.google.com/', $_SERVER["HTTP_REFERER"])) {
 		header("HTTP/1.1 301 Moved Permanently");
 		header("Location: http://sbhstimetable.tk");
 	}
@@ -84,6 +84,12 @@ echo "<script>
   });
 </script>";*/
 echo '<div id="ohai-chrome"><a class="fake-button" href="/chrome/timetable.crx">Install the app!</a></div>';
+?>
+<!--<div id='chrome-install-instructions'><h1>How to install on chrome</h1>
+When the extension has finished downloading, click <a href="about:extensions" target="_blank">Here</a> (opens in new tab) and drag and drop the downloaded file into the extensions section.
+Then, open <a href="about:apps" target="_blank">The apps screen</a> and you should see a link to the extension!
+</div>-->
+<?php
 echo '<div id="ie9-warn"><!--<strong>Hey there</strong>! You seem to be using Internet Explorer 9. For a better experience, you\'ll need to upgrade. <a href="/ie9_faq.php">Read more...</a> <a href="javascript:void(0)" onclick="dismissIE9()">Dismiss</a>--></div>';
 echo '<div id="old-ie-warn"><!--<strong>You\'re running an old version of Internet Explorer.</strong> We recomend that you upgrade to a newer version of IE, or <a href="http://firefox.com">Firefox</a> or <a href="http://chrome.google.com">Google Chrome</a>. This website will not work on Internet Explorer 8 or older!--></div>';
 echo '<div id="feedback"><a href="https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform">Feedback</a></div>';

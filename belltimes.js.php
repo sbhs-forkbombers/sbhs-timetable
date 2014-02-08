@@ -60,9 +60,9 @@ if ($wday == 0 || $wday == 6) {
 	else {
 		$dateOffset += 1;
 	}
-	if (is_after_school($hour,$min)) {
+/*	if (is_after_school($hour,$min)) {
 		$dateOffset--;		
-	}
+}*/
 	if ($dateOffset == -1) {
 		$dateOffset = 2;
 	}
