@@ -3,16 +3,16 @@
     SBHS-Timetable Copyright (C) James Ye, Simon Shields 2014
 
     This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
+    You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -54,7 +54,7 @@ else {
 if ($wday == 0 || $wday == 6) {
 	echo "weekend = true;\n";
 	$rWday = $wday;
-	if ($wday==0) {
+	if ($wday==6) {
 		$dateOffset += 2;
 	}
 	else {
@@ -72,7 +72,10 @@ else {
 	echo "weekend = false;\n";
 }
 $now += (24*60*60)*($dateOffset);
-if ($afterSchool) $now -= 24*60*60;
+if ($afterSchool) {
+	$now -= 24*60*60;
+	echo "// after school\n";
+}
 $NOW = $now;
 
 echo "window.NOW = new Date(" . strftime("%G, Number('%m')-1, Number('%d')", $now) . ");";
@@ -525,6 +528,9 @@ $(document).ready(function() {
 	$('#notices-notice').css({"opacity": 1});
 	if (/compatible; MSIE 9.0;/.test(window.navigator.userAgent) && !window.localStorage["noIE9annoy"] && false ) { // TODO enable this. It might scare people off, though.
 		$('#ie9-warn').css({"opacity": 1});
+	}
+	if (window.chrome && !window.chrome.app.isInstalled && false) { // TODO enable this
+		$('#ohai-chrome').css({"opacity": 1});
 	}
 	setTimeout(function() {
 		$('#slideout-top-arrow').css({"opacity": ""});

@@ -18,14 +18,20 @@
 <html>
 <head>
 <meta property="og:title" content="SBHS Belltimes" />
+<title>SBHS Belltimes</title>
 <meta property="og:image" content="http://sbhsbelltimes.tk/assets/logo_big.jpg" />
 <meta name="keywords" content="SBHS, Timetable, Bell, Times, Belltimes, SHS, Sydney Boys, sbhstimtable, sbhsbelltimes" />
 <meta property="og:description" content="The fastest countdown to the bell for Sydney Boys High. The place to go to know what's next, and how long you've got left, or when that teacher you woe didn't read out today's notices..." />
 <meta name="description" content="The fastest countdown to the bell for Sydney Boys High. The place to go to know what's next, and how long you've got left, or when that teacher you woe didn't read out today's notices..." />
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<link rel="shortcut icon" sizes="196x196" href="/icon.png" />
+<link rel="apple-touch-icon" sizes="196x196" href="/icon.png" />
+<link rel="apple-touch-startup-image" href="/startup.png" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="/favicon.ico" rel="shortcut icon" />
 <link rel="stylesheet" href="/style/common.css" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
@@ -56,5 +62,7 @@ families: ['Roboto:400,100,700', 'Roboto Condensed', 'Roboto Slab:400,700']
 
     ga('create', 'UA-47488887-1', 'sbhstimetable.tk');
     ga('send', 'pageview');
-
+	$(document).ready(function() { $(document).on("touchmove", function(e) {e.preventDefault()}) });
+	// http://stackoverflow.com/a/8173161
+(function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")
 </script>
