@@ -57,7 +57,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 	include "./belltimes.js.php";
 	echo "</script>";
 	echo "</head>";
-	echo "<body>";
+	echo "<body><span class='wrapper'>";
 	echo "<a href='/faq.php' id='faq-link' title=\"the link doesn't jiggle!\">FAQ</a>";
 	include "./index_acc.php";
 }
@@ -66,7 +66,7 @@ else {
 	include("./header.php");
 	echo "<script defer src='./belltimes.js.php' type='application/javascript'></script>";
 	echo "</head>";
-	echo "<body>";
+	echo "<body><span class='wrapper'>";
 	echo "<div id=\"nojs\"><noscript>You need a Javascript-enabled browser to use this site.</noscript></div>"; 
 	echo "<a href='/faq.php' id='faq-link' title=\"The link doesn't jiggle!\">FAQ</a>";
 	include "./index_new.php";
@@ -97,5 +97,6 @@ echo "<div id='darkener'></div>";
 echo "<div id='slideout-top' class='long-slideout'></div>";
 echo "<div id='slideout-top-arrow' class='arrow' ></div><div id='notices-notice'>Click here for notices (new!)</div>";
 echo "<div id='swipe-info'>Swipe left or right to show more information...</div>";
+echo "</span>";
 echo "</body>";
 echo "</html>";

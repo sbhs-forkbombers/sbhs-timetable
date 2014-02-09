@@ -502,3 +502,15 @@ small.diary-name {
     transition: all 500ms ease;
 
 }
+
+html {
+	overflow: none;
+}
+
+body {
+	overflow: none;
+}
+
+.wrapper {
+	overflow: auto;
+}

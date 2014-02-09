@@ -61,8 +61,14 @@ families: ['Roboto:400,100,700', 'Roboto Condensed', 'Roboto Slab:400,700']
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
     ga('create', 'UA-47488887-1', 'sbhstimetable.tk');
-    ga('send', 'pageview');
-	$(document).ready(function() { $(document).on("touchmove", function(e) {e.preventDefault()}) });
+	ga('send', 'pageview');
+/*
+	$(document).ready(function() { 
+		$(document).on("touchmove", function(e) {
+			if (!e.target.classList.contains('long-slideout') && !e.target.classList.contains('slideout'))
+				e.preventDefault()
+		}); 
+	});*/
 	// http://stackoverflow.com/a/8173161
 (function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")
 </script>
