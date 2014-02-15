@@ -17,6 +17,7 @@ try {
 catch (Exception $e) {
 	error_log("EXCEPTION: " . $e->getMessage() . "\n");
 	header("Location: /login.php?refresh-token&urlback=diary.php");
+	exit;
 }
 $email = $results['email'];
 if ($email == "") {

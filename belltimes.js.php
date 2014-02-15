@@ -702,7 +702,7 @@ function genDiaryRow(el) {
 		dStr = "<strong class='diary-overdue'>OVERDUE!</strong> (due " + dStr + " period " + p + ")";
 		due = "";
 	}
-	var text = "<tr id='diary-"+window.newEntryID+"'><td class='diary-name'>"+el["name"]+"</td><td class='due-date'>" + due + " " + dStr + "</td><td class='diary-subject'>"+el["subject"]+"</td><td class='diary-notes'>"+el["notes"]+"</td></td><td><input type='checkbox' onchange='processDiaryDone(event)' />&nbsp;<a href='javascript:void(0)' onclick='editDiary(event)'>edit</a>&nbsp;<a href='javascript:void(0)' onclick='deleteDiaryEntry(event)'>delete</a></td></tr>";
+	var text = "<tr id='diary-"+window.newEntryID+"'><td class='diary-name'>"+el["name"]+"</td><td class='due-date'>" + due + " " + dStr + "</td><td class='diary-subject'>"+el["subject"]+"</td><td class='diary-notes'>"+el["notes"]+"</td></td><td><input type='checkbox' onchange='diaryEntryDone(event)' checked='"+el["done"]+"' />&nbsp;<a href='javascript:void(0)' onclick='editDiary(event)'>edit</a>&nbsp;<a href='javascript:void(0)' onclick='deleteDiaryEntry(event)'>delete</a></td></tr>";
 	return text;
 }
 /** process the diary when it's been loaded */
@@ -715,12 +715,12 @@ function processDiary(diary) {
 		window.newEntryID = i;
 		rows.push(genDiaryRow(el));
 	}
-	var res = "<h1 id='diary-header'>My Homework</h1><table id='diary-table'><tbody>";
+	var res = "<span id='diary-add' onclick='addDiaryEvent()'>+</span><h1 id='diary-header'>My Homework</h1><table id='diary-table'><tbody>";
 	for (i in rows) {
 		res += rows[i];
 	}
 	res += "</tbody></table>";
-	res += "<div id='diary-add' onclick='addDiaryEvent()'>+</div>";
+	res += "";
 	$('#slideout-bottom').html(res);
 }
 
@@ -776,6 +776,7 @@ function saveDiary() {
 		"subject": subj,
 		"due": formatDate(date, true),
 		"duePeriod": period,
+		"done": false,
 	};
 	var tDiary = diary;
 	tDiary[window.newEntryID] = data;
@@ -802,6 +803,27 @@ function saveDiary() {
 	});		
 }
 
+function diaryEntryDone(e) {
+	var id = Number($(e.target).parent().parent().attr("id").split("-")[1]);
+	diary[id]["done"] = ($(e.target).find('input[type="checkbox"]').val() == "on" ? true : false);
+	var req = $.ajax({
+		"type": "POST",
+		"url": "diary.php",
+		"data": {
+			"json": JSON.stringify(diary),
+			"update": true
+		}
+	});
+
+	req.done(function(msg) {
+		if (msg != "Ok") {
+			$(e.target).after("<span class='error'>failed to set done!</span>");
+			$(e.target).find('input[type="checkbox"]').click();
+			setTimeout(5000, function() { $('.error', e.target).remove() });
+		}
+	});
+}
+
 function deleteDiaryEntry(e) {
 	var id = Number($(e.target).parent().parent().attr("id").split("-")[1]);
 	var tDiary = diary;
@@ -817,7 +839,6 @@ function deleteDiaryEntry(e) {
 
 	req.done(function(msg) {
 		if (msg == "Ok") {
-			window.addingEntry = false;
 			$('#diary-'+id).fadeOut().remove();
 			window.console.log("delete id: " + id);
 			diary.splice(id, 1);
