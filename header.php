@@ -36,6 +36,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/webfont/1.3.0/webfont.js"></script>
+<script defer src="//cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
 <?php if (isset($EXTRA_STYLESHEETS)) {
 	echo $EXTRA_STYLESHEETS;
 }?>

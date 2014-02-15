@@ -39,19 +39,24 @@ require_once("Google/Client.php");
 require_once("Google/Service/Oauth2.php");
 require_once("./common.php");
 $client = get_client();
+unset($_SESSION['new-timetable']);
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 	// logged in
-	$client->setAccessToken($_SESSION['access_token']);
-	$service = new Google_Service_Oauth2($client);
-	try {
-		$results = $service->userinfo_v2_me->get();
+	$results = array();
+	if (!isset($_SESSION['email'])) {
+		$client->setAccessToken($_SESSION['access_token']);
+		$service = new Google_Service_Oauth2($client);
+		try {
+			$results = $service->userinfo_v2_me->get();
+		}
+		catch (Exception $e) {
+			error_log("EXCEPTION: " . $e->getMessage() . "\n");
+			# the token has probably expired.
+			header("Location: /login.php?refresh-token");
+		}
+		$_SESSION['email'] = $results["email"];
 	}
-	catch (Exception $e) {
-		error_log("EXCEPTION: " . $e->getMessage() . "\n");
-		# the token has probably expired.
-		header("Location: /login.php?refresh-token");
-	}
-	$_SESSION['email'] = $results["email"];
+	$results["email"] = $_SESSION['email'];
 	include("./header.php");
 	echo "<script defer type='application/javascript'>";
 	include "./belltimes.js.php";

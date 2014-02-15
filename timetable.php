@@ -23,15 +23,21 @@ require_once("./common.php");
 if (!(isset($_SESSION['access_token']) && $_SESSION['access_token'])) {
 	header("Location: /login.php?refresh-token&urlback=timetable.php");
 }
-$client = get_client();
-$client->setAccessToken($_SESSION['access_token']);
 $service = new Google_Service_Oauth2($client);
-try {
-	$results = $service->userinfo_v2_me->get();
+$results = array();
+if (isset $_SESSION['email']) {
+	$results['email'] = $_SESSION['email'];
 }
-catch (Exception $e) {
-	error_log("EXCEPTION: " . $e->getMessage() . "\n");
-	header("Location: /login.php?refresh-token&urlback=timetable.php");
+else {
+	try {
+		$results = $service->userinfo_v2_me->get();
+		$client = get_client();
+		$client->setAccessToken($_SESSION['access_token']);
+	}
+	catch (Exception $e) {
+		error_log("EXCEPTION: " . $e->getMessage() . "\n");
+		header("Location: /login.php?refresh-token&urlback=timetable.php");
+	}
 }
 $email = $results['email'];
 if ($email == "") {

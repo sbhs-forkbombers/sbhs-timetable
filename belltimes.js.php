@@ -15,7 +15,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+// calculate some initial values for the client
 ini_set("date.timezone", "Australia/Sydney");
 if (!isset($results)) { header("Content-type: application/javascript"); }
 function is_after_school($hour,$min) {
@@ -37,11 +37,11 @@ $min  = $localtime["tm_min"];
 $wday = $localtime["tm_wday"];
 $afterSchool = false;
 echo "day_offset = 0;";
-if (is_after_school($hour,$min) && $wday >= 1 && $wday <= 5) {
+if (is_after_school($hour,$min) && $wday >= 1 && $wday <= 5) { // after school on a weekday
 	echo "after_school = true;\n";
 	$dateOffset+=1;
 	$wday = $wday%7;
-	if ($wday == 5) {
+	if ($wday == 5) { // it's friday
 		$dateOffset += 2;
 		echo "day_offset += 2;\n";
 	}
@@ -51,13 +51,13 @@ if (is_after_school($hour,$min) && $wday >= 1 && $wday <= 5) {
 else {
 	echo "after_school = false;\n";
 }
-if ($wday == 0 || $wday == 6) {
+if ($wday == 0 || $wday == 6) { // it's a weekend
 	echo "weekend = true;\n";
 	$rWday = $wday;
-	if ($wday==6) {
+	if ($wday==6) { // sat
 		$dateOffset += 2;
 	}
-	else {
+	else { // sun
 		$dateOffset += 1;
 	}
 /*	if (is_after_school($hour,$min)) {
@@ -79,12 +79,11 @@ if ($afterSchool) {
 $NOW = $now;
 
 echo "window.NOW = new Date(" . strftime("%G, Number('%m')-1, Number('%d')", $now) . ");";
-echo "//http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $now);
+//echo "//http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $now);
 ?>
 
 belltimes = {"status": "error"};
-<?php //belltimes = <?php echo file_get_contents("http://localhost:8081/bells.json") ?>;
-<?php if (isset($results)) {
+<?php if (isset($results)) { // handle the timetable - send the entire copy down with the client so it shouldn't need a refresh.
 	echo "// results set\n";
 	echo "loggedIn = true;\n";
 	$udata = db_get_data_or_create($results['email']);
@@ -116,6 +115,7 @@ Date.prototype.getYearDay = function() {
 	return Math.ceil((this - onejan) / 86400000);
 } 
 Date.prototype.getDateStr = function() { return this.getFullYear() + "-" + (this.getMonth()+1) + "-" + this.getDate() }; 
+
 week = null; 
 dow = null;
 recalculating = false;
@@ -123,6 +123,10 @@ nextBell = null;
 nextBellIdx = null;
 nextPeriod = null;
 startDate = new Date();
+
+/**
+* calculate the next bell
+**/
 function recalculateNextBell() {
 	recalculating = true;
 	var now = new Date();
@@ -153,10 +157,11 @@ function recalculateNextBell() {
 		}
 		$('#period-name').text("Updating bells...");
 		$('#countdown').text('');
+		// this will call all the initialise stuff again!
 		$.getScript("http://student.sbhs.net.au/api/belltimes/bells.json?date=" + NOW.getDateStr() + "&callback=loadTimetable");
 	}
 
-	if (after_school || weekend) {
+	if (after_school || weekend) { // the next bell is going to be start of school tomorrow.
 		nextBell = belltimes['bells'][0];
 		nextBell["internal"] = [9,0];
 		nextPeriod = belltimes['bells'][1];
@@ -174,40 +179,38 @@ function recalculateNextBell() {
 			else if (d.getDay() == 6) {
 				day_offset += 1;
 			}
-/*			else if (d.getDay() == 0) {
-				day_offset += 1;
-		}*/
 		}
 		doReposition();
 		return;
 	}
+	
 	var nearestBellIdx = null;
 	var nearestBell = null;
-//	if (nextBellIdx == null) {
+	
 	for (var i = 0; i < belltimes['bells'].length; i++) {
 			var start = belltimes['bells'][i]['time'].split(":");
 			start[0] = Number(start[0]);
 			start[1] = Number(start[1]);
-			if (start[0] == hour && start[1] >= min) {
+			if (start[0] == hour && start[1] >= min) { // after now?
+				if (nearestBell == null || ((nearestBell[0] == start[0] && nearestBell[1] > start[1]) || (nearestBell[0] > start[0]))) { // and closer than any other thing we've found so far
+					nearestBell = start;
+					nearestBellIdx = i;
+				}
+			}
+			else if (start[0] > hour) { // see above (TODO: move this into the one block)
 				if (nearestBell == null || ((nearestBell[0] == start[0] && nearestBell[1] > start[1]) || (nearestBell[0] > start[0]))) {
 					nearestBell = start;
 					nearestBellIdx = i;
 				}
 			}
-			else if (start[0] > hour) {
-				if (nearestBell == null || ((nearestBell[0] == start[0] && nearestBell[1] > start[1]) || (nearestBell[0] > start[0]))) {
-					nearestBell = start;
-					nearestBellIdx = i;
-				}
-			}
-			if (nearestBell != null && ((nearestBell[0] == start[0] && nearestBell[1] < start[1]) || nearestBell[0] < start[0]) && ((nearestBell[0] == hour && nearestBell[1] > min) || nearestBell[0] > hour)) {
+			if (nearestBell != null && ((nearestBell[0] == start[0] && nearestBell[1] < start[1]) || nearestBell[0] < start[0]) && ((nearestBell[0] == hour && nearestBell[1] > min) || nearestBell[0] > hour)) { 
 				// we're done!
 				break;
 			}
 		}
 	nextBell = belltimes['bells'][nearestBellIdx];
 	var pName = nextBell['bell'].replace("Roll Call", "School starts").replace("End of Day", "School ends");
-	if (/Transition|Lunch 1|Recess/i.test(pName)) {
+	if (/Transition|Lunch 1|Recess/i.test(pName)) { // count down until the end of this period rather than the start of whatever's next
 		var last = belltimes['bells'][nearestBellIdx-1]['bell'];
 		if (timetable != null) {
 			var lesson = last;
@@ -227,15 +230,15 @@ function recalculateNextBell() {
 	if (!/ (starts)| (ends)$/.test(pName)) {
 		pName += " starts";
 	}
-	if (/^\d/.test(pName)) {
+	if (/^\d/.test(pName)) { // make periods look better - "1 ends in" vs "Period 1 ends in"
 		pName = "Period " + pName;
 	}
 	nextBell["internal"] = nearestBell;
-	if (/^\d/.test(nextBell['bell']) ) {
+	if (/^\d/.test(nextBell['bell']) ) { // work out what the next period is
 		nextPeriod = nextBell;
 	}
 	else if (nextBell['bell'] == "End of Day") {
-		nextPeriod = null; // period one tomorrow
+		nextPeriod = null; // period one tomorrow. 
 	}
 	else {
 		var j = "";
@@ -265,7 +268,9 @@ function recalculateNextBell() {
 	recalculating = false;
 	doReposition();	
 }
-
+/**
+* format what next period is actually going to be
+*/
 function doNextPeriod(nextP) {
 	var text = "";
 	var nextPeriod = timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(nextP["bell"]-1)];
@@ -289,7 +294,10 @@ function doNextPeriod(nextP) {
 	document.getElementById("next-info").innerHTML = text;
 }
 
-function format(seconds) {
+/**
+* format a given number of seconds into a countdown format
+*/
+function format(seconds) { 
 	var sec = (seconds % 60) + ""; seconds = Math.floor(seconds/60);
 	var min = (seconds % 60); 
 	if (min + (seconds-min) < 100) {
@@ -310,7 +318,9 @@ function format(seconds) {
 	}
 	return (hrs > 0 ? (hrs + "h ") : "") + min + "m " + sec + "s";
 }
-
+/**
+* is it hour, min after school?
+ */
 function isAfterSchool(hour, min) {
 	if (hour == 15 && min >= 15) {
 		return true;
@@ -320,23 +330,24 @@ function isAfterSchool(hour, min) {
 	}
 	return false;
 }
-
+/** update the countdown */
 function updateTimeLeft() {
-	if (recalculating) {
+	if (recalculating) { // if we're working out the next bell, stop now (otherwise max stack size exceeded errors happen)
 		return;
 	}
 	var n = new Date();
 	var teststr = n.getDateStr();
 	var el = document.getElementById("countdown");
 	var start = nextBell["internal"];
-	if (weekend || after_school) {
+	if (weekend || after_school) { // we need to countdown from midnight on the day in question.
 		var now = new Date();
-		now.setDate(now.getDate()+1+day_offset);
+		now.setDate(now.getDate()+1+day_offset); // js automatically wraps dates!
 		now.setHours(0,0,0);
 	}
 	else {
 		var now = new Date();
 	}
+	// how long?
 	var hour = now.getHours();
 	var min = now.getMinutes() + hour*60;
 	var startMin = start[0]*60 + start[1];
@@ -344,7 +355,7 @@ function updateTimeLeft() {
 	var sec = min * 60;
 	if (weekend || after_school) {
 		//sec += (24*60*60)*day_offset;
-		sec += Math.floor((now.valueOf() - Date.now())/1000);
+		sec += Math.floor((now.valueOf() - Date.now())/1000); // work out how long there is until midnight
 	}
 	sec += (60 - now.getSeconds());
 	if (sec < 60 || n.getDateStr() != startDate.getDateStr()) {
@@ -362,6 +373,7 @@ var botEx = false;
 
 var diaryLoaded = false;
 var noticesLoaded = false;
+/** slides out/in the top (notices) pane */
 function slideOutTop() {
 	if (rightEx) slideOutRight();
 	if (leftEx) slideOutLeft();
@@ -382,6 +394,7 @@ function slideOutTop() {
 		var target = document.getElementById("slideout-top");
 		window.currentNoticesSpinner = new Spinner(opts).spin(target);
 	}
+	$('#slideout-bottom-arrow').toggleClass("mini");
 	$('#slideout-top,#slideout-top-arrow').toggleClass("expanded");
 	if (!noticesLoaded) {
 		getNotices();
@@ -389,7 +402,7 @@ function slideOutTop() {
 	topEx = !topEx;
 	noticesLoaded = true;
 }
-
+/** slide out the bottom (diary) pane */
 function slideOutBottom() {
 	if (rightEx) slideOutRight();
 	if (leftEx) slideOutLeft();
@@ -410,6 +423,7 @@ function slideOutBottom() {
 		var target= document.getElementById("slideout-bottom");
 		window.currentDiarySpinner = new Spinner(opts).spin(target);
 	}
+	$('#slideout-top-arrow').toggleClass("mini");
 	$('#slideout-bottom,#slideout-bottom-arrow').toggleClass("expanded");
 	if (!diaryLoaded) {
 		getDiary();
@@ -417,7 +431,7 @@ function slideOutBottom() {
 	botEx = !botEx;
 	diaryLoaded = true;
 }
-
+/** slide out the right (belltimes) pane */
 function slideOutRight() {
 	if (window.oneSlider && leftEx) {
 		slideOutLeft();
@@ -438,7 +452,7 @@ function slideOutRight() {
 		$('#darkener').removeClass('visible');
 	}
 }
-
+/** slide out the left (timetable) pane */
 function slideOutLeft() {
 	if (window.oneSlider && rightEx) {
 		slideOutRight();
@@ -460,6 +474,8 @@ function slideOutLeft() {
 	}
 }
 
+
+/** update the belltimes pane */
 function updateRightSlideout() { // belltimes here
 	var text;
 	text = "<div style='text-align: center;'><span class='big'>" + dow + " " + week + "</span><br /><table class='right-table' style='margin-left: auto; margin-right:auto;'><tbody>";
@@ -470,6 +486,7 @@ function updateRightSlideout() { // belltimes here
 	text += "</tbody></table></div>";
 	document.getElementById("slideout-right").innerHTML = text;
 }
+/** update the timetable pane - either show a prompt to log in/enter your timetable *or* show the timetable for today */
 function updateLeftSlideout() {// timetable here
 	var text;
 	if (timetable == null) {
@@ -510,6 +527,8 @@ echo "http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-
 
 var DOCUMENT_READY = false;
 var BELLTIMES_DONE = false;
+
+/** store the timetable, if the document's ready, do all the setup. */
 function loadTimetable(obj) {
 	window.belltimes = obj;
 	BELLTIMES_DONE = true;
@@ -519,11 +538,11 @@ function loadTimetable(obj) {
 }
 
 $(document).ready(function() { 
-	$('#old-ie-warn').css({"opacity": 0, "font-size": 0}); // we got this far...
+	$('#old-ie-warn').css({"opacity": 0, "font-size": 0}); // we got this far... (older IEs will fail because jQuery 2.x doesn't support them)
 	DOCUMENT_READY = true;  
-	if (BELLTIMES_DONE) begin();
-	if (window.actualMobile) return;
 	$('#slideout-top-arrow').click(slideOutTop);
+	if (BELLTIMES_DONE) begin();
+	if (window.actualMobile) return; // this stuff is unnecessary for mobile
 	$('#slideout-top-arrow').css({"opacity": 1});
 	$('#notices-notice').css({"opacity": 1});
 	if (/compatible; MSIE 9.0;/.test(window.navigator.userAgent) && !window.localStorage["noIE9annoy"] && false ) { // TODO enable this. It might scare people off, though.
@@ -539,13 +558,14 @@ $(document).ready(function() {
 	setTimeout(function() {$('#ie9-warn').css({"opacity": 0})}, 10000);
 });
 
+
 function begin() {
-	if (belltimes["status"] == "Error") {
+	if (belltimes["status"] == "Error") { // well dang. TODO add default bells + display a warning when the bells failed to load.
 		$('#countdown').text('');
 		$('#period-name').text("Something went wrong :(");
 		$('#in').html("You can <a href='https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform'>report a bug</a>, or try again later.");
 	}
-	else {
+	else { // show stuff.
 		week = belltimes["weekType"];
 		dow  = belltimes["day"];
 		recalculateNextBell();
@@ -556,7 +576,7 @@ function begin() {
 	}
 	$(window).on('resize', doReposition);
 }
-function doReposition() {
+function doReposition() { // reposition/resize things to fit.
 	if (window.innerWidth <= 510 || window.MOBILE) {
 		$('.slideout').css({"width": "100%", "padding": "0"});
 		window.oneSlider = true;
@@ -593,7 +613,7 @@ function doReposition() {
 function getNotices() {
 	$.getJSON("notices/dailynotices.php?codify=yes&date="+NOW.getDateStr(), processNotices);
 }
-
+// put the notices in the notice pane
 function processNotices(data) {
 
 	var res = "<h1 style='text-align: center'>Notices for " + dow + " " + week + "</h1>";
@@ -625,6 +645,7 @@ function processNotices(data) {
 	$('#slideout-top').html(res);
 	doneNoticeLoad();
 }
+/** attaches onChange/whatever handlers to notices */
 function doneNoticeLoad() {
 	$('.info').click(function(ev) {
 		$($(this).children('.content')[0]).slideToggle();
@@ -639,10 +660,10 @@ function doneNoticeLoad() {
 		$('.content').slideToggle();
 	});
 }
-
+/** format a date */
 function formatDate(d,js) {
 	var dom = d.getDate().toString();
-	var mon = (d.getMonth()+(js ? 0 : 1)).toString();
+	var mon = (d.getMonth()+1).toString();
 	var yrs = d.getFullYear().toString();
 	if (dom.length < 2) {
 		dom = "0" + dom;
@@ -661,48 +682,161 @@ function formatDate(d,js) {
 function getDiary() {
 	$.getJSON("diary.php?raw-json", processDiary);
 }
-
-function processDiary(diary) {
-/*TODO	var beforeToday = [];
-	var afterToday = [];
-var today = [];*/
-	var rows = [];
+/** generate a diary row for a JSON element */
+function genDiaryRow(el) {
 	var date = new Date(formatDate(new Date(), true));
-
+	var dueDate = new Date(el["due"]);
+	var dStr = formatDate(dueDate);
+	var due = "";
+	var p = el["duePeriod"];
+	if (dueDate == date) {
+		dStr = "<strong>Today</strong> (period " + p + ")";
+	}
+	else if (dueDate == (date-24*60*60) && !el["done"]) {
+		dStr = "<strong class='diary-overdue'>Yesterday</strong> (period " + p + ")";
+	}
+	else if (dueDate == (date+24*60*60) && !el["done"]) {
+		dStr = "<strong>Tomorrow</strong> (period " + p + ")";
+	}
+	else if (dueDate < date && !el["done"]) {
+		dStr = "<strong class='diary-overdue'>OVERDUE!</strong> (due " + dStr + " period " + p + ")";
+		due = "";
+	}
+	var text = "<tr id='diary-"+window.newEntryID+"'><td class='diary-name'>"+el["name"]+"</td><td class='due-date'>" + due + " " + dStr + "</td><td class='diary-subject'>"+el["subject"]+"</td><td class='diary-notes'>"+el["notes"]+"</td></td><td><input type='checkbox' onchange='processDiaryDone(event)' />&nbsp;<a href='javascript:void(0)' onclick='editDiary(event)'>edit</a>&nbsp;<a href='javascript:void(0)' onclick='deleteDiaryEntry(event)'>delete</a></td></tr>";
+	return text;
+}
+/** process the diary when it's been loaded */
+function processDiary(diary) {
+	var rows = ["<tr><td style='border: 0px'>Name</td><td style='border: 0px'>Due</td><td style='border: 0px'>Subject</td><td style='border: 0px'>Notes</td><td style='border: 0px'>&nbsp;</td></tr>"];
+	var date = new Date(formatDate(new Date(), true));
+	window.diary = diary;
 	for (i in diary) {
 		var el = diary[i];
-		var dueDate = new Date(el["due"]);
-		var dStr = formatDate(dueDate);
-		if (dueDate == date) {
-			dStr = "<strong>Today</strong>";
-		}
-		else if (dueDate == (date-24*60*60) && !el["done"]) {
-			dStr = "<strong>Yesterday</strong>";
-		}
-		else if (dueDate == (date+24*60*60) && !el["done"]) {
-			dStr = "<strong>Tomorrow</strong>";
-		}
-		var text = "<tr><td class='diary-name'>"+el["name"]+"<br /><small>due " + dStr + "</small></td><td class='diary-notes'><span class='diary-subject'>"+el["subject"]+"</span><br /><span class='diary-notes'>"+el["notes"]+"</span></td><td><input type='checkbox' onchange='processDiaryDone(event)' /></td><td style='display:none' class='json'>"+JSON.stringify(el)+"</td></tr>";
-		rows.push(text);
+		window.newEntryID = i;
+		rows.push(genDiaryRow(el));
 	}
-	var res = "<table><tbody>";
+	var res = "<h1 id='diary-header'>My Homework</h1><table id='diary-table'><tbody>";
 	for (i in rows) {
 		res += rows[i];
 	}
 	res += "</tbody></table>";
+	res += "<div id='diary-add' onclick='addDiaryEvent()'>+</div>";
 	$('#slideout-bottom').html(res);
 }
-		
 
+function getNewRow() {
+	return "<tr id='newDRow'><td class='diary-name'><input placeholder='Name' type='text' /></td><td><input placeholder='Date' type='text' class='date-in' /> Period <input style='width: 15px' type='text' class='period'/></td><td class='diary-subject'><input placeholder='Subject' type='text' /></td><td class='diary-desc'><textarea/></td><td><a href='javascript:void(0)' onclick='saveDiary()'>save</a> </tr>";
+}
+
+
+/** add a new row to add an entry to the diary table */
+function addDiaryEvent() {
+	if (!window.diary) {
+		console.error("addDiaryEvent - called before diary loaded!");
+		return; // oops...
+	}
+	else if (window.addingEntry)
+		return;
+	var newRow = getNewRow();
+	$('#diary-table').append(newRow);
+	window.addingEntry = true;
+	window.newEntryID = window.diary.length;
+}
+/** edit a row */
+function editDiary(e) {
+	var id = Number($(e.target).parent().parent().attr("id").split("-")[1]);
+	var el = diary[id];
+	$('#diary-table #diary-'+id).replaceWith(getNewRow());
+	var row = $('#newDRow *');
+	row.filter('.diary-name input').val(el["name"]);
+	row.filter('.date-in').val(el["due"]);
+	row.filter('.period').val(el["duePeriod"]);
+	row.filter('.diary-subject input').val(el["subject"]);
+	row.filter('.diary-desc textarea').val(el["notes"]);
+	window.newEntryID = id;
+}
+
+
+/** save the content of the add to diary row */;
+function saveDiary() {
+	var row = $('#newDRow *');
+	var name = row.filter('.diary-name input').val();
+	var date = Date.parse(row.filter('.date-in').val());
+	if (date == null) {
+		row.filter('.date-in').val("").attr("placeholder", "Try again.");
+		return;
+	}
+	var period = row.filter('.period').val();
+	var subj = row.filter('.diary-subject input').val();
+	var desc = row.filter('.diary-desc textarea').val();
+
+	var data = {
+		"name": name,
+		"notes": desc,
+		"subject": subj,
+		"due": formatDate(date, true),
+		"duePeriod": period,
+	};
+	var tDiary = diary;
+	tDiary[window.newEntryID] = data;
+	var req = $.ajax({
+		"type": "POST",
+		"url": "diary.php",
+		"data": {
+			"json": JSON.stringify(tDiary),
+			"update": true
+		}
+	});
+
+	req.done(function(msg) {
+		if (msg == "Ok") {
+			window.addingEntry = false;
+			var dRow = genDiaryRow(data, window.newEntryID);
+			diary[window.newEntryID] = data;
+			$('#newDRow').replaceWith(dRow);
+		}
+		else {
+			$('#newDRow a').text('failed to save!');
+			setTimeout(5000, function() { $('#newDRow a').text('save') });
+		}
+	});		
+}
+
+function deleteDiaryEntry(e) {
+	var id = Number($(e.target).parent().parent().attr("id").split("-")[1]);
+	var tDiary = diary;
+	tDiary.splice(id, 1);
+	var req = $.ajax({
+		"type": "POST",
+		"url": "diary.php",
+		"data": {
+			"json": JSON.stringify(tDiary),
+			"update": true
+		}
+	});
+
+	req.done(function(msg) {
+		if (msg == "Ok") {
+			window.addingEntry = false;
+			$('#diary-'+id).fadeOut().remove();
+			window.console.log("delete id: " + id);
+			diary.splice(id, 1);
+		}
+		else {
+			$('#diary-'+id+' .delete').text('failed to delete!');
+			setTimeout(5000, function() { $('#diary-'+id+' .delete').text('delete') });
+		}
+	});
+}
 function dismissIE9() {
 	window.localStorage["noIE9annoy"] = true;
 	$('#ie9-warn').css({"opacity": 0});
 }
-
+/** prompt to set a year */
 function promptSetYear() {
 	$('#year').html("<input type='text' id='new-year' /><br /><br /><a class='fake-button' href='javascript:void(0)' onclick='saveYear()'>Save Year!</a>");
 }
-
+/** update the year */
 function saveYear() {
 	var newYear = $('#new-year').val();
 	if (!/7|8|9|10|11|12|Staff/.test(newYear)) {
@@ -734,7 +868,7 @@ function saveYear() {
 		}
 	});
 }		
-
+// load jquery mobile (+ the swipe up/down support) if it's a device that supports touch.
 yepnope([{
 		test: Modernizr.touch,
 		yep : ["/script/jquery.mobile.custom.min.js"],
@@ -782,7 +916,7 @@ yepnope([{
 						}
 					});
 				});
-				if (window.actualMobile || /ipad|android/i.test(navigator.userAgent)) {
+				if (window.actualMobile || /ipad|android/i.test(navigator.userAgent)) { // show the swipe info!
 					$('#swipe-info').css({"opacity": 1});
 					setTimeout(function() { $('#swipe-info').css({"opacity": 0}) }, 5000);
 				}
