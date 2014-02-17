@@ -529,7 +529,7 @@ body {
 	color: rgb(51, 181, 229);
 }
 
-input[type="text"] {
+#slideout-bottom input[type="text"] {
 	font-size: 25px;
 }
 
@@ -542,4 +542,18 @@ input[type="text"] {
 	text-align: center;
 	font-size: 40px;
 	font-weight: 100;
+}
+
+#reload-notices {
+	top: 5px;
+	right: 5px;
+	text-align: right;
+	position: relative;
+}
+
+#diary-reload {
+	top: 5px;
+	right: 5px;
+	text-align: right;
+	position: relative;
 }

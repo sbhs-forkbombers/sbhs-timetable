@@ -115,7 +115,15 @@ Date.prototype.getYearDay = function() {
 	return Math.ceil((this - onejan) / 86400000);
 } 
 Date.prototype.getDateStr = function() { return this.getFullYear() + "-" + (this.getMonth()+1) + "-" + this.getDate() }; 
-
+Date.lastWeekday = function() {
+	var t = new Date();
+	if (!t.is().sun() && !t.is().sat()) {
+		return new Date();
+	}
+	else {
+		return new Date.last().friday();
+	}
+}
 week = null; 
 dow = null;
 recalculating = false;
@@ -140,7 +148,7 @@ function recalculateNextBell() {
 	now.setMinutes(now.getMinutes() + 1);
 	var hour = now.getHours();
 	var min  = now.getMinutes();
-	if (nextBell != null && nextBell["bell"] == "End of Day") {
+	if ((nextBell != null && nextBell["bell"] == "End of Day") || Date.now() > (new Date()).set({hours: 15, minutes: 15}) || !Date.lastWeekday().isToday()) {
 		// it's now after school.
 		after_school = true;
 		// should get the next set of bells here
@@ -155,6 +163,7 @@ function recalculateNextBell() {
 			// weekend!
 			weekend = true;
 		}
+		dow = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][NOW.getDay()];
 		$('#period-name').text("Updating bells...");
 		$('#countdown').text('');
 		// this will call all the initialise stuff again!
@@ -373,8 +382,12 @@ var botEx = false;
 
 var diaryLoaded = false;
 var noticesLoaded = false;
+function reloadNotices() {
+	noticesLoaded = false;
+	slideOutTop(true);
+}
 /** slides out/in the top (notices) pane */
-function slideOutTop() {
+function slideOutTop(reload) {
 	if (rightEx) slideOutRight();
 	if (leftEx) slideOutLeft();
 	if (botEx) slideOutBottom();
@@ -394,16 +407,22 @@ function slideOutTop() {
 		var target = document.getElementById("slideout-top");
 		window.currentNoticesSpinner = new Spinner(opts).spin(target);
 	}
-	$('#slideout-bottom-arrow').toggleClass("mini");
-	$('#slideout-top,#slideout-top-arrow').toggleClass("expanded");
+	if (reload != true) {
+		$('#slideout-bottom-arrow').toggleClass("mini");
+		$('#slideout-top,#slideout-top-arrow').toggleClass("expanded");
+		topEx = !topEx;
+	}
 	if (!noticesLoaded) {
 		getNotices();
 	}
-	topEx = !topEx;
 	noticesLoaded = true;
 }
+function reloadDiary() {
+	diaryLoaded = false;
+	slideOutBottom(true);
+}
 /** slide out the bottom (diary) pane */
-function slideOutBottom() {
+function slideOutBottom(reload) {
 	if (rightEx) slideOutRight();
 	if (leftEx) slideOutLeft();
 	if (topEx) slideOutTop();
@@ -423,12 +442,14 @@ function slideOutBottom() {
 		var target= document.getElementById("slideout-bottom");
 		window.currentDiarySpinner = new Spinner(opts).spin(target);
 	}
-	$('#slideout-top-arrow').toggleClass("mini");
-	$('#slideout-bottom,#slideout-bottom-arrow').toggleClass("expanded");
+	if (reload != true) {
+		$('#slideout-top-arrow').toggleClass("mini");
+		$('#slideout-bottom,#slideout-bottom-arrow').toggleClass("expanded");
+		botEx = !botEx;
+	}
 	if (!diaryLoaded) {
 		getDiary();
 	}
-	botEx = !botEx;
 	diaryLoaded = true;
 }
 /** slide out the right (belltimes) pane */
@@ -558,10 +579,14 @@ $(document).ready(function() {
 	setTimeout(function() {$('#ie9-warn').css({"opacity": 0})}, 10000);
 });
 
+function tryLoadBells() { // try and reload the bells
+	$.getScript("http://student.sbhs.net.au/api/belltimes/bells.json?date=" + NOW.getDateStr() + "&callback=loadTimetable");
+}
+
 
 function begin() {
 	if (belltimes["status"] == "Error") { // well dang. TODO add default bells + display a warning when the bells failed to load.
-		$('#countdown').text('');
+		$('#countdown').text('<a href="javascript:void(0)" onclick="tryLoadBells()">Try Again</a>');
 		$('#period-name').text("Something went wrong :(");
 		$('#in').html("You can <a href='https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform'>report a bug</a>, or try again later.");
 	}
@@ -616,7 +641,7 @@ function getNotices() {
 // put the notices in the notice pane
 function processNotices(data) {
 
-	var res = "<h1 style='text-align: center'>Notices for " + dow + " " + week + "</h1>";
+	var res = "<h1 style='text-align: center'>Notices for " + dow + " " + week + "</h1><a href='javascript:void(0)' id='reload-notices' onclick='reloadNotices()'>reload</a>";
 	res += "Pick a year: <select id='notice-filter'><option value='.notice-row'>All years</option>";
 	var year = (Number(studentYear) == Number.NaN ? studentYear : Number(studentYear));
 	for (i=7; i <= 12; i++) {
@@ -702,12 +727,22 @@ function genDiaryRow(el) {
 		dStr = "<strong class='diary-overdue'>OVERDUE!</strong> (due " + dStr + " period " + p + ")";
 		due = "";
 	}
-	var text = "<tr id='diary-"+window.newEntryID+"'><td class='diary-name'>"+el["name"]+"</td><td class='due-date'>" + due + " " + dStr + "</td><td class='diary-subject'>"+el["subject"]+"</td><td class='diary-notes'>"+el["notes"]+"</td></td><td><input type='checkbox' onchange='diaryEntryDone(event)' checked='"+el["done"]+"' />&nbsp;<a href='javascript:void(0)' onclick='editDiary(event)'>edit</a>&nbsp;<a href='javascript:void(0)' onclick='deleteDiaryEntry(event)'>delete</a></td></tr>";
+	if (window.actualMobile) {
+		var text = "<tr id='diary-"+window.newEntryID+"' onclick='mobileExpandDiary(event)'><td class='diary-name'>"+el["name"]+"&nbsp;&nbsp;&#9660;<div class='hidden due-date'>"+due+" "+dStr+"</div></td><td class='diary-subject'>"+el["subject"]+"&nbsp;&nbsp;&#9660;<div class='diary-notes hidden'>"+el["notes"]+"</div></td><td><input type='checkbox' onchange='diaryEntryDone(event)' checked='"+el["done"]+"' />&nbsp;<a href='javascript:void(0)' onclick='editDiary(event)'>edit</a>&nbsp;<a href='javascript:void(0)' onclick='deleteDiaryEntry(event)'>delete</a></td></tr>";
+	}
+	else {
+		var text = "<tr id='diary-"+window.newEntryID+"'><td class='diary-name'>"+el["name"]+"</td><td class='due-date'>" + due + " " + dStr + "</td><td class='diary-subject'>"+el["subject"]+"</td><td class='diary-notes'>"+el["notes"]+"</td></td><td><input type='checkbox' onchange='diaryEntryDone(event)' checked='"+el["done"]+"' />&nbsp;<a href='javascript:void(0)' onclick='editDiary(event)'>edit</a>&nbsp;<a href='javascript:void(0)' onclick='deleteDiaryEntry(event)'>delete</a></td></tr>";
+	}
 	return text;
 }
 /** process the diary when it's been loaded */
 function processDiary(diary) {
-	var rows = ["<tr><td style='border: 0px'>Name</td><td style='border: 0px'>Due</td><td style='border: 0px'>Subject</td><td style='border: 0px'>Notes</td><td style='border: 0px'>&nbsp;</td></tr>"];
+	if (window.actualMobile) {
+		var rows = [];
+	}
+	else {
+		var rows = ["<tr><td style='border: 0px'>Name</td><td style='border: 0px'>Due</td><td style='border: 0px'>Subject</td><td style='border: 0px'>Notes</td><td style='border: 0px'>&nbsp;</td></tr>"];
+	}
 	var date = new Date(formatDate(new Date(), true));
 	window.diary = diary;
 	for (i in diary) {
@@ -715,7 +750,7 @@ function processDiary(diary) {
 		window.newEntryID = i;
 		rows.push(genDiaryRow(el));
 	}
-	var res = "<span id='diary-add' onclick='addDiaryEvent()'>+</span><h1 id='diary-header'>My Homework</h1><table id='diary-table'><tbody>";
+	var res = "<span id='diary-add' onclick='addDiaryEvent()'>+</span><a href='javascript:void(0)' id='diary-reload' onclick='reloadDiary()'>reload</a><h1 id='diary-header'>My Homework</h1><table id='diary-table'><tbody>";
 	for (i in rows) {
 		res += rows[i];
 	}
@@ -725,9 +760,23 @@ function processDiary(diary) {
 }
 
 function getNewRow() {
-	return "<tr id='newDRow'><td class='diary-name'><input placeholder='Name' type='text' /></td><td><input placeholder='Date' type='text' class='date-in' /> Period <input style='width: 15px' type='text' class='period'/></td><td class='diary-subject'><input placeholder='Subject' type='text' /></td><td class='diary-desc'><textarea/></td><td><a href='javascript:void(0)' onclick='saveDiary()'>save</a> </tr>";
+	if (window.actualMobile) {
+		return "<tr id='newDRow'><td class='diary-name'><input placeholder='Name' type='text' /><br /><span class='diary-subject'><input placeholder='Subject' type='text' /></span></td><td><input placeholder='Date' type='text' class='date-in' /> Period <input style='width: 15px' type='text' class='period' /></td><td class='diary-desc'><textarea/><a href='javascript:void(0)' onclick='saveDiary()'>save</a></td></tr";
+	}
+	else {
+		return "<tr id='newDRow'><td class='diary-name'><input placeholder='Name' type='text' /></td><td><input placeholder='Date' type='text' class='date-in' /> Period <input style='width: 15px' type='text' class='period'/></td><td class='diary-subject'><input placeholder='Subject' type='text' /></td><td class='diary-desc'><textarea/></td><td><a href='javascript:void(0)' onclick='saveDiary()'>save</a></td></tr>";
+	}
 }
 
+function mobileExpandDiary(e) {
+	if (e.target.nodeName.toLowerCase() == "tr") {
+		var td = $(e.target);
+	}
+	else {
+		var td = $(e.target).parents("tr");
+	}
+	$(td).find("*.hidden").slideToggle();
+}
 
 /** add a new row to add an entry to the diary table */
 function addDiaryEvent() {
@@ -748,11 +797,11 @@ function editDiary(e) {
 	var el = diary[id];
 	$('#diary-table #diary-'+id).replaceWith(getNewRow());
 	var row = $('#newDRow *');
-	row.filter('.diary-name input').val(el["name"]);
+	row.filter('.diary-name > input').val(el["name"]);
 	row.filter('.date-in').val(el["due"]);
 	row.filter('.period').val(el["duePeriod"]);
-	row.filter('.diary-subject input').val(el["subject"]);
-	row.filter('.diary-desc textarea').val(el["notes"]);
+	row.filter('.diary-subject > input').val(el["subject"]);
+	row.filter('.diary-desc > textarea').val(el["notes"]);
 	window.newEntryID = id;
 }
 
@@ -930,10 +979,16 @@ yepnope([{
 						if (topEx) {
 							slideOutTop();
 						}
+						else if (!botEx) {
+							slideOutBottom();
+						}
 					});
 					$(document).on('swipedown', function(ev) {
 						if (!topEx) {
 							slideOutTop();
+						}
+						else if (botEx) {
+							slideOutBottom();
 						}
 					});
 				});

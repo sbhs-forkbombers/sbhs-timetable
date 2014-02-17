@@ -1,6 +1,3 @@
-.arrow {
-	border: 10px solid transparent;
-}
 
 
 .nomobile {
@@ -102,6 +99,10 @@ td > input {
 	margin-left: 10%;
 }
 
+#slideout-bottom-arrow {
+	margin-left: 10%;
+}
+
 .info {
 	padding-top: 50px;
 }
@@ -136,4 +137,32 @@ input {
 	top: auto;
 	left: 50%;
 	margin-left: -60px;
+}
+
+#slideout-bottom {
+	left: 0;
+	top: 0;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	border: 0px !important;
+}
+
+.hidden {
+	display: none;
+}
+
+#slideout-bottom table {
+	left: 0;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+.diary-notes,.due-date,.diary-name,.diary-subject {
+	font-size: 15px;
+	font-family: "Roboto";
+	font-weight: normal;
+	vertical-align: top;
 }
