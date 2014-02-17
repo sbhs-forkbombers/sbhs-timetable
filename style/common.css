@@ -546,14 +546,14 @@ body {
 
 #reload-notices {
 	top: 5px;
-	right: 5px;
-	text-align: right;
-	position: relative;
+	left: 5px;
+	text-align: left;
+	position: absolute;
 }
 
 #diary-reload {
 	top: 5px;
 	right: 5px;
 	text-align: right;
-	position: relative;
+	position: absolute;
 }
