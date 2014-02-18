@@ -81,6 +81,11 @@ $NOW = $now;
 echo "window.NOW = new Date(" . strftime("%G, Number('%m')-1, Number('%d')", $now) . ");";
 //echo "//http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $now);
 ?>
+/** Number of seconds to subtract from countdown (accomodates for drift). */
+window.DRIFT = 0;
+if (window.localStorage.DRIFT) {
+	window.DRIFT = window.localStorage.DRIFT;
+}
 
 belltimes = {"status": "error"};
 <?php if (isset($results)) { // handle the timetable - send the entire copy down with the client so it shouldn't need a refresh.
@@ -138,6 +143,9 @@ startDate = new Date();
 function recalculateNextBell() {
 	recalculating = true;
 	var now = new Date();
+	now.setSeconds(now.getSeconds() + DRIFT);
+	NOW = now;
+	NOW.setHours(0, 0, 0);
 	if (now.getDateStr() != startDate.getDateStr()) {
 		// we've changed days
 		startDate = now;
@@ -180,6 +188,7 @@ function recalculateNextBell() {
 		recalculating = false;
 		day_offset = 0;
 		var d = new Date();
+		d.setSeconds(d.getSeconds() + DRIFT);
 		if (weekend || d.getDay() == 5) {
 			after_school = true;
 			if (d.getDay() == 5) {
@@ -345,6 +354,7 @@ function updateTimeLeft() {
 		return;
 	}
 	var n = new Date();
+	n.setSeconds(n.getSeconds() + DRIFT);
 	var teststr = n.getDateStr();
 	var el = document.getElementById("countdown");
 	var start = nextBell["internal"];
@@ -355,6 +365,10 @@ function updateTimeLeft() {
 	}
 	else {
 		var now = new Date();
+		now.setSeconds(now.getSeconds() + DRIFT);
+		if (!now.isSameDay(new Date()))
+			var temp_after_school = true;
+		now = new Date();
 	}
 	// how long?
 	var hour = now.getHours();
@@ -367,6 +381,7 @@ function updateTimeLeft() {
 		sec += Math.floor((now.valueOf() - Date.now())/1000); // work out how long there is until midnight
 	}
 	sec += (60 - now.getSeconds());
+	if (weekend || after_school || temp_after_school) sec -= DRIFT;
 	if (sec < 60 || n.getDateStr() != startDate.getDateStr()) {
 		recalculateNextBell();
 		updateTimeLeft();
