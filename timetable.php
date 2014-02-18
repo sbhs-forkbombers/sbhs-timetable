@@ -20,14 +20,15 @@ set_include_path("gapi");
 require_once("Google/Client.php");
 require_once("Google/Service/Oauth2.php");
 require_once("./common.php");
-if (!(isset($_SESSION['access_token']) && $_SESSION['access_token'])) {
-	header("Location: /login.php?refresh-token&urlback=timetable.php");
-}
+
 $results = array();
 if (isset($_SESSION['email'])) {
 	$results['email'] = $_SESSION['email'];
 }
 else {
+	if (!(isset($_SESSION['access_token']) && $_SESSION['access_token'])) {
+		header("Location: /login.php?refresh-token&urlback=timetable.php");
+	}
 	try {
 		$client = get_client();
 		$client->setAccessToken($_SESSION['access_token']);

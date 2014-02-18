@@ -8,6 +8,11 @@ require_once("./common.php");
 if (!(isset($_SESSION['access_token']) && $_SESSION['access_token'])) {
 	header("Location: /login.php?refresh-token&urlback=diary.php");
 }
+if (!isset($_SESSION['email'])) {
+	echo "[{'name':'WHAT?!?', 'notes':'You need to log in before you can use the diary', 'subject':'Log in!', due:'Log in!', duePeriod:'', 'done': false}]";
+	exit;
+}
+/*
 $client = get_client();
 $client->setAccessToken($_SESSION['access_token']);
 $service = new Google_Service_Oauth2($client);
@@ -19,7 +24,8 @@ catch (Exception $e) {
 	header("Location: /login.php?refresh-token&urlback=diary.php");
 	exit;
 }
-$email = $results['email'];
+$email = $results['email'];*/
+$email = $_SESSION['email'];
 if ($email == "") {
 	header("Location: /login.php?logout");
 }
