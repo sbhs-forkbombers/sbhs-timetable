@@ -1,3 +1,20 @@
+/*
+    Copyright (C) 2014  James Ye  Simon Shields
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 body {
 	font-family: "Roboto", "Segoe UI", sans-serif;
 	color: #fff;
@@ -423,7 +440,7 @@ p {
 	position: fixed;
 	left: 3%;
 	margin-left: 79px;
-	top: 60px;
+	bottom: 40px;
 	color: #ccc;
 	opacity: 0;
 	-webkit-transition: all 500ms ease;
@@ -443,6 +460,10 @@ select {
 	border: none;
 	color: white;
 	background-color: black;
+}
+
+.mobile {
+	display: none;
 }
 
 #ie9-warn {
@@ -487,6 +508,7 @@ small.diary-name {
 	width: 94%;
 	left: 4%;
 	position: fixed;
+	table-layout: fixed;
 }
 #ohai-chrome {
 	opacity: 0;
@@ -530,7 +552,13 @@ body {
 }
 
 #slideout-bottom input[type="text"] {
+	position: relative;
+	max-width: 75%;
 	font-size: 25px;
+}
+
+#slideout-bottom input[type="text"].date-in {
+	max-width: 50%;
 }
 
 #diary-header {
@@ -557,3 +585,4 @@ body {
 	text-align: right;
 	position: absolute;
 }
+

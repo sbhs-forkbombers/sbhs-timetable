@@ -1,18 +1,18 @@
 <?php
 /*
-    SBHS-Timetable Copyright (C) James Ye, Simon Shields 2014
+    Copyright (C) 2014  James Ye  Simon Shields
 
     This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
+    it under the terms of the GNU Affero General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
+    You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 include("./header.php");
@@ -79,8 +79,10 @@ Improvements include:
 <li><strong>Integrated timetable</strong> - on the front page, you can see what class you've got next, what you've got tomorrow, and what the belltimes are for today</li>
 <li><strong>Designed with UX in mind</strong> - No annoying jiggly links, no attention-grabbing popups. Just a plain, clean look.</li>
 <li><strong>Intuitive touch-screen support</strong> - Why click when you can swipe? On your phone or tablet, swipe from the left and right of the screen to view more information</li>
+</ul>
 </div>
 </div>
+
 <div onclick="toggleHeader('#faq-2')" class="faq" id="faq-2">
 <span style="font-family: Roboto Slab; font-size: 30px; ">Why does this site look bad / not work on my computer, but works nicely on others?</span><br /><br />
 <div id="faq-2-ans" class="faq-ans" >
@@ -88,6 +90,25 @@ It's probably your computer and web browser. You should switch to the latest ver
 <br />
 </div>
 </div>
+
+<div onclick="toggleHeader('#faq-3')" class="faq" id="faq-3">
+<span style="font-family: Roboto Slab; font-size: 30px;">Legal, standard, boring stuff</span><br /><br />
+<div id="faq-3-ans" class="faq-ans">
+This project is licensed under the GNU Affero General Public License. It can be found <a href="/COPYING">here</a> or at the <a href="//gnu.org/licenses/agpl-3.0.txt">GNU website</a>
+This project also uses other third-party libraries available under other licenses. These are:
+<ul>
+<li>jQuery - MIT </li>
+<li>Modernizr - MIT </li>
+<li>WebFont Loader - Apache 2.0</li>
+<li>Datejs - MIT </li>
+<li>spin.js - MIT </li>
+<li>yepnoe.js - WTFPL</li>
+</ul>
+See the individual projects for their license notices.<br>
+Full text for the: <a href="http://mit-license.org">MIT License</a> | <a href="//www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0 License</a> | <a href="http://www.wtfpl.net/txt/copying/">WTF Public License</a>
+</div>
+</div>
+
 <script>
 function toggleHeader(id) {
 	$(id+"-ans").slideToggle();

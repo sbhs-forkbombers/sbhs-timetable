@@ -1,29 +1,30 @@
+<!DOCTYPE html>
 <!--
-    SBHS-Timetable Copyright (C) James Ye, Simon Shields 2014
+    Copyright (C) 2014  James Ye  Simon Shields
 
     This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
+    it under the terms of the GNU Affero General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
+    You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<!DOCTYPE html>
 <html>
 <head>
-<meta property="og:title" content="SBHS Belltimes" />
-<title>SBHS Belltimes</title>
+<meta charset="UTF-8" />
+<meta name="google-site-verification" content="5vw2xj7xVh3ElQbRgNwk4G3oXc-wTQYJL5j9e9oMAjQ" />
+<meta property="og:title" content="SBHS Timetable" />
+<title>SBHS Timetable</title>
 <meta property="og:image" content="http://sbhsbelltimes.tk/assets/logo_big.jpg" />
-<meta name="keywords" content="SBHS, Timetable, Bell, Times, Belltimes, SHS, Sydney Boys, sbhstimtable, sbhsbelltimes" />
+<meta name="keywords" content="SBHS, Timetable, Bell, Times, Belltimes, SHS, Sydney Boys, sbhstimetable, sbhsbelltimes, sbhstimetable.tk" />
 <meta property="og:description" content="The fastest countdown to the bell for Sydney Boys High. The place to go to know what's next, and how long you've got left, or when that teacher you woe didn't read out today's notices..." />
 <meta name="description" content="The fastest countdown to the bell for Sydney Boys High. The place to go to know what's next, and how long you've got left, or when that teacher you woe didn't read out today's notices..." />
-<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, user-scalable=no" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +32,7 @@
 <link rel="shortcut icon" sizes="196x196" href="/icon.png" />
 <link rel="apple-touch-icon" sizes="196x196" href="/icon.png" />
 <link rel="apple-touch-startup-image" href="/startup.png" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge" /><![endif]-->
 <link rel="stylesheet" href="/style/common.css" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
@@ -40,7 +41,6 @@
 <?php if (isset($EXTRA_STYLESHEETS)) {
 	echo $EXTRA_STYLESHEETS;
 }?>
-<title>SBHS Timetable</title>
 <script defer src="//cdnjs.cloudflare.com/ajax/libs/spin.js/1.3.3/spin.min.js" type="application/javascript"></script>
 	<script>
 <?php include "./script/yepnope.min.js"; /* we cannot use cdn because only yepnope in the gh repo contains certain fixes for older webkit versions */ ?>

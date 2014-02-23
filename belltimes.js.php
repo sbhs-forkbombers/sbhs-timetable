@@ -1,11 +1,11 @@
 <?php
 /*
-    SBHS-Timetable Copyright (C) James Ye, Simon Shields 2014
+    Copyright (C) 2014  James Ye  Simon Shields
 
     This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,6 +15,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 // calculate some initial values for the client
 ini_set("date.timezone", "Australia/Sydney");
 if (!isset($results)) { header("Content-type: application/javascript"); }
@@ -426,6 +427,19 @@ function slideOutBottom(reload) {
 	if (rightEx) slideOutRight();
 	if (leftEx) slideOutLeft();
 	if (topEx) slideOutTop();
+	if (!loggedIn) {
+		if (!diaryLoaded) {
+			var res = "<div style='text-align:center'><h1>My homework</h1>";
+			res += "Record your homework with the click of a button. Sign in with your Google account.<br />";
+			res += "You can also sign in using your school email address:<br />";
+			res += "<strong>&lt;YourStudentID&gt;@student.sbhs.nsw.edu.au</strong><br /><br />";
+			res += '<a href="/login.php?urlback=/timetable.php&new-timetable" class="fake-button">Sign In</a></div>';
+			$('#slideout-bottom').html(res);
+		}
+		$('#slideout-bottom,#slideout-bottom-arrow').toggleClass("expanded");
+		botEx = !botEx;
+		return;
+	}
 	var opts = { // spinner settings
 		lines: 10,
 		length: 40,
@@ -520,8 +534,8 @@ function updateLeftSlideout() {// timetable here
 		}
 		else {
 			text = "<div style='text-align: center;'><h1>Your timetable, here.</h1>";
-			text += "You can see your timetable here. Sign in using your Google account.<br />";
-			text += "You can also sign in with your school email account:<br />";
+			text += "You can see your timetable here. Sign in with your Google account.<br />";
+			text += "You can also sign in using your school email account:<br />";
 			text += "<span style='word-wrap: break-word'>&lt;YourStudentID&gt;@student.sbhs.nsw.edu.au</span><br /><br /><br /><br />"; 
 			text += "<a href='/login.php?urlback=/timetable.php&new-timetable' class='fake-button'>Sign In</a></div>";
 		}
@@ -728,10 +742,19 @@ function genDiaryRow(el) {
 		due = "";
 	}
 	if (window.actualMobile) {
-		var text = "<tr id='diary-"+window.newEntryID+"' onclick='mobileExpandDiary(event)'><td class='diary-name'>"+el["name"]+"&nbsp;&nbsp;&#9660;<div class='hidden due-date'>"+due+" "+dStr+"</div></td><td class='diary-subject'>"+el["subject"]+"&nbsp;&nbsp;&#9660;<div class='diary-notes hidden'>"+el["notes"]+"</div></td><td><input type='checkbox' onchange='diaryEntryDone(event)' checked='"+el["done"]+"' />&nbsp;<a href='javascript:void(0)' onclick='editDiary(event)'>edit</a>&nbsp;<a href='javascript:void(0)' onclick='deleteDiaryEntry(event)'>delete</a></td></tr>";
+		var text = "<tr id='diary-"+window.newEntryID+"' onclick='mobileExpandDiary(event)'><td class='diary-name'>"+el["name"]+"&nbsp;&nbsp;&#9660;<div class='hidden due-date'>"
+			+due+" "+dStr+"</div></td><td class='diary-subject'>"
+			+el["subject"]+"&nbsp;&nbsp;&#9660;<div class='diary-notes hidden'>"
+			+el["notes"]+"</div></td><td><input type='checkbox' onchange='diaryEntryDone(event)' "
+			+ (el["done"] ? "checked" : "")
+			+" />&nbsp;<a href='javascript:void(0)' onclick='editDiary(event)'>edit</a>&nbsp;<a href='javascript:void(0)' onclick='deleteDiaryEntry(event)'>delete</a></td></tr>";
 	}
 	else {
-		var text = "<tr id='diary-"+window.newEntryID+"'><td class='diary-name'>"+el["name"]+"</td><td class='due-date'>" + due + " " + dStr + "</td><td class='diary-subject'>"+el["subject"]+"</td><td class='diary-notes'>"+el["notes"]+"</td></td><td><input type='checkbox' onchange='diaryEntryDone(event)' checked='"+el["done"]+"' />&nbsp;<a href='javascript:void(0)' onclick='editDiary(event)'>edit</a>&nbsp;<a href='javascript:void(0)' onclick='deleteDiaryEntry(event)'>delete</a></td></tr>";
+		var text = "<tr id='diary-"+window.newEntryID+"'><td class='diary-name'>"+el["name"]+"</td><td class='due-date'>" 
+			+ due + " " + dStr + "</td><td class='diary-subject'>"
+			+ el["subject"]+"</td><td class='diary-notes'>"+el["notes"]+"</td><td class='edit-wrapper'><input type='checkbox' onchange='diaryEntryDone(event)' "
+			+ (el["done"] ? "checked" : "")
+			+ " />&nbsp;<a href='javascript:void(0)' onclick='editDiary(event)'>edit</a>&nbsp;<a href='javascript:void(0)' onclick='deleteDiaryEntry(event)'>delete</a></td></tr>";
 	}
 	return text;
 }
@@ -898,6 +921,51 @@ function deleteDiaryEntry(e) {
 		}
 	});
 }
+
+function promptAddDiary() {
+	if (!loggedIn) {
+		slideOutBottom();
+		return;
+	}
+	var myNextBell = nextBell;
+	if (!/\d$/.test(myNextBell["bell"])) { // we're probably in a period!
+		if (myNextBell["bell"] == "Roll Call") {
+			// last period on the previous day
+			var today = dow.toLowerCase().substr(0,3);
+			var wk = week.toLowerCase();
+			var prevDay = {"sat": "fri","sun": "fri", "mon": "fri", "tue": "mon", "wed": "tue", "thu": "wed", "fri": "thu"};
+			var prevWeek = {"a": "c", "b": "a", "c": "b"};
+			var today = prevDay[today];
+			if (today == "fri") {
+				// wrap around one week backwards!
+				wk = ({"a": "c", "b": "a", "c": "b"})[wk];
+			}
+
+		}
+	}
+}
+/** return {'days': <numOfDays>, 'period': <period>, 'day': <day>, 'wk': <wk>} */
+function getNextInstanceOf(lesson, today, wk, period) {
+	var nextDay = {"sat": "mon", "sun": "mon", "fri": "mon", "mon": "tue", "tue": "wed", "wed": "thu", "thu": "fri"};
+	var nextWeek = {"a": "b", "b":"c", "c": "a"};
+	var lesson = timetable[wk][today][period];
+	var sDay = today; // start day
+	var sWeek = wk;   // start week
+	var cDay = nextDay[today]; // current day
+	if (cDay == "mon") {
+		var cWeek = nextWeek[wk];
+	}
+	else {
+		var cWeek = wk;   // current week
+	}
+	for (var count = 0; count < 15; count++) {
+	}
+}
+
+
+		
+
+
 function dismissIE9() {
 	window.localStorage["noIE9annoy"] = true;
 	$('#ie9-warn').css({"opacity": 0});
