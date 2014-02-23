@@ -11,4 +11,12 @@
 		<changefreq>weekly</changefreq>
 		<priority>0.6</priority>
 	</url>
+	<url>
+		<loc>http://sbhstimetable.tk/login.php</loc>
+		<priority>0.0</priority>
+	</url>
+	<url>
+		<loc>http://sbhstimetable.tk/timetable.php</loc>
+		<priority>0.1</priority>
+	</url>
 </urlset> 
