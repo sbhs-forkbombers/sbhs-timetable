@@ -578,18 +578,18 @@ $(document).ready(function() {
 	$('#slideout-top-arrow').click(slideOutTop);
 	if (BELLTIMES_DONE) begin();
 	if (window.actualMobile) return; // this stuff is unnecessary for mobile
-	$('#slideout-top-arrow').css({"opacity": 1});
-	$('#notices-notice').css({"opacity": 1});
+//	$('#slideout-top-arrow').css({"opacity": 1});
+//	$('#notices-notice').css({"opacity": 1});
 	if (/compatible; MSIE 9.0;/.test(window.navigator.userAgent) && !window.localStorage["noIE9annoy"] && false ) { // TODO enable this. It might scare people off, though.
 		$('#ie9-warn').css({"opacity": 1});
 	}
 	if (window.chrome && !window.chrome.app.isInstalled && false) { // TODO enable this
 		$('#ohai-chrome').css({"opacity": 1});
 	}
-	setTimeout(function() {
+/*	setTimeout(function() {
 		$('#slideout-top-arrow').css({"opacity": ""});
 		$('#notices-notice').css({"opacity": 0});
-	}, 5000);
+}, 5000);*/
 	setTimeout(function() {$('#ie9-warn').css({"opacity": 0})}, 10000);
 });
 
