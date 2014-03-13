@@ -86,15 +86,20 @@ a:hover {
 	z-index: 2;
 }
 
-
 #countdown {
 	position: fixed;
 	top: 200px;
+	left: 0;
 	font-family: "Roboto";
 	font-weight: 100;
 	font-size: 115px;
 	text-align: center;
 	width: 100%;
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
 }
 
 #countdown strong {
@@ -127,15 +132,15 @@ a:hover {
 	-ms-transition: all 1s ease;
 	-o-transition: all 1s ease;
 	transition: all 1s ease;
-	height: 94%;
-	-webkit-border-radius: 5px 5px 5px 5px;
-	border-radius: 5px 5px 5px 5px;
+	height: 95%;
+	/*-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;*/
 	padding: 10px;
 	position: fixed;
 	border-collapse: separate;
-	top: 3%;
-	width: 94%;
-	left: 3%;
+	top: 5%;
+	width: 99%;
+	left: -7px;
 	z-index: 3;
 	overflow: auto;
 	opacity: 0;
@@ -252,7 +257,7 @@ a:hover {
 	cursor: pointer;
 }
 .arrow:hover {
-	opacity: 1;
+	opacity: 1 !important;
 }
 /*
 .arrow.mini {
@@ -516,12 +521,11 @@ small.diary-name {
 	bottom: 15px;
 	left: 50%;
 	margin-left: -63px;
-    -webkit-transition: all 500ms ease;
-    -moz-transition: all 500ms ease;
-    -ms-transition: all 500ms ease;
-    -o-transition: all 500ms ease;
-    transition: all 500ms ease;
-
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
 }
 
 html {
@@ -537,18 +541,27 @@ body {
 }
 
 .diary-overdue {
-	color: rgb(231, 64, 64);
+	color: #cc0000;
 	font-size: 25px;
 }
+
 #diary-add {
 	font-size: 50px;
 	cursor: pointer;
 	text-align: center;
 	font-weight: 100;
+	position: fixed;
+	right: 10px;
+	top: 10px;
 }
 
 #diary-add:hover {
-	color: rgb(51, 181, 229);
+	color: #33b5e5;
+}
+
+#diary-table {
+	position: fixed;
+	top: 4em;
 }
 
 #slideout-bottom input[type="text"] {
@@ -581,8 +594,67 @@ body {
 
 #diary-reload {
 	top: 5px;
-	right: 5px;
-	text-align: right;
+	left: 5px;
+	text-align: left;
 	position: absolute;
 }
+ 
+.hidden {
+	opacity: 0
+}
 
+#expando-wrapper {
+	position: fixed;
+	left: 5px;
+	top: 5px;
+	z-index: 1;
+	cursor: pointer;
+}
+
+#expando-wrapper img {
+	width: 30px;
+	height: 30px;
+	position: fixed;
+	left: 5px;
+	top: 5px;
+}
+
+.beta-tag {
+	margin-left: 10px;
+	padding: 5px;
+	background-color: #33b5e5;
+	font-size: 20px;
+	font-family: Roboto;
+	font-weight: 400;
+}
+
+#add-homework-popover {
+	position: fixed;
+	top: 50%;
+	margin-top: -96px;
+	left: 50%;
+	margin-left: -170.5px;
+	line-height: 25px;
+    z-index: 2;
+    border: 1px solid white;
+    padding: 60px;
+    padding-top: 30px;
+    border-radius: 5px;
+}
+
+#add-homework-popover input,textarea {
+	font-size: 15px;
+	max-width: 200px;
+	min-width: 100px;
+	position: absolute;
+	margin: 0;
+	margin-top: 5px;
+	padding: 0;
+	left: 50%;
+	font-family: Roboto;
+}
+
+#additional-notes {
+	position: absolute;
+	margin-top: 5px;
+}

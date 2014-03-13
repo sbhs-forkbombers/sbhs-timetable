@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$HTML = !isset($_REQUEST['codify']);
+$HTML = !isset($_REQUEST['codify']) && !isset($CODIFY);
 if (!$HTML) {
 	if (!isset($_REQUEST['callback'])) {
 		header("Content-type: application/json; charset=utf-8");
@@ -31,6 +31,9 @@ else {
 $date = "";
 if (isset($_REQUEST["date"])) {
 	$date = $_REQUEST["date"];
+}
+else if (isset($DATE)) {
+	$date = $DATE;
 }
 else {
 	$date = date('Y-m-d');

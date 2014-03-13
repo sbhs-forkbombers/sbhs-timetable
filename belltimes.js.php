@@ -1,4 +1,3 @@
-<?php
 /*
     Copyright (C) 2014  James Ye  Simon Shields
 
@@ -15,6 +14,8 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+<?php
+
 
 // calculate some initial values for the client
 ini_set("date.timezone", "Australia/Sydney");
@@ -219,6 +220,7 @@ function recalculateNextBell() {
 			}
 		}
 	nextBell = belltimes['bells'][nearestBellIdx];
+	nextBellIdx = nearestBellIdx;
 	var pName = nextBell['bell'].replace("Roll Call", "School starts").replace("End of Day", "School ends");
 	if (/Transition|Lunch 1|Recess/i.test(pName)) { // count down until the end of this period rather than the start of whatever's next
 		var last = belltimes['bells'][nearestBellIdx-1]['bell'];
@@ -773,7 +775,7 @@ function processDiary(diary) {
 		window.newEntryID = i;
 		rows.push(genDiaryRow(el));
 	}
-	var res = "<span id='diary-add' onclick='addDiaryEvent()'>+</span><a href='javascript:void(0)' id='diary-reload' onclick='reloadDiary()'>reload</a><h1 id='diary-header'>My Homework</h1><table id='diary-table'><tbody>";
+	var res = "<span id='diary-add' onclick='addDiaryEvent()'>+</span><a href='javascript:void(0)' id='diary-reload' onclick='reloadDiary()'>reload</a><h1 id='diary-header'>My Homework <span class='beta-tag'>Beta!</span></h1><table id='diary-table'><tbody>";
 	for (i in rows) {
 		res += rows[i];
 	}
@@ -945,26 +947,114 @@ function promptAddDiary() {
 	}
 }
 /** return {'days': <numOfDays>, 'period': <period>, 'day': <day>, 'wk': <wk>} */
-function getNextInstanceOf(lesson, today, wk, period) {
+function getNextInstanceOf(today, wk, period) {
 	var nextDay = {"sat": "mon", "sun": "mon", "fri": "mon", "mon": "tue", "tue": "wed", "wed": "thu", "thu": "fri"};
 	var nextWeek = {"a": "b", "b":"c", "c": "a"};
 	var lesson = timetable[wk][today][period];
-	var sDay = today; // start day
-	var sWeek = wk;   // start week
-	var cDay = nextDay[today]; // current day
-	if (cDay == "mon") {
-		var cWeek = nextWeek[wk];
+	var daysPast = 0;
+	var sDay = nextDay[today]
+	if (sDay == "mon") {
+		sWk = nextWeek[wk];
+		daysPast = 3;
 	}
 	else {
-		var cWeek = wk;   // current week
+		sWk = wk;
+		daysPast = 1;
 	}
-	for (var count = 0; count < 15; count++) {
+	var cWk = sWk;
+	var cDay = sDay;
+	var done = false;
+	
+	for (var i = 0; i < 3; i++) {
+		for (var j = 0; j < 5; j++) {
+			var s = timetable[cWk][cDay];
+			for (var k in s) {
+				if (s[k]["name"] == lesson["name"]) {
+					// we FOUND IT!
+					done = true;
+					break;
+				}
+			}
+			if (done) break;
+			daysPast++;
+			cDay = nextDay[cDay];
+		}
+		if (done) break;
+		daysPast += 2; // sat, sun
+		cWk = nextWeek[cWk];
 	}
+	return {"daysLeft": daysPast, "wk": cWk, "day": cDay, "period": k};
+	
 }
 
+function getLastLesson() {
+	var currently = nextBellIdx;
+	var lesson = null;
+	for (true; currently >= 0; currently--) {
+		if (/^\d/.test(belltimes.bells[currently]["bell"])) {
+			// found last period.
+			var day = dow.substr(0,3).toLowerCase();
+			var wk = week.toLowerCase();
+			var period = Number(belltimes.bells[currently]["bell"]);
+			lesson = timetable[wk][day][period-1];
+			if (lesson["name"] == "") {
+				continue; // free period, skip it.
+			}
+			break;
+		}
+	}
+	return {"lesson": lesson, "bell": belltimes.bells[currently], "period": period-1};
+}
 
-		
+function promptAddHomework() {
+	var lessonData = getLastLesson();
+	var day = dow.substr(0,3).toLowerCase();
+	var wk = week.toLowerCase();
+	var nextInstance = getNextInstanceOf(day, wk, lessonData["period"]);
+	var ln = "<div id='add-homework-popover'><h1 class='mini-header'>Homework for " + lessonData.lesson['name'] + "</h1>";
+	ln += "<div class='input-wrapper'>";
+	ln += "Name: <input class='diary-name' type='text' /><br />";
+	ln += "Due: <input class='diary-due' type='text' value='+" + nextInstance["daysLeft"] + " days' /><br />";
+	ln += "Period <input class='diary-period' type='number' value='" + (""+nextInstance["period"]+1).replace(/^0+/, "") + "' /><br />";
+	ln += "Subject: <input class='diary-subject' type='text' value='"+lessonData.lesson.name+"' /><br />";
+	ln += "<span id='additional-notes'>Additional Notes:</span> <textarea class='diary-desc' /><br /></div></div>";
+	$(document.body).append(ln);
+}
 
+function toggleExpando() {
+	$('#expand-countdown,#collapse-countdown').toggleClass('hidden');
+	if ($('#expand-countdown').hasClass('hidden')) {
+		// expand countdown
+		$('#period-name,#in,#sidebar,#faq-link,#feedback,#debug').fadeOut();
+		$('#countdown').css({"top": "50%", "margin-top": "-127px", "font-size": "12em"});
+		$('.arrow').css({"opacity": 0});
+		// TODO do people actually want/care about this?
+		/*if (document.body.requestFullscreen) { 
+			document.body.requestFullscreen();
+		} else if (document.body.msRequestFullscreen) {
+			document.body.msRequestFullscreen();
+		} else if (document.body.mozRequestFullScreen) {
+			document.body.mozRequestFullScreen();
+		} else if (document.body.webkitRequestFullScreen) {
+			document.body.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+		}*/
+	}
+	else {
+		$('#period-name,#in,#sidebar,#faq-link,#feedback,#debug').fadeIn();
+		$('.arrow').css({"opacity": ""});
+		$('#countdown').css({"top": "", "margin-top": "", "font-size": ""});
+		$(window).resize();
+		/*if (document.exitFullscreen) {
+			document.exitFullscreen();
+		} else if (document.msExitFullscreen) {
+			document.msExitFullscreen();
+		} else if (document.mozCancelFullScreen) {
+			document.mozCancelFullScreen();
+		} else if (document.webkitExitFullscreen) {
+			document.webkitExitFullscreen();
+		}*/
+	}
+}
 
 function dismissIE9() {
 	window.localStorage["noIE9annoy"] = true;

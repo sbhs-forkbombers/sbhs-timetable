@@ -102,6 +102,9 @@ Then, open <a href="about:apps" target="_blank">The apps screen</a> and you shou
 <div id="slideout-bottom" class="long-slideout"></div>
 <div id="slideout-bottom-arrow" class="arrow" onclick="slideOutBottom()"></div>
 <div id='swipe-info'>Swipe left or right to show more information...</div>
+<div id='expando-wrapper'>
+<a onclick='toggleExpando()'><img id='expand-countdown' alt='expand' src='/expand.png' /><img id='collapse-countdown' alt='collapse' src='/collapse.png' class='hidden' /></a>
+</div>
 </div>
 </body>
 </html>
