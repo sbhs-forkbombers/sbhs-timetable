@@ -19,10 +19,10 @@
 <div id="sidebar">
 	<div id="user-info">
 		<?php
-			echo "<span class='nomobile'>Logged in as</br></span>";
+			echo "<span class='nomobile'>Wow. Such</br></span>";
 			echo $results['email'];
 		?><br />
-		<a href="/login.php?logout">Logout</a> <span style="font-size: 14px;">&#9679;</span> <a href="/timetable.php">My timetable</a>
+		<a href="/login.php?logout">Many quit.</a> <span style="font-size: 14px;">&#9679;</span> <a href="/timetable.php">Such timetable</a>
 <!--		<span style="font-size: 14px;">&#9679;</span> <a href="/notices/dailynotices.php">Today's Notices</a>-->
 	</div>
 	<div id="next-info"></div><br />

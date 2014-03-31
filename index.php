@@ -62,7 +62,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 	echo "</script>";
 	echo "</head>";
 	echo "<body><div class='wrapper'>";
-	echo "<a href='/faq.php' id='faq-link' title=\"the link doesn't jiggle!\">FAQ</a>";
+	echo "<a href='/faq.php' id='faq-link' title=\"the link doesn't jiggle!\">Such Questions</a>";
 	include "./index_acc.php";
 }
 else {
@@ -72,7 +72,7 @@ else {
 	echo "</head>";
 	echo "<body><div class='wrapper'>";
 	echo "<div id=\"nojs\"><noscript>You need a Javascript-enabled browser to use this site.</noscript></div>"; 
-	echo "<a href='/faq.php' id='faq-link' title=\"The link doesn't jiggle!\">FAQ</a>";
+	echo "<a href='/faq.php' id='faq-link' title=\"The link doesn't jiggle!\">Such Questions</a>";
 	include "./index_new.php";
 }
 
@@ -95,13 +95,21 @@ Then, open <a href="about:apps" target="_blank">The apps screen</a> and you shou
 </div>-->
 <div id="ie9-warn"><!--<strong>Hey there</strong>! You seem to be using Internet Explorer 9. For a better experience, you\'ll need to upgrade. <a href="/ie9_faq.php">Read more...</a> <a href="javascript:void(0)" onclick="dismissIE9()">Dismiss</a>--></div>
 <div id="old-ie-warn"><!--<strong>You\'re running an old version of Internet Explorer.</strong> We recomend that you upgrade to a newer version of IE, or <a href="http://firefox.com">Firefox</a> or <a href="http://chrome.google.com">Google Chrome</a>. This website will not work on Internet Explorer 8 or older!--></div>
-<div id="feedback"><a href="https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform">Feedback</a></div>
+<div id="feedback"><a href="https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform">Much complain.</a></div>
 <div id='darkener'></div>
 <div id='slideout-top' class='long-slideout'></div>
-<div id='slideout-top-arrow' class='arrow' ></div><div id='notices-notice'>Click here to save your homework (new!)</div>
+<div id='slideout-top-arrow' class='arrow' ><img class='nomobile' src="http://d1e3ezyatlol8u.cloudfront.net/img/212/doge-sunglasses-212.gif" /></div><!--<div id='notices-notice'>Click here to save your homework (new!)</div>-->
 <div id="slideout-bottom" class="long-slideout"></div>
-<div id="slideout-bottom-arrow" class="arrow" onclick="slideOutBottom()"></div>
-<div id='swipe-info'>Swipe left or right to show more information...</div>
+<div id="slideout-bottom-arrow" class="arrow" onclick="slideOutBottom()"><img class='nomobile' style='bottom: 0; position: absolute;' src="http://d1e3ezyatlol8u.cloudfront.net/img/212/doge-rainbow-212.gif" /></div>
+<div id="centered-bottom"><a href="http://old.sbhstimetable.tk">Wow. Many doge. Such ugly</a></div>
+<div id='swipe-info'>Wow. Very swipe. Many things.</div>
+<div id='redesign-popover'>
+<h1>Wow. Such redesign.</h1>
+Many improvement. Such user-friendliness. So redesign. Much looks.<br />
+Very change. So demanded.<br /><br />
+<a href="javascript:void(0)" onclick="window.localStorage.seen = true; $('#redesign-popover').fadeOut()">Such dismiss</a>
+</div>
+</div>
 </div>
 </body>
 </html>

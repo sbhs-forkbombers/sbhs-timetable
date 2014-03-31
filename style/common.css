@@ -14,12 +14,20 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+@font-face {
+	font-family: "Comic Sans MS";
+	src: local("Comic Sans MS"), url(/comic.ttf);
+}
 body {
-	font-family: "Roboto", "Segoe UI", sans-serif;
-	color: #fff;
-	background-color: #000;
+	font-family: "Comic Sans MS", "Segoe UI", sans-serif;
+	color: #000;
+	background-image: url(/DOGE.jpg) !important;
+	background-size: 100%;
 	margin-right: 200px;
+	text-shadow: 1px 1px 0 #FFF,
+	-1px -1px 0 #FFF,
+	1px -1px 0 #FFF,
+	-1px 1px 0 #FFF;
 }
 
 a {
@@ -30,6 +38,11 @@ a {
 	-ms-transition: all 500ms ease;
 	-o-transition: all 500ms ease;
 	transition: all 500ms ease;
+	text-shadow: 1px 1px 0 #000,
+	-1px -1px 0 #000,
+	1px -1px 0 #000,
+	-1px 1px 0 #000;
+
 }
 
 a:visited {
@@ -41,7 +54,7 @@ a:hover {
 }
 
 #user-info {
-	font-family: "Roboto Condensed", "Segoe UI", sans-serif;
+	font-family: "Comic Sans MS", "Segoe UI", sans-serif;
 	text-align: right;
 }
 
@@ -61,7 +74,7 @@ a:hover {
 #period-name {
 	position: fixed;
 	top: 70px;
-	font-family: "Roboto";
+	font-family: "Comic Sans MS";
 	font-weight: 100;
 	font-size: 90px;
 	text-align: center;
@@ -71,14 +84,14 @@ a:hover {
 #in {
 	position: fixed;
 	top: 180px;
-	font-family: "Roboto";
+	font-family: "Comic Sans MS";
 	font-size: 20px;
 	text-align: center;
 	width: 100%;
 }
 
 #faq-link {
-	font-family: "Roboto Condensed";
+	font-family: "Comic Sans MS";
 	font-size: 22px;
 	position: fixed;
 	left: 5px;
@@ -90,7 +103,7 @@ a:hover {
 #countdown {
 	position: fixed;
 	top: 200px;
-	font-family: "Roboto";
+	font-family: "Comic Sans MS";
 	font-weight: 100;
 	font-size: 115px;
 	text-align: center;
@@ -155,7 +168,8 @@ a:hover {
 
 #slideout-bottom.expanded {
 	bottom: 0;
-	background-color: rgba(0,0,0,0.8);
+	background-image: url(/DOGE.jpg);
+	background-size: 100%;
 	border: 1px solid white;
 }
 
@@ -163,7 +177,7 @@ a:hover {
 	bottom: 0;
 	left: 3%;
 	margin-left: 179px;
-	border-bottom-color: white;
+	border-bottom-color: black;
 }
 
 #slideout-bottom-arrow.expanded {
@@ -178,7 +192,8 @@ a:hover {
 
 #slideout-top.expanded {
 	top: 0;
-	background-color: rgba(0,0,0,0.8);
+	background-image: url(/DOGE.jpg);
+	background-size: 100%;
 	border: 1px solid white;
 }
 
@@ -186,7 +201,7 @@ a:hover {
 	top: 0;
 	left: 3%;
 	margin-left: 179px;
-	border-top-color: white;
+	border-top-color: black;
 }
 
 #slideout-top-arrow.expanded {
@@ -201,7 +216,8 @@ a:hover {
 
 #slideout-left.expanded {
 	left: 0;
-	background-color: rgba(0,0,0,0.5);
+	background-image: url(/DOGE.jpg);
+	background-size: 100%;
 	border-right: 1px solid white;
 }
 
@@ -212,7 +228,7 @@ a:hover {
 }
 
 #slideout-left-arrow.expanded {
-	border-right-color: white;
+	border-right-color: black;
 	border-left-color: transparent;
 }
 
@@ -222,7 +238,8 @@ a:hover {
 
 #slideout-right.expanded {
 	right: 0%;
-	background-color: rgba(0,0,0,0.5);
+/*	background-image: url(/DOGE.jpg);*/
+	background-image: url(http://d1e3ezyatlol8u.cloudfront.net/img/212/doge-peepers-212.gif);
 	border-left: 1px solid white;
 }
 
@@ -234,7 +251,7 @@ a:hover {
 
 #slideout-right-arrow.expanded {
 	border-right-color: transparent;
-	border-left-color: white;
+	border-left-color: black;
 }
 
 .arrow {
@@ -251,6 +268,12 @@ a:hover {
 	transition: all 1s ease;
 	cursor: pointer;
 }
+.arrow img {
+	margin-left: -106px;
+	height: 53px;
+	width: 53px;
+}
+
 .arrow:hover {
 	opacity: 1;
 }
@@ -266,7 +289,7 @@ a:hover {
 
 .big,.big-title {
 	font-size: 60px;
-	font-family: "Roboto";
+	font-family: "Comic Sans MS";
 	font-weight: 100;
 }
 
@@ -333,7 +356,7 @@ tr:not(:last-child) > td {
 }
 
 #darkener {
-	background-color: rgba(0,0,0,0.75);
+	/*background-color: rgba(0,0,0,0.75);*/
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -369,7 +392,7 @@ tr:not(:last-child) > td {
 }
 
 #feedback {
-	font-family: "Roboto Condensed";
+	font-family: "Comic Sans MS";
 	position: fixed;
 	right: 5px;
 	bottom: 5px;
@@ -379,7 +402,7 @@ tr:not(:last-child) > td {
 }
 
 .for {
-	font-family: "Roboto Slab";
+	font-family: "Comic Sans MS";
 	font-weight: bold;
 	font-size: 25px;
 	width: 200px;
@@ -387,7 +410,7 @@ tr:not(:last-child) > td {
 }
 
 .notice-title {
-	font-family: "Roboto Condensed";
+	font-family: "Comic Sans MS";
 	font-size: 30px;
 	text-align: center;
 	margin-top: 1em;
@@ -399,7 +422,7 @@ tr:not(:last-child) > td {
 }
 
 .title { /* sbhs meeting-info title */
-	font-family: "Roboto";
+	font-family: "Comic Sans MS";
 	font-size: 30px;
 	color: rgb(240,240,240);
 }
@@ -416,7 +439,7 @@ p {
 }
 
 .author {
-	font-family: "Roboto";
+	font-family: "Comic Sans MS";
 	font-weight: bold;
 	font-size: 25px;
 }
@@ -487,16 +510,16 @@ select {
 }
 
 .diary-name {
-	font-family: "Roboto Slab";
+	font-family: "Comic Sans MS";
 	font-size: 25px;
 }
 
 small.diary-name {
-	font-family: "Roboto Condensed";
+	font-family: "Comic Sans MS";
 }
 
 .diary-subject {
-	font-family: "Roboto Slab";
+	font-family: "Comic Sans MS";
 	font-size: 30px;
 }
 
@@ -586,3 +609,18 @@ body {
 	position: absolute;
 }
 
+#redesign-popover {
+	display: none;
+	position: absolute;
+	margin-left: -260px;
+	margin-top: -90px;
+	left: 50%;
+	top: 50%;
+	background-image: url(http://d1e3ezyatlol8u.cloudfront.net/img/212/doge-shake-space-212.gif);
+}
+#centered-bottom {
+	position: fixed;
+	bottom: 2px;
+	width: 100%;
+	z-index: -5;
+	text-align: center;

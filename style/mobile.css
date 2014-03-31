@@ -29,7 +29,7 @@
 .big {
 	font-size: 30px;
 	font-weight: initial;
-	font-family: "Roboto Slab";
+	font-family: "Comic Sans MS";
 }
 
 
@@ -38,7 +38,7 @@
 }
 
 h1 {
-	font-family: "Roboto Slab";
+	font-family: "Comic Sans MS";
 	font-weight: initial;
 	font-size: 30px;
 }
@@ -182,7 +182,7 @@ input {
 
 .diary-notes,.due-date,.diary-name,.diary-subject {
 	font-size: 15px;
-	font-family: "Roboto";
+	font-family: "Comic Sans MS";
 	font-weight: normal;
 	vertical-align: top;
 }

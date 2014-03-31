@@ -177,6 +177,7 @@ function recalculateNextBell() {
 		nextPeriod = belltimes['bells'][1];
 		nextPeriod["internal"] = [9,5];
 		var pName = nextBell['bell'].replace("Roll Call", "School starts").replace("End of Day", "School ends");
+		pName = pName.replace("School starts", "Such beginning").replace("School ends", "Many ending");
 		document.getElementById("period-name").innerHTML = pName;
 		recalculating = false;
 		day_offset = 0;
@@ -220,6 +221,7 @@ function recalculateNextBell() {
 		}
 	nextBell = belltimes['bells'][nearestBellIdx];
 	var pName = nextBell['bell'].replace("Roll Call", "School starts").replace("End of Day", "School ends");
+	pName = pName.replace("School starts", "Such beginning").replace("School ends", "Many ending");
 	if (/Transition|Lunch 1|Recess/i.test(pName)) { // count down until the end of this period rather than the start of whatever's next
 		var last = belltimes['bells'][nearestBellIdx-1]['bell'];
 		if (timetable != null) {
@@ -227,7 +229,7 @@ function recalculateNextBell() {
 			var details= timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(last)-1];
 			var name = details["name"];
 			if (name == "") {
-				pName = "Free Period";
+				pName = "WOW. SUCH FREE.";
 			}
 			else {
 				pName = name + " ends";
@@ -429,11 +431,11 @@ function slideOutBottom(reload) {
 	if (topEx) slideOutTop();
 	if (!loggedIn) {
 		if (!diaryLoaded) {
-			var res = "<div style='text-align:center'><h1>My homework</h1>";
-			res += "Record your homework with the click of a button. Sign in with your Google account.<br />";
-			res += "You can also sign in using your school email address:<br />";
+			var res = "<div style='text-align:center'><h1>Wow. Many things. Such procrastination. Very detention.</h1>";
+			res += "Wow. Such homework. How record? Here record.<br />";
+			res += "Such email. Many useful:<br />";
 			res += "<strong>&lt;YourStudentID&gt;@student.sbhs.nsw.edu.au</strong><br /><br />";
-			res += '<a href="/login.php?urlback=/timetable.php&new-timetable" class="fake-button">Sign In</a></div>';
+			res += '<a href="/login.php?urlback=/timetable.php&new-timetable" class="fake-button">Wow. Such login.</a></div>';
 			$('#slideout-bottom').html(res);
 		}
 		$('#slideout-bottom,#slideout-bottom-arrow').toggleClass("expanded");
@@ -527,17 +529,17 @@ function updateLeftSlideout() {// timetable here
 	if (timetable == null) {
 		// prompt them to log in and create a timetable
 		if (loggedIn) {
-			text = "<div style='text-align: center;'><h1>Your timetable, here.</h1>";
-			text += "You can see your timetable here.<br />";
-			text += "It'll take about five minutes. You'll need a copy of your timetable.<br /><br /><br /><br />";
-			text += "<a href='/timetable.php' class='fake-button'>Get Started</a></div>";
+			text = "<div style='text-align: center;'><h1>Wow. Such timetable. Very subject. Many room.</h1>";
+			text += "How remember rooms? Such this box.<br />";
+			text += "Very need timetable.<br /><br /><br /><br />";
+			text += "<a href='/timetable.php' class='fake-button'>Much begin.</a></div>";
 		}
 		else {
-			text = "<div style='text-align: center;'><h1>Your timetable, here.</h1>";
-			text += "You can see your timetable here. Sign in with your Google account.<br />";
-			text += "You can also sign in using your school email account:<br />";
+			text = "<div style='text-align: center;'><h1>Such timetable. Very subject. Many room.</h1>";
+			text += "Many subjects here.<br />";
+			text += "Such school account. Very useful:<br />";
 			text += "<span style='word-wrap: break-word'>&lt;YourStudentID&gt;@student.sbhs.nsw.edu.au</span><br /><br /><br /><br />"; 
-			text += "<a href='/login.php?urlback=/timetable.php&new-timetable' class='fake-button'>Sign In</a></div>";
+			text += "<a href='/login.php?urlback=/timetable.php&new-timetable' class='fake-button'>Many sign in</a></div>";
 		}
 	}
 	else {
@@ -545,12 +547,14 @@ function updateLeftSlideout() {// timetable here
 		var day = dow.substr(0,3).toLowerCase();
 		var wk  = week.toLowerCase();
 		var today = timetable[wk][day];
+		possibles = ["Such", "Wow.", "Very", "Many", "Much"];
 		for (i in today) {
 			var name = today[i]["name"];
 			if (name == "") {
-				name = "Free Period";
+				name = "Such free.";
 			}
-			text += "<tr><td class='big'>" + (Number(i)+1) + "</td><td class='sidebar-name'>" + name + "</td><td class='sidebar-room'>" + today[i]["room"] + "</td></tr>";
+			var r = Math.floor(Math.random() * 10) % 5;
+			text += "<tr><td class='big'>" + (Number(i)+1) + "</td><td class='sidebar-name'>" + possibles[r] + " " + name + "</td><td class='sidebar-room'>" + today[i]["room"] + "</td></tr>";
 		}
 		text += "</tbody></table></div>";
 	}
@@ -613,6 +617,9 @@ function begin() {
 		updateLeftSlideout();
 		updateRightSlideout();
 	}
+	if (!window.localStorage.seen) {
+		$('#redesign-popover').fadeIn();
+	}
 	$(window).on('resize', doReposition);
 }
 function doReposition() { // reposition/resize things to fit.
@@ -655,8 +662,8 @@ function getNotices() {
 // put the notices in the notice pane
 function processNotices(data) {
 
-	var res = "<h1 style='text-align: center'>Notices for " + dow + " " + week + "</h1><a href='javascript:void(0)' id='reload-notices' onclick='reloadNotices()'>reload</a>";
-	res += "Pick a year: <select id='notice-filter'><option value='.notice-row'>All years</option>";
+	var res = "<h1 style='text-align: center'>Very " + dow + " " + week + "</h1><a href='javascript:void(0)' id='reload-notices' onclick='reloadNotices()'>reload</a>";
+	res += "Such year: <select id='notice-filter'><option value='.notice-row'>All years</option>";
 	var year = (Number(studentYear) == Number.NaN ? studentYear : Number(studentYear));
 	for (i=7; i <= 12; i++) {
 		
@@ -729,16 +736,16 @@ function genDiaryRow(el) {
 	var due = "";
 	var p = el["duePeriod"];
 	if (dueDate == date) {
-		dStr = "<strong>Today</strong> (period " + p + ")";
+		dStr = "<strong>SUCH TODAY</strong> (period " + p + ")";
 	}
 	else if (dueDate == (date-24*60*60) && !el["done"]) {
-		dStr = "<strong class='diary-overdue'>Yesterday</strong> (period " + p + ")";
+		dStr = "<strong class='diary-overdue'>VERY Yesterday</strong> (period " + p + ")";
 	}
 	else if (dueDate == (date+24*60*60) && !el["done"]) {
-		dStr = "<strong>Tomorrow</strong> (period " + p + ")";
+		dStr = "<strong>Many Tomorrow</strong> (period " + p + ")";
 	}
 	else if (dueDate < date && !el["done"]) {
-		dStr = "<strong class='diary-overdue'>OVERDUE!</strong> (due " + dStr + " period " + p + ")";
+		dStr = "<strong class='diary-overdue'>MUCH OVERDUE!</strong> (due " + dStr + " period " + p + ")";
 		due = "";
 	}
 	if (window.actualMobile) {
@@ -869,7 +876,7 @@ function saveDiary() {
 			$('#newDRow').replaceWith(dRow);
 		}
 		else {
-			$('#newDRow a').text('failed to save!');
+			$('#newDRow a').text('such failure. many disappoint.');
 			setTimeout(5000, function() { $('#newDRow a').text('save') });
 		}
 	});		
