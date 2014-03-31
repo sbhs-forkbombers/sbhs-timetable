@@ -15,6 +15,19 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+function crawlerDetect() {
+	if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+
+}
+if (crawlerDetect()) {
+	header("HTTP/1.1 301 Moved Permanently");
+	header("Location: http://sbhstimetable.tk/");
+}
 session_start();
 set_include_path("gapi");
 require_once "Google/Client.php";
