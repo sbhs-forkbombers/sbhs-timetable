@@ -216,8 +216,7 @@ a:hover {
 
 #slideout-left.expanded {
 	left: 0;
-	background-image: url(/DOGE.jpg);
-	background-size: 100%;
+	background-image: url(http://d1e3ezyatlol8u.cloudfront.net/img/212/doge-gradient-212.gif);
 	border-right: 1px solid white;
 }
 
