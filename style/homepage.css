@@ -1,0 +1,118 @@
+/*
+    Copyright (C) 2014  James Ye  Simon Shields
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#period-name {
+        position: fixed;
+        top: 70px;
+        font-family: "Roboto";
+        font-weight: 100;
+        font-size: 90px;
+        text-align: center;
+        width: 100%;
+}
+
+#in {
+        position: fixed;
+        top: 180px;
+        font-family: "Roboto";
+        font-size: 20px;
+        text-align: center;
+        width: 100%;
+}
+
+#faq-link {
+        font-family: "Roboto Condensed";
+        font-size: 22px;
+        position: fixed;
+        left: 5px;
+        bottom: 5px;
+        z-index: 2;
+}
+
+#countdown {
+        position: fixed;
+        top: 200px;
+        left: 0;
+        font-family: "Roboto";
+        font-weight: 100;
+        font-size: 115px;
+        text-align: center;
+        width: 100%;
+        -webkit-transition: all 500ms ease;
+        -moz-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+}
+
+#countdown strong {
+        font-weight: 400;
+}
+
+#nojs {
+        color: #FF4444;
+        width: 100%;
+        text-align: center;
+        position: fixed;
+        font-size: 22px;
+}
+
+#darkener {
+        background-color: rgba(0,0,0,0.75);
+        position: fixed;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all 1s ease;
+        -moz-transition: all 1s ease;
+        -ms-transition: all 1s ease;
+        -o-transition: all 1s ease;
+        transition: all 1s ease;
+        z-index: 2;
+        display: none;
+}
+
+#darkener.visible {
+        display: block;
+        opacity: 1;
+}
+
+#swipe-info {
+        opacity: 0;
+        position: fixed;
+        bottom: 80px;
+        width: 100%;
+        z-index: -1;
+        text-align: center;
+        -webkit-transition: all 500ms ease;
+        -moz-transition: all 500ms ease;
+        -ms-transition: all 500ms ease;
+        -o-transition: all 500ms ease;
+        transition: all 500ms ease;
+}
+
+#feedback {
+        font-family: "Roboto Condensed";
+        position: fixed;
+        right: 5px;
+        bottom: 5px;
+        font-size: 22px;
+        z-index: 1;
+        text-align: center;
+}

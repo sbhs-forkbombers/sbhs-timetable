@@ -1,0 +1,170 @@
+/*
+    Copyright (C) 2014  James Ye  Simon Shields
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+.slideout {
+        -webkit-transition: all 1s ease;
+        -moz-transition: all 1s ease;
+        -ms-transition: all 1s ease;
+        -o-transition: all 1s ease;
+        transition: all 1s ease;
+        height: 98%;
+        /*-webkit-border-radius: 5px 5px 5px 5px;
+        border-radius: 5px 5px 5px 5px;*/
+        padding: 10px;
+        position: fixed;
+        border-collapse: separate;
+        top: 1%;
+        margin-bottom: 1%;
+        width: 40%;
+        z-index: 3;
+        overflow: auto;
+        opacity: 0;
+}
+
+.long-slideout {
+        -webkit-transition: all 1s ease;
+        -moz-transition: all 1s ease;
+        -ms-transition: all 1s ease;
+        -o-transition: all 1s ease;
+        transition: all 1s ease;
+        height: 95%;
+        /*-webkit-border-radius: 5px 5px 5px 5px;
+        border-radius: 5px 5px 5px 5px;*/
+        padding: 10px;
+        position: fixed;
+        border-collapse: separate;
+        top: 5%;
+        width: 99%;
+        left: -7px;
+        z-index: 3;
+        overflow: auto;
+        opacity: 0;
+}
+
+.long-slideout.expanded {
+        opacity: 1;
+}
+.slideout.expanded {
+        opacity: 1;
+}
+
+#slideout-bottom {
+        bottom: -100%;
+        top: auto;
+}
+
+#slideout-bottom.expanded {
+        bottom: 0;
+        background-color: rgba(0,0,0,0.8);
+        border: 1px solid white;
+}
+
+#slideout-bottom-arrow {
+        bottom: 0;
+        left: 3%;
+        margin-left: 179px;
+        border-bottom-color: white;
+}
+
+#slideout-bottom-arrow.expanded {
+        border-bottom-color: transparent;
+        border-top-color:white;
+        bottom: -25px;
+}
+
+#slideout-top {
+        top: -100%;
+}
+
+#slideout-top.expanded {
+        top: 0;
+        background-color: rgba(0,0,0,0.8);
+        border: 1px solid white;
+}
+
+#slideout-top-arrow {
+        top: 0;
+        left: 3%;
+        margin-left: 179px;
+        border-top-color: white;
+}
+
+#slideout-top-arrow.expanded {
+        border-top-color: transparent;
+        border-bottom-color: white;
+        top: -25px;
+}
+
+#slideout-left {
+        left: -100%;
+}
+
+#slideout-left.expanded {
+        left: 0;
+        background-color: rgba(0,0,0,0.5);
+        border-right: 1px solid white;
+}
+
+#slideout-left-arrow {
+        top: 66%;
+        left: 0;
+        border-left-color: white;
+}
+
+#slideout-left-arrow.expanded {
+        border-right-color: white;
+        border-left-color: transparent;
+}
+
+#slideout-right {
+        right: -100%;
+}
+
+#slideout-right.expanded {
+        right: 0%;
+        background-color: rgba(0,0,0,0.5);
+        border-left: 1px solid white;
+}
+
+#slideout-right-arrow {
+        top: 66%;
+        right: 0;
+        border-right-color: white;
+}
+
+#slideout-right-arrow.expanded {
+        border-right-color: transparent;
+        border-left-color: white;
+}
+
+.arrow {
+        height: 0;
+        width: 0;
+        border: 25px solid transparent;
+        opacity: 0.25;
+        position: fixed;
+        z-index: 4;
+        -webkit-transition: all 1s ease;
+        -moz-transition: all 1s ease;
+        -ms-transition: all 1s ease;
+        -o-transition: all 1s ease;
+        transition: all 1s ease;
+        cursor: pointer;
+}
+.arrow:hover {
+        opacity: 1 !important;
+}

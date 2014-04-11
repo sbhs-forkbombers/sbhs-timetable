@@ -1,0 +1,128 @@
+/*
+    Copyright (C) 2014  James Ye  Simon Shields
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+.diary-overdue {
+        color: #cc0000;
+        font-size: 25px;
+}
+
+#diary-add {
+        font-size: 50px;
+        cursor: pointer;
+        text-align: center;
+        font-weight: 100;
+        position: fixed;
+        right: 10px;
+        top: 10px;
+}
+
+#diary-add:hover {
+        color: #33b5e5;
+}
+
+#diary-table {
+        position: fixed;
+        top: 4em;
+}
+
+#slideout-bottom input[type="text"] {
+        position: relative;
+        max-width: 75%;
+        font-size: 25px;
+}
+
+#slideout-bottom input[type="text"].date-in {
+        max-width: 50%;
+}
+
+#diary-header {
+        position: absolute;
+        top: 0;
+        margin: 0;
+        left: 50%;
+        margin-left: -121px;
+        text-align: center;
+        font-size: 40px;
+        font-weight: 100;
+}
+
+#diary-reload {
+        top: 5px;
+        left: 5px;
+        text-align: left;
+        position: absolute;
+}
+
+.hidden {
+        opacity: 0
+}
+
+#expando-wrapper {
+        position: fixed;
+        left: 5px;
+        top: 5px;
+        z-index: 1;
+        cursor: pointer;
+}
+
+#expando-wrapper img {
+        width: 30px;
+        height: 30px;
+        position: fixed;
+        left: 5px;
+        top: 5px;
+}
+
+.beta-tag {
+        margin-left: 10px;
+        padding: 5px;
+        background-color: #33b5e5;
+        font-size: 20px;
+        font-family: Roboto;
+        font-weight: 400;
+}
+
+#add-homework-popover {
+        position: fixed;
+        top: 50%;
+        margin-top: -96px;
+        left: 50%;
+        margin-left: -170.5px;
+        line-height: 25px;
+    z-index: 2;
+    border: 1px solid white;
+    padding: 60px;
+    padding-top: 30px;
+    border-radius: 5px;
+}
+
+#add-homework-popover input,textarea {
+        font-size: 15px;
+        max-width: 200px;
+        min-width: 100px;
+        position: absolute;
+        margin: 0;
+        margin-top: 5px;
+        padding: 0;
+        left: 50%;
+        font-family: Roboto;
+}
+
+#additional-notes {
+        position: absolute;
+        margin-top: 5px;
+}
