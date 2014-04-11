@@ -66,7 +66,7 @@ body {
 </head>
 <body>
 <h1>FAQ</h1>
-<a href="/" id="back">Back</a>
+<a href="/" id="back">Home</a>
 <div onclick="toggleHeader('#faq-1')" class="faq" id="faq-1">
 <span style="font-family: Roboto Slab; font-size: 30px; ">About this site</span><br /><br />
 <div id="faq-1-ans" class="faq-ans" >

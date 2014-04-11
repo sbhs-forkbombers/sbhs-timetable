@@ -612,6 +612,7 @@ function begin() {
 		recalculateNextBell();
 		updateTimeLeft();
 		setInterval(updateTimeLeft, 1000);
+		setTimeout(function() { $('#doge-notify').fadeOut()}, 5000);
 		updateLeftSlideout();
 		updateRightSlideout();
 	}
