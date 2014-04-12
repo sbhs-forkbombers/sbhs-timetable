@@ -599,10 +599,40 @@ function tryLoadBells() { // try and reload the bells
 	$.getScript("http://student.sbhs.net.au/api/belltimes/bells.json?date=" + NOW.getDateStr() + "&callback=loadTimetable");
 }
 
+function isSchoolHolidays() {
+	var holS = new Date("2014-04-11");
+	var holE = new Date("2014-04-28");
+
+	if (NOW.isAfter(holS) && NOW.isBefore(holE)) {
+		return true;
+	}
+	return false;
+}
+
+function getRandColor() {
+	return Math.round(Math.random()*255);//% 255;
+}
+
+function snazzify() {
+	var s = "#in";
+	$(s).fadeIn().css({"color": "rgb("+getRandColor()+","+getRandColor()+","+getRandColor()+")"});
+//	setTimeout($(s).fadeOu, 1000);
+	setTimeout(snazzify, 500);
+}
 
 function begin() {
+	if (isSchoolHolidays()) {
+		toggleExpando();
+		window.console.log('setting image');
+		$('body').css({"background-image": "url(/GOT.jpg) !important", "color": "black"});
+		$('body').css({"background-image": "url(/GOT.jpg)"});
+		$('#in').fadeIn().text('studystudystudystudystudystudystudy').css({"transition": "500ms ease"});
+		snazzify();
+//		$('#period-name').fadeIn().text("Exams are coming.")
+		return;
+	}
 	if (belltimes["status"] == "Error") { // well dang. TODO add default bells + display a warning when the bells failed to load.
-		$('#countdown').text('<a href="javascript:void(0)" onclick="tryLoadBells()">Try Again</a>');
+		$('#countdown').html('<a href="javascript:void(0)" onclick="tryLoadBells()">Try Again</a>');
 		$('#period-name').text("Something went wrong :(");
 		$('#in').html("You can <a href='https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform'>report a bug</a>, or try again later.");
 	}
