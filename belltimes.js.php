@@ -628,8 +628,8 @@ function begin() {
 	if (isSchoolHolidays()) {
 		toggleExpando();
 		window.console.log('setting image');
-		$('body').css({"background-image": "url(/GOT.jpg) !important", "color": "black"});
-		$('body').css({"background-image": "url(/GOT.jpg)"});
+		$('body').css({"background-image": "url('/GOT.jpg')", "color": "black"});
+		$('body').css({"background-size": 'auto'});
 		$('#in').fadeIn().text('studystudystudystudystudystudystudy').css({"transition": "500ms ease"});
 		snazzify();
 //		$('#period-name').fadeIn().text("Exams are coming.")

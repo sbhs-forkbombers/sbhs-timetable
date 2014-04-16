@@ -21,7 +21,7 @@
 body {
 	font-family: "Comic Sans MS", "Segoe UI", sans-serif;
 	color: #000;
-	background-image: url(/DOGE.jpg) !important;
+	background-image: url(/DOGE.jpg);
 	background-size: 100%;
 	margin-right: 200px;
 	text-shadow: 1px 1px 0 #FFF,
