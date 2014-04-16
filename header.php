@@ -15,8 +15,9 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<html>
+<html><!--<html manifest='timetable.appcache'>-->
 <head>
+	<script>window.applicationCache.onerror = function(e) { window.lasterror = e }</script>
 <meta charset="UTF-8" />
 <meta name="google-site-verification" content="5vw2xj7xVh3ElQbRgNwk4G3oXc-wTQYJL5j9e9oMAjQ" />
 <meta property="og:title" content="SBHS Timetable" />

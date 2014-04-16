@@ -66,7 +66,7 @@ body {
 </head>
 <body>
 <h1>FAQ</h1>
-<a href="/" id="back">Back</a>
+<a href="/" id="back">Home</a>
 <div onclick="toggleHeader('#faq-1')" class="faq" id="faq-1">
 <span style="font-family: Roboto Slab; font-size: 30px; ">About this site</span><br /><br />
 <div id="faq-1-ans" class="faq-ans" >
@@ -102,7 +102,7 @@ This project also uses other third-party libraries available under other license
 <li>WebFont Loader - Apache 2.0</li>
 <li>Datejs - MIT </li>
 <li>spin.js - MIT </li>
-<li>yepnoe.js - WTFPL</li>
+<li>yepnope.js - WTFPL</li>
 </ul>
 See the individual projects for their license notices.<br>
 Full text for the: <a href="http://mit-license.org">MIT License</a> | <a href="//www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0 License</a> | <a href="http://www.wtfpl.net/txt/copying/">WTF Public License</a>

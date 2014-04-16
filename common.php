@@ -29,8 +29,8 @@ $timetable_structure = array(
 	"b"	=> $dow,
 	"c"	=> $dow
 );
-
-$data = preg_split("/\n/", file_get_contents(".htsecret"));
+$prefix = $_SERVER['DOCUMENT_ROOT'];
+$data = preg_split("/\n/", file_get_contents($_SERVER['DOCUMENT_ROOT']."/.htsecret"));
 
 function get_client() {
 	global $data;
@@ -60,10 +60,13 @@ function get_client_email($urlback = "/") {
 	}
 	return $results["email"];
 }
-
+function get_db_handle() {
+	global $prefix;
+	return new SQLite3("$prefix/.httimetable.db");
+}
 
 function db_get_data_or_create($email) {
-	$handle = new SQLite3(".httimetable.db");
+	$handle = get_db_handle();
 	global $timetable_structure;
 	$result = $handle->querySingle('SELECT * FROM timetable WHERE email="' . SQLite3::escapeString($email) . '"', true);
 	if ($result === false) {
@@ -100,7 +103,7 @@ function db_store_data($email, $timetable, $year=null) {
 		error_log("db_store_data was called without a year arg from " . $j['file'] .":". $j['line']);
 		$year = "";
 	}
-	$handle = new SQLite3(".httimetable.db");
+	$handle = get_db_handle();
 	if (!is_string($timetable)) {
 		$timetable = SQLite3::escapeString(json_encode($timetable));
 	}
@@ -115,7 +118,7 @@ function db_store_data($email, $timetable, $year=null) {
 }
 
 function db_get_diary_or_create($email) {
-	$handle = new SQLite3(".httimetable.db");
+	$handle = get_db_handle();
 	$result = $handle->querySingle('SELECT * FROM todo WHERE email="' . SQLite3::escapeString($email) . '"', true);
 	if ($result === false) {
 		echo "FATAL ERROR - INVALID QUERY. ";
@@ -135,13 +138,13 @@ function db_get_diary_or_create($email) {
 }
 
 function db_clear_diary($email) {
-	$handle = new SQLite3(".httimetable.db");
+	$handle = get_db_handle();
 	$handle->exec("DELETE FROM todo WHERE email=\"" . SQLite3::escapeString($email) . "\";");
 	$handle->close();
 }
 
 function db_store_diary($email, $json) {
-	$handle = new SQLite3(".httimetable.db");
+	$handle = get_db_handle();
 	$json = SQLite3::escapeString($json);
 	$email = SQLite3::escapeString($email);
 	$r = $handle->exec("UPDATE todo SET data='$json' WHERE email='$email'");

@@ -109,6 +109,8 @@ Many improvement. Such user-friendliness. So redesign. Much looks.<br />
 Very change. So demanded.<br /><br />
 <a href="javascript:void(0)" onclick="window.localStorage.seen = true; $('#redesign-popover').fadeOut()">Such dismiss</a>
 </div>
+<div id='expando-wrapper'>
+<a onclick='toggleExpando()'><img id='expand-countdown' alt='expand' src='/expand.png' /><img id='collapse-countdown' alt='collapse' src='/collapse.png' class='hidden' /></a>
 </div>
 </div>
 </body>

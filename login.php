@@ -15,6 +15,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+header("X-Robots-Tag: noindex, noarchive");
 function crawlerDetect() {
 	if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
 		return TRUE;
@@ -26,7 +27,7 @@ function crawlerDetect() {
 }
 if (crawlerDetect()) {
 	header("HTTP/1.1 301 Moved Permanently");
-	header("Location: http://sbhstimetable.tk/");
+	header("Location: http://sbhstimetable.tk");
 }
 session_start();
 set_include_path("gapi");
