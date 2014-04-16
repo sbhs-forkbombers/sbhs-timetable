@@ -239,7 +239,7 @@ function recalculateNextBell() {
 			pName = last + " ends";
 		}
 	}
-	if (!/ (starts)| (ends)$/.test(pName)) {
+	if (!/ (starts)| (ends)$/.test(pName) && pName != "Many ending" && pName != "Such beginning") {
 		pName += " starts";
 	}
 	if (/^\d/.test(pName)) { // make periods look better - "1 ends in" vs "Period 1 ends in"

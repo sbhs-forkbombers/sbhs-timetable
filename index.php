@@ -101,7 +101,7 @@ Then, open <a href="about:apps" target="_blank">The apps screen</a> and you shou
 <div id='slideout-top-arrow' class='arrow' ><img class='nomobile' src="http://d1e3ezyatlol8u.cloudfront.net/img/212/doge-sunglasses-212.gif" /></div><!--<div id='notices-notice'>Click here to save your homework (new!)</div>-->
 <div id="slideout-bottom" class="long-slideout"></div>
 <div id="slideout-bottom-arrow" class="arrow" onclick="slideOutBottom()"><img class='nomobile' style='bottom: 0; position: absolute;' src="http://d1e3ezyatlol8u.cloudfront.net/img/212/doge-rainbow-212.gif" /></div>
-<div id="centered-bottom"><a href="http://old.sbhstimetable.tk">Wow. Many doge. Such ugly</a></div>
+<div id="centered-bottom"><a href="http://sbhstimetable.tk">Wow. Many doge. Such ugly</a></div>
 <div id='swipe-info'>Wow. Very swipe. Many things.</div>
 <div id='redesign-popover'>
 <h1>Wow. Such redesign.</h1>
