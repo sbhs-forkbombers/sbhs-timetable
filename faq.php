@@ -84,7 +84,7 @@ Improvements include:
 </div>
 
 <div onclick="toggleHeader('#faq-2')" class="faq" id="faq-2">
-<span style="font-family: Roboto Slab; font-size: 30px; ">Why does this site look bad / not work on my computer, but works nicely on others?</span><br /><br />
+<span style="font-family: Roboto Slab; font-size: 30px; ">Why does this site look bad / not work on my computer?</span><br /><br />
 <div id="faq-2-ans" class="faq-ans" >
 It's probably your computer and web browser. You should switch to the latest version of either <a href="https://www.google.com/chrome">Google Chrome</a> or <a href="https://www.mozilla.org/firefox">Mozilla Firefox</a>. If you're unfortunate and on a DER-loaned laptop and don't want to violate your user / loan charter, you can update to the latest Internet Explorer by clicking "Check online for updates from Windows Update", underneath "Managed by your system administrator" in the Windows Update section of Control Panel.
 <br />
@@ -109,6 +109,12 @@ Full text for the: <a href="http://mit-license.org">MIT License</a> | <a href="/
 </div>
 </div>
 
+<div onclick="toggleHeader('#faq-4')" class="faq" id="faq-4">
+<span style="font-family: Roboto Slab; font-size: 30px;">Help, support, complaints, else</span><br /><br />
+<div id="faq-4-ans" class="faq-ans">
+For all quick questions and suggestions: <a href="http://webchat.freenode.net?channels=%23%23sbhstimetable">webchat</a> (not allowed by DEC, you can use your whatever censorship evasion)
+<br /><br />
+If you want to give detailed feeback or receieve a detailed reply, please complete this form: <a href="https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform">feedback</a>
 <script>
 function toggleHeader(id) {
 	$(id+"-ans").slideToggle();

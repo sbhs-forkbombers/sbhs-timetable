@@ -30,6 +30,9 @@ class TimetableAPI extends RESTResponse {
     
     public function __construct($req) {
         parent::__construct($req);
+		if (isset($_COOKIE['PHPSESSID']) && !isset($this->request['sid'])) {
+			$this->request['sid'] = $_COOKIE['PHPSESSID'];
+		}
     }
     
     protected function authenticate() {
@@ -64,7 +67,7 @@ class TimetableAPI extends RESTResponse {
         if ($this->method == 'GET' || $this->method == 'POST') {
             if (!isset($this->request['sid'])) {
                 //$this->_response("Need to authenticate first", 403);
-                return "Need to authenticate first.";
+                return array("error" => "Need to authenticate first.");
             }
             session_id($this->request['sid']);
             session_start();
@@ -75,7 +78,7 @@ class TimetableAPI extends RESTResponse {
             $email = $_SESSION['email'];
             $result = db_get_data_or_create($_SESSION['email']);
 			if ($this->verb == 'get') {
-				return json_decode($result['timetable']['timetable']);
+				return array("timetable" => json_decode($result['timetable']['timetable']), "year" => $result['timetable']['year']);
 //                return json_decode($result['timetable']);
 			}
 			else if ($this->verb == 'put') {

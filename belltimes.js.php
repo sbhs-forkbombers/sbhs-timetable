@@ -1,117 +1,121 @@
 /*
-    Copyright (C) 2014  James Ye  Simon Shields
+Copyright (C) 2014  James Ye  Simon Shields
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-<?php
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
+window.defaultBells = [];
+window.defaultBells[0] = {"status":"OK","bellsAltered":false,"bellsAlteredReason":"","bells":[{"bell":"Roll Call","time":"09:00"},{"bell":"1","time":"09:05"},{"bell":"Transition","time":"10:05"},{"bell":"2","time":"10:10"},{"bell":"Lunch 1","time":"11:10"},{"bell":"Lunch 2","time":"11:30"},{"bell":"3","time":"11:50"},{"bell":"Transition","time":"12:50"},{"bell":"4","time":"12:55"},{"bell":"Recess","time":"13:55"},{"bell":"5","time":"14:15"},{"bell":"End of Day","time":"15:15"}],"day":"","term":"Unknown","week":"Unknown","weekType":"fill me in"}; // sun
+window.defaultBells[1] = window.defaultBells[0]; // mon
+window.defaultBells[2] = window.defaultBells[0]; // tue
+window.defaultBells[3] = {"status":"OK","bellsAltered":false,"bellsAlteredReason":"","bells":[{"bell":"Roll Call","time":"09:00"},{"bell":"1","time":"09:05"},{"bell":"Transition","time":"10:05"},{"bell":"2","time":"10:10"},{"bell":"Recess","time":"11:10"},{"bell":"3","time":"11:30"},{"bell":"Lunch 1","time":"12:30"},{"bell":"Lunch 2","time":"12:50"},{"bell":"4","time":"13:10"},{"bell":"Transition","time":"14:10"},{"bell":"5","time":"14:15"},{"bell":"End of Day","time":"15:15"}],"day":"","term":"Unknown","week":"Unknown","weekType":"fill me in"}; // wed
+window.defaultBells[4] = window.defaultBells[3]; // thu
+window.defaultBells[5] = {"status":"OK","bellsAltered":false,"bellsAlteredReason":"","bells":[{"bell":"Roll Call","time":"09:25"},{"bell":"1","time":"09:30"},{"bell":"Transition","time":"10:25"},{"bell":"2","time":"10:30"},{"bell":"Lunch 1","time":"11:25"},{"bell":"Lunch 2","time":"11:45"},{"bell":"3","time":"12:05"},{"bell":"Transition","time":"13:00"},{"bell":"4","time":"13:05"},{"bell":"Recess","time":"14:00"},{"bell":"5","time":"14:20"},{"bell":"End of Day","time":"15:15"}],"day":"","term":"Unkown","week":"Unknown","weekType":"fill me in"}; // fri
+window.defaultBells[6] = window.defaultBells[0]; // sat
 
-// calculate some initial values for the client
-ini_set("date.timezone", "Australia/Sydney");
-if (!isset($results)) { header("Content-type: application/javascript"); }
-function is_after_school($hour,$min) {
-	if ($hour == 15 && $min >= 15) {
+//ini_set("date.timezone", "Australia/Sydney");
+<?php if (!isset($results)) { header("Content-type: application/javascript"); } 
+if (isset($_REQUEST["devmode"])) {
+	echo "window.devMode = true;\n";
+}
+?>
+function is_after_school(hour,min) {
+	if (hour == 15 && min >= 15) {
 		return true;
 	}
-	else if ($hour > 15) {
+	else if (hour > 15) {
 		return true;
 	}
 	else {
 		return false;
 	}
 }
-$dateOffset = 0;
-$now = time();
-$localtime = localtime($now,true);
-$hour = $localtime["tm_hour"];
-$min  = $localtime["tm_min"];
-$wday = $localtime["tm_wday"];
-$afterSchool = false;
-echo "day_offset = 0;";
-if (is_after_school($hour,$min) && $wday >= 1 && $wday <= 5) { // after school on a weekday
-	echo "after_school = true;\n";
-	$dateOffset+=1;
-	$wday = $wday%7;
-	if ($wday == 5) { // it's friday
-		$dateOffset += 2;
-		echo "day_offset += 2;\n";
-	}
-	$afterSchool = true;
+function redoDate() {
+	dateOffset = 0;
+	localtime = new Date();
+	now = Math.floor(localtime.getTime() / 1000);
+	hour = localtime.getHours(); //$localtime["tm_hour"];
+	min  = localtime.getMinutes();
+	wday = localtime.getDay();//$localtime["tm_wday"];
+	window.afterSchool = false;
+	window.day_offset = 0;
+	if (is_after_school(hour,min) && wday >= 1 && wday <= 5) { // after school on a weekday
+		dateOffset+=1;
+		wday = wday%7;
+		if (wday == 5) { // it's friday
+			dateOffset += 2;
+			window.day_offset += 2;
+		}
+		window.afterSchool = true;
 
-}
-else {
-	echo "after_school = false;\n";
-}
-if ($wday == 0 || $wday == 6) { // it's a weekend
-	echo "weekend = true;\n";
-	$rWday = $wday;
-	if ($wday==6) { // sat
-		$dateOffset += 2;
-	}
-	else { // sun
-		$dateOffset += 1;
-	}
-/*	if (is_after_school($hour,$min)) {
-		$dateOffset--;		
-}*/
-	if ($dateOffset == -1) {
-		$dateOffset = 2;
-	}
-	echo "day_offset += " . $dateOffset . ";";
-}
-else {
-	echo "weekend = false;\n";
-}
-$now += (24*60*60)*($dateOffset);
-if ($afterSchool) {
-	$now -= 24*60*60;
-	echo "// after school\n";
-}
-$NOW = $now;
-
-echo "window.NOW = new Date(" . strftime("%G, Number('%m')-1, Number('%d')", $now) . ");";
-//echo "//http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $now);
-?>
-
-belltimes = {"status": "error"};
-<?php if (isset($results)) { // handle the timetable - send the entire copy down with the client so it shouldn't need a refresh.
-	echo "// results set\n";
-	echo "loggedIn = true;\n";
-	$udata = db_get_data_or_create($results['email']);
-	if ($udata['fresh']) {
-		echo "//fresh\n";
-		echo "timetable = null; studentYear = '';\n";
 	}
 	else {
-		$timetable = $udata['timetable']['timetable'];
-		if (!preg_match('/^"/', $timetable)) {
-			$timetable = json_encode($timetable);
-		}
-		echo "timetable = JSON.parse(" . $timetable . ");";
-		if ($udata['year'] . "" == "") {
-			$udata['year'] = "''";
-		}
-		echo "studentYear = " . $udata['year'] . ';';
+		window.afterSchool = false;
 	}
+	if (wday == 0 || wday == 6) { // it's a weekend
+		window.weekend = true;
+		rWday = wday;
+		if (wday==6) { // sat
+			dateOffset += 2;
+		}
+		else { // sun
+			dateOffset += 1;
+		}
+/*	if (is_afterSchool($hour,$min)) {
+	$dateOffset--;		
+}*/
+		if (dateOffset == -1) {
+			dateOffset = 2;
+		}
+		window.day_offset += dateOffset;
+	}
+	else {
+		window.weekend = false;
+	}
+	now += (24*60*60)*(dateOffset-1);
+	if (afterSchool) {
+		now -= 24*60*60;
+	}
+	window.now = now;
+	window.NOW = new Date(now*1000);
 }
-else {
-	echo "// results unset\n";
-	echo "timetable = null;";
-	echo "loggedIn = false;\n";
-	echo "studentYear = '';\n";
+//echo "window.NOW = new Date(" . strftime("%G, Number('%m')-1, Number('%d')", $now) . ");";
+//echo "//http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $now);
+redoDate();
+belltimes = {"status": "error"};
+if (window.localStorage.timetable) {
+	window.timetable = JSON.parse(window.localStorage.timetable);
+	window.loggedIn = true;
+	window.studentYear = window.localStorage.year;
 }
-?>
+$.getJSON("/api/v1/timetable/get", "", function(data, textStatus, jqXHR) {
+	window.tData = data;
+	if (data.hasOwnProperty("error")) {
+		if (window.localStorage.timetable) return;
+		window.timetable = null;
+		window.loggedIn = false;
+		window.studentYear = '';
+	}
+	if (window.timetable != data.timetable) {
+		window.localStorage.timetable = JSON.stringify(data.timetable);
+		window.localStorage.studentYear = data.studentYear;
+	}
+	window.timetable = data["timetable"];
+	window.loggedIn = true;
+		window.studentYear = Number(data["year"]);
+	});
+
 Date.prototype.getYearDay = function() {
 	var onejan = new Date(this.getFullYear(),0,1);
 	return Math.ceil((this - onejan) / 86400000);
@@ -133,26 +137,26 @@ nextBell = null;
 nextBellIdx = null;
 nextPeriod = null;
 startDate = new Date();
-
+afterSchool = false;
 /**
-* calculate the next bell
-**/
+ * calculate the next bell
+ **/
 function recalculateNextBell() {
 	recalculating = true;
 	var now = new Date();
 	if (now.getDateStr() != startDate.getDateStr()) {
 		// we've changed days
 		startDate = now;
-		after_school = false;
+		afterSchool = false;
 		day_offset--;
 		if (day_offset <= 0) { weekend = false }
 	}
 	now.setMinutes(now.getMinutes() + 1);
 	var hour = now.getHours();
 	var min  = now.getMinutes();
-	if ((nextBell != null && nextBell["bell"] == "End of Day") || Date.now() > (new Date()).set({hours: 15, minutes: 15}) || !Date.lastWeekday().isToday()) {
+	if ((nextBell != null && nextBell["bell"] == "End of Day") || Date.now() > (new Date()).set({hours: 15, minutes: 15}) || !Date.lastWeekday().isToday() && !afterSchool) {
 		// it's now after school.
-		after_school = true;
+		afterSchool = true;
 		// should get the next set of bells here
 		NOW.setDate(NOW.getDate()+1);
 		if (NOW.getDay() == 6) {
@@ -169,10 +173,10 @@ function recalculateNextBell() {
 		$('#period-name').text("Updating bells...");
 		$('#countdown').text('');
 		// this will call all the initialise stuff again!
-		$.getScript("http://student.sbhs.net.au/api/belltimes/bells.json?date=" + NOW.getDateStr() + "&callback=loadTimetable");
+		$.getScript("http://student.sbhs.net.au/api/timetable/bells.json?date=" + NOW.getDateStr() + "&callback=loadTimetable");
 	}
 
-	if (after_school || weekend) { // the next bell is going to be start of school tomorrow.
+	if (afterSchool || weekend) { // the next bell is going to be start of school tomorrow.
 		nextBell = belltimes['bells'][0];
 		nextBell["internal"] = [9,0];
 		nextPeriod = belltimes['bells'][1];
@@ -183,7 +187,7 @@ function recalculateNextBell() {
 		day_offset = 0;
 		var d = new Date();
 		if (weekend || d.getDay() == 5) {
-			after_school = true;
+			afterSchool = true;
 			if (d.getDay() == 5) {
 				day_offset += 2;
 			}
@@ -194,31 +198,31 @@ function recalculateNextBell() {
 		doReposition();
 		return;
 	}
-	
+
 	var nearestBellIdx = null;
 	var nearestBell = null;
-	
+
 	for (var i = 0; i < belltimes['bells'].length; i++) {
-			var start = belltimes['bells'][i]['time'].split(":");
-			start[0] = Number(start[0]);
-			start[1] = Number(start[1]);
-			if (start[0] == hour && start[1] >= min) { // after now?
-				if (nearestBell == null || ((nearestBell[0] == start[0] && nearestBell[1] > start[1]) || (nearestBell[0] > start[0]))) { // and closer than any other thing we've found so far
-					nearestBell = start;
-					nearestBellIdx = i;
-				}
-			}
-			else if (start[0] > hour) { // see above (TODO: move this into the one block)
-				if (nearestBell == null || ((nearestBell[0] == start[0] && nearestBell[1] > start[1]) || (nearestBell[0] > start[0]))) {
-					nearestBell = start;
-					nearestBellIdx = i;
-				}
-			}
-			if (nearestBell != null && ((nearestBell[0] == start[0] && nearestBell[1] < start[1]) || nearestBell[0] < start[0]) && ((nearestBell[0] == hour && nearestBell[1] > min) || nearestBell[0] > hour)) { 
-				// we're done!
-				break;
+		var start = belltimes['bells'][i]['time'].split(":");
+		start[0] = Number(start[0]);
+		start[1] = Number(start[1]);
+		if (start[0] == hour && start[1] >= min) { // after now?
+			if (nearestBell == null || ((nearestBell[0] == start[0] && nearestBell[1] > start[1]) || (nearestBell[0] > start[0]))) { // and closer than any other thing we've found so far
+				nearestBell = start;
+				nearestBellIdx = i;
 			}
 		}
+		else if (start[0] > hour) { // see above (TODO: move this into the one block)
+			if (nearestBell == null || ((nearestBell[0] == start[0] && nearestBell[1] > start[1]) || (nearestBell[0] > start[0]))) {
+				nearestBell = start;
+				nearestBellIdx = i;
+			}
+		}
+		if (nearestBell != null && ((nearestBell[0] == start[0] && nearestBell[1] < start[1]) || nearestBell[0] < start[0]) && ((nearestBell[0] == hour && nearestBell[1] > min) || nearestBell[0] > hour)) { 
+			// we're done!
+			break;
+		}
+	}
 	nextBell = belltimes['bells'][nearestBellIdx];
 	nextBellIdx = nearestBellIdx;
 	var pName = nextBell['bell'].replace("Roll Call", "School starts").replace("End of Day", "School ends");
@@ -262,11 +266,11 @@ function recalculateNextBell() {
 		nextPeriod = belltimes['bells'][idx];
 		var times = nextPeriod['time'].split(":");
 		times[0] = Number(times[0])
-		times[1] = Number(times[1])
-		nextPeriod['internal'] = times;
+			times[1] = Number(times[1])
+			nextPeriod['internal'] = times;
 
 	}
-	
+
 	document.getElementById("period-name").innerHTML = pName;
 	if (timetable != null && nextPeriod != null) {
 		doNextPeriod(nextPeriod);
@@ -281,8 +285,8 @@ function recalculateNextBell() {
 	doReposition();	
 }
 /**
-* format what next period is actually going to be
-*/
+ * format what next period is actually going to be
+ */
 function doNextPeriod(nextP) {
 	var text = "";
 	var nextPeriod = timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(nextP["bell"]-1)];
@@ -307,8 +311,8 @@ function doNextPeriod(nextP) {
 }
 
 /**
-* format a given number of seconds into a countdown format
-*/
+ * format a given number of seconds into a countdown format
+ */
 function format(seconds) { 
 	var sec = (seconds % 60) + ""; seconds = Math.floor(seconds/60);
 	var min = (seconds % 60); 
@@ -331,7 +335,7 @@ function format(seconds) {
 	return (hrs > 0 ? (hrs + "h ") : "") + min + "m " + sec + "s";
 }
 /**
-* is it hour, min after school?
+ * is it hour, min after school?
  */
 function isAfterSchool(hour, min) {
 	if (hour == 15 && min >= 15) {
@@ -396,15 +400,15 @@ function slideOutTop(reload) {
 	if (botEx) slideOutBottom();
 	var opts = { // spinner settings
 		lines: 10,
-		length: 40,
-		width: 10,
-		radius: 30,
-		corners: 1,
-		direction: 1,
-		color: '#fff',
-		speed: 1,
-		trail: 60,
-		shadow: true,
+			length: 40,
+			width: 10,
+			radius: 30,
+			corners: 1,
+			direction: 1,
+			color: '#fff',
+			speed: 1,
+			trail: 60,
+			shadow: true,
 	};
 	if (!noticesLoaded) {
 		var target = document.getElementById("slideout-top");
@@ -444,15 +448,15 @@ function slideOutBottom(reload) {
 	}
 	var opts = { // spinner settings
 		lines: 10,
-		length: 40,
-		width: 10,
-		radius: 30,
-		corners: 1,
-		direction: 1,
-		color: '#fff',
-		speed: 1,
-		trail: 60,
-		shadow: true,
+			length: 40,
+			width: 10,
+			radius: 30,
+			corners: 1,
+			direction: 1,
+			color: '#fff',
+			speed: 1,
+			trail: 60,
+			shadow: true,
 	};
 	if (!diaryLoaded) {
 		var target= document.getElementById("slideout-bottom");
@@ -580,8 +584,8 @@ $(document).ready(function() {
 	$('#slideout-top-arrow').click(slideOutTop);
 	if (BELLTIMES_DONE) begin();
 	if (window.actualMobile) return; // this stuff is unnecessary for mobile
-//	$('#slideout-top-arrow').css({"opacity": 1});
-//	$('#notices-notice').css({"opacity": 1});
+	//	$('#slideout-top-arrow').css({"opacity": 1});
+	//	$('#notices-notice').css({"opacity": 1});
 	if (/compatible; MSIE 9.0;/.test(window.navigator.userAgent) && !window.localStorage["noIE9annoy"] && false ) { // TODO enable this. It might scare people off, though.
 		$('#ie9-warn').css({"opacity": 1});
 	}
@@ -603,6 +607,9 @@ function isSchoolHolidays() {
 	return false; // nope
 	var holS = new Date("2014-04-11");
 	var holE = new Date("2014-04-28");
+	if (window.hasOwnProperty("devMode") && window.devMode == true) {
+		return false;
+	}	
 
 	if (NOW.isAfter(holS) && NOW.isBefore(holE)) {
 		return true;
@@ -617,36 +624,48 @@ function getRandColor() {
 function snazzify() {
 	var s = "#in";
 	$(s).fadeIn().css({"color": "rgb("+getRandColor()+","+getRandColor()+","+getRandColor()+")"});
-//	setTimeout($(s).fadeOu, 1000);
+	//	setTimeout($(s).fadeOu, 1000);
 	setTimeout(snazzify, 500);
 }
 
 function begin() {
 	if (isSchoolHolidays()) {
 		toggleExpando();
-		window.console.log('setting image');
 		$('body').css({"background-image": "url(/GOT.jpg) !important", "color": "black"});
 		$('body').css({"background-image": "url(/GOT.jpg)"});
 		$('#in').fadeIn().text('studystudystudystudystudystudystudy').css({"transition": "500ms ease"});
 		snazzify();
-//		$('#period-name').fadeIn().text("Exams are coming.")
+		setTimeout(function() { $('#doge-notify').fadeOut()}, 5000);
+		//		$('#period-name').fadeIn().text("Exams are coming.")
 		return;
 	}
 	if (belltimes["status"] == "Error") { // well dang. TODO add default bells + display a warning when the bells failed to load.
-		$('#countdown').html('<a href="javascript:void(0)" onclick="tryLoadBells()">Try Again</a>');
-		$('#period-name').text("Something went wrong :(");
-		$('#in').html("You can <a href='https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform'>report a bug</a>, or try again later.");
+		belltimes = window.defaultBells[NOW.getDay()];
+		var types = ["B","C","A"];
+		$('#bells-changed').text('These are the default belltimes for today. They might be wrong if an assembly or other event is happening today.');
+		window.console.log(NOW.getWeek());
+		belltimes.weekType = types[(NOW.getWeek()+1)%3];
+		week = belltimes.weekType;
+		dow = "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[NOW.getDay()];
+//		$('#countdown').html('<a href="javascript:void(1)" onclick="tryLoadBells()">Try Again</a>');
+//		$('#period-name').text("Something went wrong :(");
+//		$('#in').html("You can <a href='https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform'>report a bug</a>, or try again later.");
 	}
 	else { // show stuff.
 		week = belltimes["weekType"];
 		dow  = belltimes["day"];
-		recalculateNextBell();
-		updateTimeLeft();
-		setInterval(updateTimeLeft, 1000);
-		setTimeout(function() { $('#doge-notify').fadeOut()}, 5000);
-		updateLeftSlideout();
-		updateRightSlideout();
+		if (belltimes.bellsAltered) {
+			$('#bells-changed').text('Bells Changed! Reason: ' + belltimes.bellsAlteredReason);
+		}
 	}
+	recalculateNextBell();
+	updateTimeLeft();
+	setInterval(updateTimeLeft, 1000);
+	setTimeout(function() { $('#doge-notify').fadeOut()}, 5000);
+	window.console.log(NOW.getWeek());
+	updateLeftSlideout();
+	updateRightSlideout();
+	$('#bells-changed').fadeIn();
 	$(window).on('resize', doReposition);
 }
 function doReposition() { // reposition/resize things to fit.
@@ -680,11 +699,13 @@ function doReposition() { // reposition/resize things to fit.
 	var top2 = $('#in').height();
 	$('#countdown').css({"top": top1+top2});
 
-	
+
 }
 
 function getNotices() {
-	$.getJSON("notices/dailynotices.php?codify=yes&date="+NOW.getDateStr(), processNotices);
+	$.getJSON("notices/dailynotices.php?codify=yes&date="+NOW.getDateStr(), processNotices).fail(function() {
+		$('#slideout-top').html('<h1>Failed to load notices</h1><a href="javascript:void(0)" onclick="reloadNotices()">try again?</a>');
+	});
 }
 // put the notices in the notice pane
 function processNotices(data) {
@@ -693,7 +714,7 @@ function processNotices(data) {
 	res += "Pick a year: <select id='notice-filter'><option value='.notice-row'>All years</option>";
 	var year = (Number(studentYear) == Number.NaN ? studentYear : Number(studentYear));
 	for (i=7; i <= 12; i++) {
-		
+
 		res += "<option value='.notice-"+i+"'" + (year == i ? "selected" : "") + ">Year " + i + "</option>";
 	}
 	res += "<option value='.notice-Staff'" + (year == "Staff" ? "selected" : "") + ">Staff</option></select>";
@@ -878,9 +899,9 @@ function saveDiary() {
 
 	var data = {
 		"name": name,
-		"notes": desc,
-		"subject": subj,
-		"due": formatDate(date, true),
+			"notes": desc,
+			"subject": subj,
+			"due": formatDate(date, true),
 		"duePeriod": period,
 		"done": false,
 	};
@@ -888,11 +909,11 @@ function saveDiary() {
 	tDiary[window.newEntryID] = data;
 	var req = $.ajax({
 		"type": "POST",
-		"url": "diary.php",
-		"data": {
-			"json": JSON.stringify(tDiary),
-			"update": true
-		}
+			"url": "diary.php",
+			"data": {
+				"json": JSON.stringify(tDiary),
+					"update": true
+			}
 	});
 
 	req.done(function(msg) {
@@ -914,11 +935,11 @@ function diaryEntryDone(e) {
 	diary[id]["done"] = ($(e.target).find('input[type="checkbox"]').val() == "on" ? true : false);
 	var req = $.ajax({
 		"type": "POST",
-		"url": "diary.php",
-		"data": {
-			"json": JSON.stringify(diary),
-			"update": true
-		}
+			"url": "diary.php",
+			"data": {
+				"json": JSON.stringify(diary),
+					"update": true
+			}
 	});
 
 	req.done(function(msg) {
@@ -936,11 +957,11 @@ function deleteDiaryEntry(e) {
 	tDiary.splice(id, 1);
 	var req = $.ajax({
 		"type": "POST",
-		"url": "diary.php",
-		"data": {
-			"json": JSON.stringify(tDiary),
-			"update": true
-		}
+			"url": "diary.php",
+			"data": {
+				"json": JSON.stringify(tDiary),
+					"update": true
+			}
 	});
 
 	req.done(function(msg) {
@@ -985,18 +1006,18 @@ function getNextInstanceOf(today, wk, period) {
 	var lesson = timetable[wk][today][period];
 	var daysPast = 0;
 	var sDay = nextDay[today]
-	if (sDay == "mon") {
-		sWk = nextWeek[wk];
-		daysPast = 3;
-	}
-	else {
-		sWk = wk;
-		daysPast = 1;
-	}
+		if (sDay == "mon") {
+			sWk = nextWeek[wk];
+			daysPast = 3;
+		}
+		else {
+			sWk = wk;
+			daysPast = 1;
+		}
 	var cWk = sWk;
 	var cDay = sDay;
 	var done = false;
-	
+
 	for (var i = 0; i < 3; i++) {
 		for (var j = 0; j < 5; j++) {
 			var s = timetable[cWk][cDay];
@@ -1016,7 +1037,7 @@ function getNextInstanceOf(today, wk, period) {
 		cWk = nextWeek[cWk];
 	}
 	return {"daysLeft": daysPast, "wk": cWk, "day": cDay, "period": k};
-	
+
 }
 
 function getLastLesson() {
@@ -1105,14 +1126,14 @@ function saveYear() {
 	}
 	var req = $.ajax({
 		"type": "POST",
-		"url":  "update_year.php",
-		"dataType": "text",
-		"data": {
-			"year": newYear
-		}
+			"url":  "update_year.php",
+			"dataType": "text",
+			"data": {
+				"year": newYear
+			}
 	});
 	$('#year > .fake-button').text("Saving...");
-	
+
 	req.done(function(msg) {
 		var years = ["", "7", "8", "9", "10", "11", "12", "Staff"];
 		if (msg == "Ok") {
@@ -1130,11 +1151,11 @@ function saveYear() {
 }		
 // load jquery mobile (+ the swipe up/down support) if it's a device that supports touch.
 yepnope([{
-		test: Modernizr.touch,
+	test: Modernizr.touch,
 		yep : ["/script/jquery.mobile.custom.min.js"],
 /*		callback: function(url, result, key) {
 			console.log("CALLBACKED! " + url +"," + result +"," + key);
-		},*/
+},*/
 		complete: function() {
 			if ($.mobile) {
 				$(document).ready(function() { 
@@ -1150,7 +1171,7 @@ yepnope([{
 						else if ((rightPanel || window.oneSlider) && !rightEx) {
 							slideOutRight();
 						}
-		
+
 					});
 					$(document).on('swiperight', function(ev) { 
 						var start = ev.swipestart.coords[0];
@@ -1188,7 +1209,7 @@ yepnope([{
 				}
 			}
 		}
-	}]);
+}]);
 
 
 (function(a,b){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4)))window.MOBILE=true})(navigator.userAgent||navigator.vendor||window.opera,'http://detectmobilebrowser.com/mobile');
