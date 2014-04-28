@@ -600,6 +600,7 @@ function tryLoadBells() { // try and reload the bells
 }
 
 function isSchoolHolidays() {
+	return false; // nope
 	var holS = new Date("2014-04-11");
 	var holE = new Date("2014-04-28");
 
