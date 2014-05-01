@@ -25,11 +25,11 @@ window.defaultBells[5] = {"status":"OK","bellsAltered":false,"bellsAlteredReason
 window.defaultBells[6] = window.defaultBells[0]; // sat
 
 //ini_set("date.timezone", "Australia/Sydney");
-<?php if (!isset($results)) { header("Content-type: application/javascript"); } 
+/*<?php if (!isset($results)) { header("Content-type: application/javascript"); } 
 if (isset($_REQUEST["devmode"])) {
 	echo "window.devMode = true;\n";
 }
-?>
+?>*/
 function is_after_school(hour,min) {
 	if (hour == 15 && min >= 15) {
 		return true;
@@ -109,7 +109,7 @@ $.getJSON("/api/v1/timetable/get", "", function(data, textStatus, jqXHR) {
 	}
 	if (window.timetable != data.timetable) {
 		window.localStorage.timetable = JSON.stringify(data.timetable);
-		window.localStorage.studentYear = data.studentYear;
+		window.localStorage.studentYear = data.year;
 	}
 	window.timetable = data["timetable"];
 	window.loggedIn = true;
@@ -154,7 +154,7 @@ function recalculateNextBell() {
 	now.setMinutes(now.getMinutes() + 1);
 	var hour = now.getHours();
 	var min  = now.getMinutes();
-	if ((nextBell != null && nextBell["bell"] == "End of Day") || Date.now() > (new Date()).set({hours: 15, minutes: 15}) || !Date.lastWeekday().isToday() && !afterSchool) {
+	if ((nextBell != null && nextBell["bell"] == "End of Day") || (new Date()).isAfter((new Date()).set({hours: 15, minutes: 15})) /* wut is this -->|| !Date.lastWeekday().isToday() && !afterSchool*/) {
 		// it's now after school.
 		afterSchool = true;
 		// should get the next set of bells here
@@ -355,7 +355,7 @@ function updateTimeLeft() {
 	var teststr = n.getDateStr();
 	var el = document.getElementById("countdown");
 	var start = nextBell["internal"];
-	if (weekend || after_school) { // we need to countdown from midnight on the day in question.
+	if (weekend || afterSchool) { // we need to countdown from midnight on the day in question.
 		var now = new Date();
 		now.setDate(now.getDate()+1+day_offset); // js automatically wraps dates!
 		now.setHours(0,0,0);
@@ -369,7 +369,7 @@ function updateTimeLeft() {
 	var startMin = start[0]*60 + start[1];
 	min = startMin - min;
 	var sec = min * 60;
-	if (weekend || after_school) {
+	if (weekend || afterSchool) {
 		//sec += (24*60*60)*day_offset;
 		sec += Math.floor((now.valueOf() - Date.now())/1000); // work out how long there is until midnight
 	}
@@ -562,9 +562,12 @@ function updateLeftSlideout() {// timetable here
 	}
 	document.getElementById("slideout-left").innerHTML = text;
 }
-$.getScript('<?php
-echo "http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $NOW+($afterSchool ? 24*60*60 : 0))/* "2014-01-30"*/ . "&callback=loadTimetable";
-?>');
+/*$.getScript('<?php
+echo "http://student.sbhs.net.au/api/timetable/bells.json?date=" . strftime("%G-%m-%d", $NOW+($afterSchool ? 24*60*60 : 0))/* "2014-01-30"*/ /*"&callback=loadTimetable";
+?>');*/
+var d = NOW;
+d.addSeconds(afterSchool ? 24*60*60 : 0);
+$.getScript("http://student.sbhs.net.au/api/timetable/bells.json?date=" + (d.getFullYear() + (d.getMonth()+1) + d.getDate()) + "&callback=loadTimetable");
 
 var DOCUMENT_READY = false;
 var BELLTIMES_DONE = false;
@@ -658,6 +661,7 @@ function begin() {
 			$('#bells-changed').text('Bells Changed! Reason: ' + belltimes.bellsAlteredReason);
 		}
 	}
+	redoDate();
 	recalculateNextBell();
 	updateTimeLeft();
 	setInterval(updateTimeLeft, 1000);
@@ -667,6 +671,12 @@ function begin() {
 	updateRightSlideout();
 	$('#bells-changed').fadeIn();
 	$(window).on('resize', doReposition);
+	if (window.studentYear) {
+		$('#year').html(window.studentYear + " &nbsp;&nbsp;<small><a href='javascript:void(0)' onclick='promptSetYear()'>Change</a></small>");
+	}
+	else {
+		$('#year').html("(not set) <a href='javascript:void(0)' onclick='promptSetYear()'>Set</a>");
+	}
 }
 function doReposition() { // reposition/resize things to fit.
 	if (window.innerWidth <= 510 || window.MOBILE) {

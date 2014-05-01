@@ -57,8 +57,8 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 	}
 	$results["email"] = $_SESSION['email'];
 	include("./header.php");
-	echo "<script defer type='application/javascript'>";
-	include "./belltimes.js.php";
+	echo "<script defer src='/belltimes.js' type='application/javascript'>";
+//	include "./belltimes.js"; // TODO make this a proper script so it can be optimised
 	echo "</script>";
 	echo "</head>";
 	echo "<body><div class='wrapper'>";
@@ -68,7 +68,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 else {
 	// TODO some kind of notice saying what email will be used for, etc.
 	include("./header.php");
-	echo "<script defer src='./belltimes.js.php' type='application/javascript'></script>";
+	echo "<script defer src='./belltimes.js' type='application/javascript'></script>";
 	echo "</head>";
 	echo "<body><div class='wrapper'>";
 	echo "<div id=\"nojs\"><noscript>You need a Javascript-enabled browser to use this site.</noscript></div>"; 

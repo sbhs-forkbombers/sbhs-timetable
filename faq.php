@@ -94,15 +94,15 @@ It's probably your computer and web browser. You should switch to the latest ver
 <div onclick="toggleHeader('#faq-3')" class="faq" id="faq-3">
 <span style="font-family: Roboto Slab; font-size: 30px;">Legal, standard, boring stuff</span><br /><br />
 <div id="faq-3-ans" class="faq-ans">
-This project is licensed under the GNU Affero General Public License. It can be found <a href="/COPYING">here</a> or at the <a href="//gnu.org/licenses/agpl-3.0.txt">GNU website</a>
-This project also uses other third-party libraries available under other licenses. These are:
+This project is licensed under the GNU Affero General Public License. It can be found <a href="/COPYING">here</a> or at the <a href="//gnu.org/licenses/agpl-3.0.txt">GNU website</a>.<br />
+This project also uses third-party libraries available under other licenses. These are:
 <ul>
-<li>jQuery - MIT </li>
-<li>Modernizr - MIT </li>
-<li>WebFont Loader - Apache 2.0</li>
-<li>Datejs - MIT </li>
-<li>spin.js - MIT </li>
-<li>yepnope.js - WTFPL</li>
+<li><a href="http://jquery.com/">jQuery</a> - MIT</li>
+<li><a href="http://modernizr.com/">Modernizr</a> - MIT</li>
+<li><a href="http://github.com/typekit/webfontloader/">WebFont Loader</a> - Apache 2.0</li>
+<li><a href="http://datejs.com/">Datejs</a> - MIT</li>
+<li><a href="http://fgnass.github.io/spin.js/">spin.js</a> - MIT</li>
+<li><a href="http://yepnopejs.com/">yepnope.js</a> - WTFPL</li>
 </ul>
 See the individual projects for their license notices.<br>
 Full text for the: <a href="http://mit-license.org">MIT License</a> | <a href="//www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0 License</a> | <a href="http://www.wtfpl.net/txt/copying/">WTF Public License</a>
@@ -114,7 +114,7 @@ Full text for the: <a href="http://mit-license.org">MIT License</a> | <a href="/
 <div id="faq-4-ans" class="faq-ans">
 For all quick questions and suggestions: <a href="http://webchat.freenode.net?channels=%23%23sbhstimetable">webchat</a> (not allowed by DEC, you can use your whatever censorship evasion)
 <br /><br />
-If you want to give detailed feeback or receieve a detailed reply, please complete this form: <a href="https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform">feedback</a>
+If you want to give detailed feedback or receieve a detailed reply, please complete this form: <a href="https://docs.google.com/forms/d/1z7uAIRsPjDTQxevO1R5GFn4OrETeHuZ0j2jzBcg3UKM/viewform">feedback</a>
 <script>
 function toggleHeader(id) {
 	$(id+"-ans").slideToggle();
