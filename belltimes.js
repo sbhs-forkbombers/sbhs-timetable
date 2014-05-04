@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+window.timetable = null;
 window.defaultBells = [];
 window.defaultBells[0] = {"status":"OK","bellsAltered":false,"bellsAlteredReason":"","bells":[{"bell":"Roll Call","time":"09:00"},{"bell":"1","time":"09:05"},{"bell":"Transition","time":"10:05"},{"bell":"2","time":"10:10"},{"bell":"Lunch 1","time":"11:10"},{"bell":"Lunch 2","time":"11:30"},{"bell":"3","time":"11:50"},{"bell":"Transition","time":"12:50"},{"bell":"4","time":"12:55"},{"bell":"Recess","time":"13:55"},{"bell":"5","time":"14:15"},{"bell":"End of Day","time":"15:15"}],"day":"","term":"Unknown","week":"Unknown","weekType":"fill me in"}; // sun
 window.defaultBells[1] = window.defaultBells[0]; // mon
@@ -228,7 +228,7 @@ function recalculateNextBell() {
 	var pName = nextBell['bell'].replace("Roll Call", "School starts").replace("End of Day", "School ends");
 	if (/Transition|Lunch 1|Recess/i.test(pName)) { // count down until the end of this period rather than the start of whatever's next
 		var last = belltimes['bells'][nearestBellIdx-1]['bell'];
-		if (timetable != null) {
+		if (window.timetable != null) {
 			var lesson = last;
 			var details= timetable[week.toLowerCase()][dow.substr(0,3).toLowerCase()][Number(last)-1];
 			var name = details["name"];
