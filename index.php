@@ -97,7 +97,7 @@ echo "<script>
 <div id="slideout-bottom" class="long-slideout"></div>
 <div id="slideout-bottom-arrow" class="arrow" onclick="slideOutBottom()"></div>
 <div id='swipe-info'>Swipe left or right to show more information...</div>
-<div id="doge-notify"><a href="http://nodejs.sbhstimetable.tk/wat.html">Is typing your timetable too much effort? Reading room change signs too hard? Try this (ALPHA!)</a><br /><a href="http://doge.sbhstimetable.tk/">Like Doge?</a>&nbsp;<sup><a id='nohover' href="javascript:void(0)" onclick="$('#doge-notify').fadeOut();">X</a></sup></div>
+<div id="doge-notify">If you're overly attached to this site, you might want to become un-attached.<br />We're switching over to <a href="http://nodejs.sbhstimetable.tk">version 2.0</a>!<br /> It's got less typing and more swag! What else could you want?&nbsp;<sup><a id='nohover' href="javascript:void(0)" onclick="$('#doge-notify').fadeOut();">X</a></sup></div>
 <div id='expando-wrapper'>
 <a onclick='toggleExpando()'><img id='expand-countdown' alt='expand' src='/expand.png' /><img id='collapse-countdown' alt='collapse' src='/collapse.png' class='hidden' /></a>
 </div>
